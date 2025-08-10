@@ -30,7 +30,7 @@ public class AuthorController {
     public List<AuthorDTO> getall(){
         return authorService.getAll();
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/by/{id}")
     public ResponseEntity<?> update (@PathVariable Integer id, @RequestBody AuthorDTO authorDTO){
         try {
             Author author = authorService.update(authorDTO,id);
