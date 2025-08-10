@@ -39,7 +39,7 @@ public class AuthorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/by/{id}")
     public  ResponseEntity<?> GetAuthorById(@PathVariable Integer id){
         try {
             AuthorDTO author = authorService.getAuthorById(id);
