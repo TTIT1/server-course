@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,22 +60,24 @@ public class AuthorService {
 
     }
     public Author update(AuthorDTO authorDTO , Integer id) {
-        Author author = authorRepository.findById(id).orElseThrow(() ->
-                new notification("I don't find data to id L: " + id));
+            Author author  =  authorRepository.findById(id).orElseThrow(()->new notification("don't data"));
+             try {
 
-            if (author != null) {
-                author.setAge(authorDTO.getAge());
-                author.setFirstName(authorDTO.getFirstName());
-                author.setEmail(authorDTO.getEmail());
-                author.setLastName(authorDTO.getLastName());
-                if (authorDTO.getCourseIds() != null) {
-                    List<Course> courses = courseRepository.findAllById(authorDTO.getCourseIds());
-                    author.setCourses(courses);
-                }
-             return  authorRepository.save(author);
+                 author.setAge(authorDTO.getAge());
+                 author.setEmail(authorDTO.getEmail());
+                 author.setFirstName(authorDTO.getFirstName());
+                 author.setLastName(authorDTO.getLastName());
+                     List<Course> courses = courseRepository.findAllById(authorDTO.getCourseIds());
+                     if(courses != null){
+                         author.setCourses(courses);
+                     }
+                     return    authorRepository.save(author);
 
-            }
-        return null;
+
+             } catch (RuntimeException e) {
+                 throw  new notification("server baoara trì");
+             }
+
     }
 
      public AuthorDTO getAuthorById(Integer id){

@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 //@DiscriminatorColumn(name = "resource_type")// đặt tên cho cột chứ các dữ  liệu lớp con kế thừa vì các lớp con với lớp cha
-// chung trong 1 bảng vì Sigle table mà bên các lops con thì có anotation khác để phân biệt data DiscriminatorValue
+// chung trong 1 bảng vì Single table mà bên các lops con thì có anotation khác để phân biệt data DiscriminatorValue
 public class Resource {
     @Id
     @GeneratedValue
