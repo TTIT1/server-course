@@ -50,4 +50,22 @@ public class AuthorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+    @GetMapping("/get/all/{nameFind}")
+    public  ResponseEntity<?> GetListName(@PathVariable String nameFind){
+        try {
+            List<Author> authors = authorService.authorListByName(nameFind);
+            return ResponseEntity.status(HttpStatus.OK).body(authors);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    @GetMapping("/get/{nameFind}")
+    public  ResponseEntity<?> GetListNameIngoreCase(@PathVariable String nameFind){
+        try {
+            List<Author> authors = authorService.authorListByNameIngoreCase(nameFind);
+            return ResponseEntity.status(HttpStatus.OK).body(authors);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

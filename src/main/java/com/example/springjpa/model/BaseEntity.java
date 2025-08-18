@@ -22,6 +22,7 @@ public class BaseEntity {
     private LocalDateTime creatAt;
     @UpdateTimestamp
     private LocalDateTime lassModifiedAt;
+
     private String createBy;
     private String lastMotifiedBy;
 }
