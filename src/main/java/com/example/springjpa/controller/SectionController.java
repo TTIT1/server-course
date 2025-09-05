@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springjpa.dto.ApiResponse;
 import com.example.springjpa.dto.SectionDTO;
@@ -15,7 +16,8 @@ import com.example.springjpa.service.SectionService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
-@@RequestMapping("/api/v3")
+@RequestMapping("/api/v3")
+@RestController
 public class SectionController {
     @Autowired
     SectionService sectionService;
