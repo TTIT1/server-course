@@ -1,71 +1,59 @@
 package com.example.springjpa.controller;
 
+import com.example.springjpa.dto.ApiResponse;
 import com.example.springjpa.dto.AuthorDTO;
+import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Author;
 import com.example.springjpa.service.AuthorService;
+import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
+import io.swagger.v3.core.model.ApiDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/author")
 public class AuthorController {
     @Autowired
-    AuthorService authorService;
-
-
-    @PostMapping("/add/Author")
-    public ResponseEntity<?> save(@RequestBody AuthorDTO authorDTO) {
-        try {
-            authorService.saveAuthor(authorDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("ok la ");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail: "+authorDTO);
-        }
-    }
+    private AuthorService authorService;
     @GetMapping("/get/all")
-    public List<AuthorDTO> getall(){
-        return authorService.getAll();
-    }
-    @PutMapping("/update/by/{id}")
-    public ResponseEntity<?> update (@PathVariable Integer id, @RequestBody AuthorDTO authorDTO){
-        try {
-            Author author = authorService.update(authorDTO,id);
-            return ResponseEntity.status(HttpStatus.OK).body("200 "+author);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-    @GetMapping("/get/by/{id}")
-    public  ResponseEntity<?> GetAuthorById(@PathVariable Integer id){
-        try {
-            AuthorDTO author = authorService.getAuthorById(id);
+    public ResponseEntity<ApiResponse<List<AuthorDTO>>> getAllApiResponseResponseEntity(){
+                    ApiResponse<List<AuthorDTO>> apiResponse = new ApiResponse<>();
+                    apiResponse.setRsulte(authorService.getAll());
+                    apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+                    return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
-              return   ResponseEntity.status(HttpStatus.OK).body(author);
+    }
+    @PostMapping("/add/new/author")
+    public ResponseEntity<ApiResponse<Author>>AddApiResponseResponseEntity(@RequestBody AuthorDTO authorDTO){
+                    ApiResponse<Author> apiResponse = new ApiResponse<>();
+                    apiResponse.setRsulte(authorService.saveAuthor(authorDTO));
+                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+                    apiResponse.setCode(ErrorCode.NOT_FOUND.getCode());
+                    return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
-    @GetMapping("/get/all/{nameFind}")
-    public  ResponseEntity<?> GetListName(@PathVariable String nameFind){
-        try {
-            List<Author> authors = authorService.authorListByName(nameFind);
-            return ResponseEntity.status(HttpStatus.OK).body(authors);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiResponse<Author>> UpdateResponseResponseEntity(@RequestBody AuthorDTO authorDTO,@PathVariable Integer id){
+            ApiResponse<Author> apiResponse = new ApiResponse<>();
+            apiResponse.setRsulte(authorService.update(authorDTO,id));
+            apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+            apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+            return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
-    @GetMapping("/get/{nameFind}")
-    public  ResponseEntity<?> GetListNameIngoreCase(@PathVariable String nameFind){
-        try {
-            List<Author> authors = authorService.authorListByNameIngoreCase(nameFind);
-            return ResponseEntity.status(HttpStatus.OK).body(authors);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    @GetMapping("/get/by/id")
+     public ResponseEntity<ApiResponse<Author>> getbyid(@PathVariable Integer id){
+             ApiResponse<Author> apiResponse = new ApiResponse<>();
+             apiResponse.setRsulte(authorService.getAuthorById(id));
+             apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+             apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+             return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
 }

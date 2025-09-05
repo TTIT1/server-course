@@ -1,7 +1,8 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.config.notification;
 import com.example.springjpa.dto.LaptopAttributeDTO;
+import com.example.springjpa.exception.AppExcepotion;
+import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Attribute;
 import com.example.springjpa.model.Laptop;
 import com.example.springjpa.model.LaptopAttribute;
@@ -12,7 +13,6 @@ import com.example.springjpa.repository.LaptopAttributeRep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -93,7 +93,7 @@ public class LaptopAttributeService {
 
                return laptopAttributeDTO;
            } catch (RuntimeException e) {
-               throw  new notification("Bug data");
+               throw  new AppExcepotion(ErrorCode.INVALID_INPUT);
            }
 
 

@@ -1,20 +1,16 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.config.notification;
 import com.example.springjpa.dto.FileDTO;
-import com.example.springjpa.dto.ResourceDTO;
+import com.example.springjpa.exception.AppExcepotion;
+import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.File;
 import com.example.springjpa.model.Lecture;
-import com.example.springjpa.model.Resource;
 import com.example.springjpa.repository.FileRepository;
 import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +24,7 @@ public class FileService {
     @Autowired
     ResourceRepository resourceRepository;
     public FileDTO save(FileDTO fileDTO){
-        Lecture lecture = lectureRepository.findById(fileDTO.getLectureid()).orElseThrow(()->new notification("Server don't find data "));
+        Lecture lecture = lectureRepository.findById(fileDTO.getLectureid()).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
 
         try {
             File file = new File();
@@ -41,7 +37,7 @@ public class FileService {
             return  toModelFileDTO(file);
 
         }catch (Exception e){
-            throw new notification("Server đang bảo chì tính năng này");
+            throw new AppExcepotion(ErrorCode.INVALID_INPUT);
         }
 
 

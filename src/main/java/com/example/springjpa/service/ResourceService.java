@@ -1,6 +1,8 @@
 package com.example.springjpa.service;
 
 import com.example.springjpa.dto.ResourceDTO;
+import com.example.springjpa.exception.AppExcepotion;
+import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Lecture;
 import com.example.springjpa.model.Resource;
 import com.example.springjpa.repository.LectureRepository;
@@ -16,7 +18,7 @@ public class ResourceService {
     LectureRepository lectureRepository;
 public ResourceDTO add(ResourceDTO resourceDTO){
     Lecture lecture = lectureRepository.findById(resourceDTO.getLectureid())
-            .orElseThrow(()->new RuntimeException("null"));
+            .orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
     if(lecture!=null){
         Resource resource = new Resource();
         resource.setName(resourceDTO.getName());

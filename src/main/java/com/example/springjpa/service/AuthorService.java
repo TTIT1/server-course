@@ -1,12 +1,12 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.config.notification;
 import com.example.springjpa.dto.AuthorDTO;
+import com.example.springjpa.exception.AppExcepotion;
+import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Author;
 import com.example.springjpa.model.Course;
 import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class AuthorService {
 
     public Author saveAuthor(AuthorDTO authorDTO) {
         if (authorRepository.findByEmail(authorDTO.getEmail()).isPresent()) {
-            throw new EntityNotFoundException("Author already exists");
+             new AppExcepotion(ErrorCode.INVALID_EMAIL);
         }
         Author savedAuthor = new Author();
         savedAuthor.setEmail(authorDTO.getEmail());
@@ -54,12 +54,15 @@ public class AuthorService {
 
     public List<AuthorDTO> getAll() {
         List<AuthorDTO> authorDTOS = authorRepository.findAll().stream().map(this::toModelAuthor).collect(Collectors.toList());
+        if (authorDTOS.isEmpty()){
+            throw new AppExcepotion(ErrorCode.NOT_FOUND);
+        }
         return authorDTOS;
 
     }
 
     public Author update(AuthorDTO authorDTO, Integer id) {
-        Author author = authorRepository.findById(id).orElseThrow(() -> new notification("don't data"));
+        Author author = authorRepository.findById(id).orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
         try {
 
             author.setAge(authorDTO.getAge());
@@ -74,14 +77,14 @@ public class AuthorService {
 
 
         } catch (RuntimeException e) {
-            throw new notification("server baoara trì");
+            throw new AppExcepotion(ErrorCode.INVALID_INPUT);
         }
 
     }
 
-    public AuthorDTO getAuthorById(Integer id) {
-        Author author = authorRepository.findById(id).orElseThrow(() -> new notification("Server don't find data to id = " + id));
-        return toModelAuthor(author);
+    public Author getAuthorById(Integer id) {
+        Author author = authorRepository.findById(id).orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
+        return author;
     }
 
     public List<Author> authorListByName(String nameFind) {
@@ -89,7 +92,7 @@ public class AuthorService {
             List<Author> authors = authorRepository.findAllByfirstName(nameFind);
             return authors;
         } catch (RuntimeException e) {
-            throw new notification("Server don't find data ");
+            throw new AppExcepotion(ErrorCode.INVALID_INPUT);
         }
 
     }
@@ -97,9 +100,12 @@ public class AuthorService {
     public List<Author> authorListByNameIngoreCase(String nameFind) {
         try {
             List<Author> authors = authorRepository.findAllByfirstNameIgnoreCase(nameFind);
+            if (authors.isEmpty()){
+                throw new AppExcepotion(ErrorCode.NOT_FOUND);
+            }
             return authors;
         } catch (RuntimeException e) {
-            throw new notification("Server don't find data ");
+            throw new AppExcepotion(ErrorCode.INVALID_INPUT);
         }
     }
 }

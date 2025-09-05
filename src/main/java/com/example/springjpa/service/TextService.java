@@ -1,7 +1,8 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.config.notification;
 import com.example.springjpa.dto.TextDTO;
+import com.example.springjpa.exception.AppExcepotion;
+import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Lecture;
 import com.example.springjpa.model.Text;
 import com.example.springjpa.repository.LectureRepository;
@@ -34,7 +35,7 @@ public class TextService {
    }
     public TextDTO add(TextDTO textDTO) {
             Lecture lecture = lectureRepository.findById(textDTO.getLectureid()).orElseThrow(() ->
-                    new RuntimeException("I don't find data lecture id = " + textDTO.getLectureid()));
+                    new AppExcepotion(ErrorCode.NOT_FOUND));
         try {
             Text text = new Text();
             text.setConText(textDTO.getText());
@@ -51,13 +52,13 @@ public class TextService {
         }
       public TextDTO update(TextDTO textDTO) {
             Text text = textRepository.findById(textDTO.getId())
-                    .orElseThrow(()->new notification("Server don't data whith id = "+textDTO.getId()));
+                    .orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
             try {
                 text.setConText(textDTO.getText());
                 textRepository.save(text);
 
             }catch (Exception e){
-                throw new RuntimeException(e.getMessage());
+                throw new AppExcepotion(ErrorCode.INVALID_INPUT);
 
             }
             return textDTO;

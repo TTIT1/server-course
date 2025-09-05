@@ -1,7 +1,8 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.config.notification;
 import com.example.springjpa.dto.SectionDTO;
+import com.example.springjpa.exception.AppExcepotion;
+import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Course;
 import com.example.springjpa.model.Section;
 import com.example.springjpa.repository.CourseRepository;
@@ -30,7 +31,7 @@ public class SectionService {
     public SectionDTO add (SectionDTO  sectionDTO) {
 
          Course course = courseRepository.findById(sectionDTO.getCourseId()).orElseThrow(()->
-                 new notification("No dataa"));
+                 new AppExcepotion(ErrorCode.NOT_FOUND));
 
          try {
              Section section = new Section();
@@ -40,7 +41,7 @@ public class SectionService {
              sectionRepository.save(section);
              return toModel(section);
          }catch (Exception e){
-             throw new notification("Something went wrong");
+             throw new AppExcepotion(ErrorCode.INVALID_INPUT);
          }
 
 
@@ -51,7 +52,8 @@ public class SectionService {
                 .collect(Collectors.toUnmodifiableList());
     }
     public SectionDTO getSectionById(int id){
-        Section section = sectionRepository.getOne(id);
+        Section section = sectionRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND ));
+
         return toModel(section);
     }
     public SectionDTO updateSectionById(int id, SectionDTO sectionDTO) {

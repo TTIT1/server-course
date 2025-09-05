@@ -1,10 +1,10 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.config.notification;
 import com.example.springjpa.dto.LectureDTO;
-import com.example.springjpa.dto.ResourceDTO;
+
+import com.example.springjpa.exception.AppExcepotion;
+import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Lecture;
-import com.example.springjpa.model.Resource;
 import com.example.springjpa.model.Section;
 import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.SectionRepository;
@@ -34,7 +34,7 @@ public class LecureService   {
        }
        public LectureDTO addLecture (LectureDTO lectureDTO){
               Section section = sectionRepository.findById(lectureDTO.getSectionId())
-                      .orElseThrow(()->new RuntimeException("Server don't find data section When you want to add Lecture"));
+                      .orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
               try {
 
                           Lecture lecture = new Lecture();
@@ -44,7 +44,7 @@ public class LecureService   {
 
               }catch (Exception e){
 
-                     throw new RuntimeException(e.getMessage());
+                     throw new AppExcepotion(ErrorCode.INVALID_INPUT);
               }
               return  lectureDTO;
 
@@ -53,14 +53,18 @@ public class LecureService   {
               return  lectureRepository.findAll().stream().map(this::toModelLecture).collect(Collectors.toList());
        }
 
-       public LectureDTO updateLecture(LectureDTO lectureDTO) throws notification {
-              Lecture lecture = lectureRepository.findById(lectureDTO.getId()).orElseThrow(()->new notification("I DON'T DATA"));
+       // Service
+       public LectureDTO updateLecture(LectureDTO lectureDTO) {
+              Lecture lecture = lectureRepository.findById(lectureDTO.getId())
+                      .orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
               try {
-                     lecture.setName(lectureDTO.getName());return toModelLecture(lectureRepository.save(lecture));
-              } catch (notification e) {
-                     throw new RuntimeException(e);
+                     lecture.setName(lectureDTO.getName());
+                     return toModelLecture(lectureRepository.save(lecture));
+              } catch (Exception e) {
+                  throw    new AppExcepotion(ErrorCode.INVALID_INPUT);
               }
        }
+
 
 
 }
