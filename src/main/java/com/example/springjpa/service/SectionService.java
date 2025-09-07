@@ -51,12 +51,12 @@ public class SectionService {
                 .map(this::toModel)
                 .collect(Collectors.toUnmodifiableList());
     }
-    public SectionDTO getSectionById(int id){
+    public SectionDTO getSectionById(Integer id){
         Section section = sectionRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND ));
 
         return toModel(section);
     }
-    public SectionDTO updateSectionById(int id, SectionDTO sectionDTO) {
+    public SectionDTO updateSectionById(Integer id, SectionDTO sectionDTO) {
         Section section = sectionRepository.getOne(id);
         section.setName(sectionDTO.getName());
         section.setOrder(sectionDTO.getOrder());
