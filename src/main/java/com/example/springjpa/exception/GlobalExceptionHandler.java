@@ -13,7 +13,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse> handleRuntimeException(RuntimeException ex) {
           ApiResponse<Object> objectApiResponse = new ApiResponse<>();
-                  objectApiResponse.setMessages("Lỗi do custom: "+ex.getMessage());
+          objectApiResponse.setMessages("Lỗi do custom: "+ex.getMessage());
+
           return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(objectApiResponse);
     }
 

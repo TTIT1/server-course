@@ -1,5 +1,8 @@
 package com.example.springjpa.controller;
 
+
+
+import com.example.springjpa.service.SectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,10 +13,8 @@ import com.example.springjpa.dto.ApiResponse;
 import com.example.springjpa.dto.SectionDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Section;
-import com.example.springjpa.service.SectionService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,52 +26,52 @@ public class SectionController {
 
     // CREATE
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<SectionDTO>> addSection(@RequestBody SectionDTO sectionDTO) {
-        ApiResponse<SectionDTO> response = new ApiResponse<>();
-        response.setRsulte(sectionService.add(sectionDTO));
-        response.setCode(ErrorCode.SUCCESS.getCode());
-        response.setMessages(ErrorCode.SUCCESS.getMessages());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ApiResponse<SectionDTO>> add(@RequestBody SectionDTO sectionDTO) {
+        ApiResponse<SectionDTO> apiResponse = new ApiResponse<>();
+        apiResponse.setRsulte(sectionService.addSection(sectionDTO));
+        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
-    // READ - Get all
-    @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<SectionDTO>>> getAllSections() {
-        ApiResponse<List<SectionDTO>> response = new ApiResponse<>();
-        response.setRsulte(sectionService.getAllSection());
-        response.setCode(ErrorCode.SUCCESS.getCode());
-        response.setMessages(ErrorCode.SUCCESS.getMessages());
-        return ResponseEntity.ok(response);
+    // GET ALL
+    @GetMapping("/get/all")
+    public ResponseEntity<ApiResponse<List<SectionDTO>>> getAll() {
+        ApiResponse<List<SectionDTO>> apiResponse = new ApiResponse<>();
+        apiResponse.setRsulte(sectionService.getAllSection());
+        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        return ResponseEntity.ok(apiResponse);
     }
 
-    // READ - Get by id
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<SectionDTO>> getSectionById(@PathVariable Integer id) {
-        ApiResponse<SectionDTO> response = new ApiResponse<>();
-        response.setRsulte(sectionService.getSectionById(id));
-        response.setCode(ErrorCode.SUCCESS.getCode());
-        response.setMessages(ErrorCode.SUCCESS.getMessages());
-        return ResponseEntity.ok(response);
+    // GET BY ID
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ApiResponse<SectionDTO>> getById(@PathVariable Long id) {
+        ApiResponse<SectionDTO> apiResponse = new ApiResponse<>();
+        apiResponse.setRsulte(sectionService.getSectionById(id));
+        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        return ResponseEntity.ok(apiResponse);
     }
 
     // UPDATE
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<SectionDTO>> updateSection(@PathVariable Integer id,
-                                                                 @RequestBody SectionDTO sectionDTO) {
-        ApiResponse<SectionDTO> response = new ApiResponse<>();
-        response.setRsulte(sectionService.updateSectionById(id, sectionDTO));
-        response.setCode(ErrorCode.SUCCESS.getCode());
-        response.setMessages(ErrorCode.SUCCESS.getMessages());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ApiResponse<SectionDTO>> update(@PathVariable Long id,
+                                                          @RequestBody SectionDTO sectionDTO) {
+        ApiResponse<SectionDTO> apiResponse = new ApiResponse<>();
+        apiResponse.setRsulte(sectionService.updateSection(id, sectionDTO));
+        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        return ResponseEntity.ok(apiResponse);
     }
-//
-//    // DELETE
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<ApiResponse<Void>> deleteSection(@PathVariable Integer id) {
-//        ApiResponse<Void> response = new ApiResponse<>();
-//        sectionService.deleteSection(id);
-//        response.setCode(ErrorCode.SUCCESS.getCode());
-//        response.setMessages("Section deleted successfully");
-//        return ResponseEntity.ok(response);
-//    }
+
+    // DELETE
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
+        sectionService.deleteSection(id);
+        ApiResponse<Void> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+        apiResponse.setMessages("Deleted successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
 }

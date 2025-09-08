@@ -1,5 +1,7 @@
 package com.example.springjpa.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,8 +24,10 @@ public class Section extends BaseEntity  {
     private  int order;
     @ManyToOne
     @JoinColumn(name = "course_id")
+  //  @JsonIgnore
     private Course course;
     @OneToMany(mappedBy = "section")
+  //  @JsonIgnore
     private List< Lecture> lecture;
 }
 

@@ -24,7 +24,7 @@ public class Author extends BaseEntity{
     private String email;
     private int age;
     @ManyToMany(mappedBy = "authors")
-    @JsonIgnore
+    //@JsonIgnore
     private List<Course> courses = new ArrayList<>();
 
     

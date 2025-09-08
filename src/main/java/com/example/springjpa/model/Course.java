@@ -1,5 +1,6 @@
 package com.example.springjpa.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -29,9 +30,9 @@ public class Course  extends  BaseEntity{
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
-    @JsonIgnore
+   // @JsonIgnore
     private List<Author> authors = new ArrayList<>();
-
+ //@JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Section> sections = new ArrayList<>();
 

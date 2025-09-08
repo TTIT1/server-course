@@ -10,7 +10,6 @@ public class SectionDTO {
     private Integer id;
     private String name;
     private int order;
-
     private Integer courseId;
 
 }

@@ -2,6 +2,7 @@ package com.example.springjpa.dto;
 
 
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,5 +13,5 @@ public class ResourceDTO {
     private String name;
     private int size;
     private String url;
-    private  int  lectureid;
+    private Integer lectureid;
 }
