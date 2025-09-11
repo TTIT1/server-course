@@ -1,0 +1,118 @@
+package com.example.springjpa.service.Impl;
+
+import com.example.springjpa.dto.AuthorDTO;
+import com.example.springjpa.exception.AppExcepotion;
+import com.example.springjpa.exception.ErrorCode;
+import com.example.springjpa.model.Author;
+import com.example.springjpa.model.Course;
+import com.example.springjpa.repository.AuthorRepository;
+import com.example.springjpa.repository.CourseRepository;
+import com.example.springjpa.service.AuthorService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+@Service
+@RequiredArgsConstructor
+public class AuthorServiceImpl implements AuthorService {
+
+    private final AuthorRepository authorRepository;
+
+    private final  CourseRepository courseRepository;
+
+    public AuthorDTO toModelAuthor(Author author) {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setAge(author.getAge());
+        authorDTO.setId(author.getId());
+        authorDTO.setEmail(author.getEmail());
+        authorDTO.setFirstName(author.getFirstName());
+        authorDTO.setLastName(author.getLastName());
+        List<Integer> integers = author.getCourses().stream().map(Course::getId).collect(Collectors.toList());
+        authorDTO.setCourseIds(integers);
+        return authorDTO;
+    }
+
+    public AuthorDTO saveAuthor(AuthorDTO authorDTO) {
+        if (authorRepository.findByEmail(authorDTO.getEmail()).isPresent()) {
+            new AppExcepotion(ErrorCode.INVALID_EMAIL);
+        }
+        Author   author = Author.builder()
+                .age(authorDTO.getAge())
+                .firstName(authorDTO.getFirstName())
+                .email(authorDTO.getEmail())
+                .lastName(authorDTO.getLastName())
+
+                .build();
+        if (authorDTO.getCourseIds() != null) {
+            List<Course> courseIds = courseRepository.findAllById(authorDTO.getCourseIds());
+
+            author.setCourses(courseIds);
+        }
+       return toModelAuthor(authorRepository.save(author));
+
+    }
+
+    public List<AuthorDTO> getAll() {
+        List<AuthorDTO> authorDTOS = authorRepository.findAll().stream().map(this::toModelAuthor).collect(Collectors.toList());
+        if (authorDTOS.isEmpty()){
+            throw new AppExcepotion(ErrorCode.NOT_FOUND);
+        }
+        return authorDTOS;
+
+    }
+
+    public Author update(AuthorDTO authorDTO, Integer id) {
+        Author author = authorRepository.findById(id).orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
+        try {
+
+            author.setAge(authorDTO.getAge());
+            author.setEmail(authorDTO.getEmail());
+            author.setFirstName(authorDTO.getFirstName());
+            author.setLastName(authorDTO.getLastName());
+            List<Course> courses = courseRepository.findAllById(authorDTO.getCourseIds());
+            if (courses != null) {
+                author.setCourses(courses);
+            }
+            return authorRepository.save(author);
+
+
+        } catch (RuntimeException e) {
+            throw new AppExcepotion(ErrorCode.INVALID_INPUT);
+        }
+
+    }
+
+
+
+    public Author getAuthorById(Integer id) {
+        Author author = authorRepository.findById(id).orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
+        return author;
+    }
+
+    public List<Author> authorListByName(String nameFind) {
+        try {
+            List<Author> authors = authorRepository.findAllByfirstName(nameFind);
+            return authors;
+        } catch (RuntimeException e) {
+            throw new AppExcepotion(ErrorCode.INVALID_INPUT);
+        }
+
+    }
+
+    public List<Author> authorListByNameIngoreCase(String nameFind) {
+        try {
+            List<Author> authors = authorRepository.findAllByfirstNameIgnoreCase(nameFind);
+            if (authors.isEmpty()){
+                throw new AppExcepotion(ErrorCode.NOT_FOUND);
+            }
+            return authors;
+        } catch (RuntimeException e) {
+            throw new AppExcepotion(ErrorCode.INVALID_INPUT);
+        }
+    }
+}

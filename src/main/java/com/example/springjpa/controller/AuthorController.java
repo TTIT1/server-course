@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController
@@ -31,11 +31,12 @@ public class AuthorController {
 
     }
     @PostMapping("/add/new/author")
-    public ResponseEntity<ApiResponse<Author>>AddApiResponseResponseEntity(@RequestBody AuthorDTO authorDTO){
-                    ApiResponse<Author> apiResponse = new ApiResponse<>();
-                    apiResponse.setRsulte(authorService.saveAuthor(authorDTO));
-                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
-                    apiResponse.setCode(ErrorCode.NOT_FOUND.getCode());
+    public ResponseEntity<ApiResponse<AuthorDTO>>AddApiResponseResponseEntity(@RequestBody AuthorDTO authorDTO){
+                    ApiResponse<AuthorDTO> apiResponse = new ApiResponse<>();
+
+                     apiResponse.setRsulte(authorService.saveAuthor(authorDTO));
+                        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+                        apiResponse.setCode(ErrorCode.NOT_FOUND.getCode());
                     return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
     }

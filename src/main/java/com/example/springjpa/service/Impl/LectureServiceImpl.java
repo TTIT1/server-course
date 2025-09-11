@@ -33,14 +33,15 @@ public class LectureServiceImpl implements LectureService {
 
     @Override
     public LectureDTO addLecture(LectureDTO lectureDTO) {
+
         Section section = sectionRepository.findById(lectureDTO.getSectionId())
                 .orElseThrow(() -> new AppExcepotion(ErrorCode.USER_NOT_FOUND));
+
         Lecture lecture = new Lecture();
         lecture.setName(lectureDTO.getName());
-        lecture.setId(lectureDTO.getId());
         lecture.setSection(section);
-
-        return toModelLecture(lectureRepository.save(lecture))  ;
+        lectureRepository.save(lecture);
+        return toModelLecture(lecture)  ;
     }
 
     @Override

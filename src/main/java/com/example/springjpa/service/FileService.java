@@ -15,58 +15,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
-public class FileService {
-    @Autowired
-    private FileRepository fileRepository;
-    @Autowired
-    private LectureRepository lectureRepository;
-    @Autowired
-    ResourceRepository resourceRepository;
-    public FileDTO save(FileDTO fileDTO){
-        Lecture lecture = lectureRepository.findById(fileDTO.getLectureid()).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
 
-        try {
-            File file = new File();
-            file.setName(fileDTO.getName());
-            file.setSize(fileDTO.getSize());
-            file.setUrl(fileDTO.getUrl());
-            file.setType(fileDTO.getType());
-            file.setLecture(lecture);
-            fileRepository.save(file);
-            return  toModelFileDTO(file);
-
-        }catch (Exception e){
-            throw new AppExcepotion(ErrorCode.INVALID_INPUT);
-        }
-
-
-    }
-    public FileDTO updateFileById( FileDTO fileDTO) {
-            Optional<File> file = fileRepository.findById(fileDTO.getId());
-            if(file.isPresent()){
-                File f = file.get();
-                f.setType(fileDTO.getType());
-                fileRepository.save(f);
-                return fileDTO;
-            }
-            return null;
-    }
-
-    public  FileDTO toModelFileDTO(File file){
-        FileDTO fileDTO = new FileDTO();
-        fileDTO.setUrl(file.getUrl());
-        fileDTO.setName(file.getName());
-        fileDTO.setId(file.getId());
-        fileDTO.setType(file.getType());
-        fileDTO.setSize(file.getSize());
-        fileDTO.setLectureid(file.getLecture().getId());
-        return fileDTO;
-    }
-    public List<FileDTO> findAllFiles() {
-        return fileRepository.findAll().stream().map(this::toModelFileDTO).collect(Collectors.toList());
-
-    }
-
+public interface FileService {
+    List<FileDTO> findAllFiles();
+    FileDTO updateFileById( FileDTO fileDTO);
+    FileDTO save(FileDTO fileDTO);
 
 }
