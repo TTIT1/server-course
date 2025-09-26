@@ -52,9 +52,7 @@ public class CourseServiceImpl implements CourseService {
     }
     public  Course update(Integer id , CourseDTO courseDTO){
         Course course    = courseRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.USER_NOT_FOUND));
-
-        course.setDescription(courseDTO.getDescription());
-        course.setTitle(courseDTO.getTitle());
+              Course course2 = courseMapper.updateCourse(course, courseDTO)
         List<Author> author = authorRepository.findAllById(courseDTO.getAuthorIds());
         if (!author.isEmpty()){
             course.setAuthors(author);
