@@ -10,6 +10,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserResquest {
-    String email;
+public class LectureDTO {
+     Integer id;
+     String name;
+     Integer sectionId;  // hoặc sectionName nếu cần
+
 }

@@ -8,19 +8,20 @@ import com.example.springjpa.model.Section;
 import com.example.springjpa.repository.CourseRepository;
 import com.example.springjpa.repository.SectionRepository;
 import com.example.springjpa.service.SectionService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class SectionServiceImpl implements SectionService {
 
-    private final SectionRepository sectionRepository;
-    private final CourseRepository courseRepository;
+      SectionRepository sectionRepository;
+      CourseRepository courseRepository;
 
     private SectionDTO toModel(Section section) {
         SectionDTO dto = new SectionDTO();

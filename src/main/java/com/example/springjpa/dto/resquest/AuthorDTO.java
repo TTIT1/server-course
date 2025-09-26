@@ -1,5 +1,4 @@
-package com.example.springjpa.dto;
-
+package com.example.springjpa.dto.resquest;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;

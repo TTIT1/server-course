@@ -3,6 +3,7 @@ package com.example.springjpa.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.mapstruct.Builder;
 
@@ -15,18 +16,19 @@ import java.util.List;
 @SuperBuilder
 @Table(name ="AUTHOR_TBL")
 @EqualsAndHashCode(callSuper = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Author extends BaseEntity{
 
     @Column(name = "f_name", length = 50, nullable = false)
-    private String firstName;
+     String firstName;
     @Column(name = "l_name", length = 50, nullable = false)
-    private String lastName;
+     String lastName;
     @Column(name = "g_email", unique = true, nullable = false, length = 255)
-    private String email;
-    private int age;
+     String email;
+     int age;
     @ManyToMany(mappedBy = "authors")
     //@JsonIgnore
-    private List<Course> courses = new ArrayList<>();
+     List<Course> courses = new ArrayList<>();
 
     
 

@@ -1,7 +1,7 @@
 package com.example.springjpa.exception;
 
-public class AppException extends  RuntimeException{
-    public AppException( ErrorCode errorCode) {
+public class AppExcepotion extends  RuntimeException{
+    public AppExcepotion(ErrorCode errorCode) {
         super(errorCode.getMessages());
         this.errorCode = errorCode;
     }

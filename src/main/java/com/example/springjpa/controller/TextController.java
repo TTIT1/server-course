@@ -1,10 +1,12 @@
 package com.example.springjpa.controller;
 
-import com.example.springjpa.dto.ApiResponse;
+import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.TextDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.service.TextService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/text")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class TextController {
 
-    private final TextService textService;
+     TextService textService;
 
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<TextDTO>> addText(@RequestBody TextDTO textDTO) {

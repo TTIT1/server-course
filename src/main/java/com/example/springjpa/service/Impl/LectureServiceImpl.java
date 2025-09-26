@@ -1,7 +1,6 @@
 package com.example.springjpa.service.Impl;
 
 import com.example.springjpa.dto.LectureDTO;
-import com.example.springjpa.dto.SectionDTO;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Lecture;
@@ -9,18 +8,20 @@ import com.example.springjpa.model.Section;
 import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.SectionRepository;
 import com.example.springjpa.service.LectureService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class LectureServiceImpl implements LectureService {
-    private final LectureRepository lectureRepository;
-    private final SectionRepository sectionRepository;
+   LectureRepository lectureRepository;
+ SectionRepository sectionRepository;
 
     public LectureDTO toModelLecture(Lecture lecture) {
         LectureDTO lectureDTO = new LectureDTO();

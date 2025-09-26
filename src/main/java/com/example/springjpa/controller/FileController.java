@@ -1,10 +1,12 @@
 package com.example.springjpa.controller;
 
-import com.example.springjpa.dto.ApiResponse;
+import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.FileDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.service.FileService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/file")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FileController {
 
-    private final FileService fileService;
-
+        FileService fileService;
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<FileDTO>>> getAllFiles() {

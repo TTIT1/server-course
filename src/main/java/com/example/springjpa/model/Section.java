@@ -3,9 +3,11 @@ package com.example.springjpa.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -16,18 +18,19 @@ import java.util.List;
 @SuperBuilder
 @Table(name = "SECTION")
 @EqualsAndHashCode(callSuper = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Section extends BaseEntity  {
 
     @Column(name = "n_name",unique = true,nullable = false)
-    private  String name;
+      String name;
     @Column(name = "o_order",unique = true,nullable = false)
-    private  int order;
+      int order;
     @ManyToOne
     @JoinColumn(name = "course_id")
   //  @JsonIgnore
-    private Course course;
+     Course course;
     @OneToMany(mappedBy = "section")
   //  @JsonIgnore
-    private List< Lecture> lecture;
+     List< Lecture> lecture;
 }
 

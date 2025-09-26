@@ -3,27 +3,30 @@ package com.example.springjpa.service.Impl;
 import com.example.springjpa.dto.AuthorDTO;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
+import com.example.springjpa.mapper.AuthorMapper;
 import com.example.springjpa.model.Author;
 import com.example.springjpa.model.Course;
 import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
 import com.example.springjpa.service.AuthorService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
-public class AuthorServiceImpl implements AuthorService {
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 
-    private final AuthorRepository authorRepository;
+public class AuthorServiceImpl implements AuthorService  {
 
-    private final  CourseRepository courseRepository;
+   AuthorRepository authorRepository;
+
+   CourseRepository courseRepository;
+
+   AuthorMapper authorMapper;
 
     public AuthorDTO toModelAuthor(Author author) {
         AuthorDTO authorDTO = new AuthorDTO();
@@ -41,16 +44,9 @@ public class AuthorServiceImpl implements AuthorService {
         if (authorRepository.findByEmail(authorDTO.getEmail()).isPresent()) {
             new AppExcepotion(ErrorCode.INVALID_EMAIL);
         }
-        Author   author = Author.builder()
-                .age(authorDTO.getAge())
-                .firstName(authorDTO.getFirstName())
-                .email(authorDTO.getEmail())
-                .lastName(authorDTO.getLastName())
-
-                .build();
+         Author author = authorMapper.toAuthor(authorDTO);
         if (authorDTO.getCourseIds() != null) {
             List<Course> courseIds = courseRepository.findAllById(authorDTO.getCourseIds());
-
             author.setCourses(courseIds);
         }
        return toModelAuthor(authorRepository.save(author));
@@ -69,11 +65,7 @@ public class AuthorServiceImpl implements AuthorService {
     public Author update(AuthorDTO authorDTO, Integer id) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
         try {
-
-            author.setAge(authorDTO.getAge());
-            author.setEmail(authorDTO.getEmail());
-            author.setFirstName(authorDTO.getFirstName());
-            author.setLastName(authorDTO.getLastName());
+               author = authorMapper.updateAuthor(author,authorDTO);
             List<Course> courses = courseRepository.findAllById(authorDTO.getCourseIds());
             if (courses != null) {
                 author.setCourses(courses);

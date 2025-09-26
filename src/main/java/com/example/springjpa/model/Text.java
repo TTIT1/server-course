@@ -1,5 +1,6 @@
 package com.example.springjpa.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -16,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 //@DiscriminatorValue("T")
 @PrimaryKeyJoinColumn(name = "Text_id")
 public class Text extends  Resource{
-    //@Column(name = "n_name", unique = true, nullable = false)
-
-    private  String conText;
+    @Column(name = "n_name", unique = true, nullable = false)
+      String conText;
 }

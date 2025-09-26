@@ -8,8 +8,9 @@ import com.example.springjpa.model.Video;
 import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.VideoRepository;
 import com.example.springjpa.service.VideoService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +18,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class VideoServiceimpl implements VideoService {
 
-   private final VideoRepository videoRepository;
+VideoRepository videoRepository;
 
-   private final LectureRepository lectureRepository;
+    LectureRepository lectureRepository;
     public VideoDTO toModel(Video video){
         VideoDTO videoDTO = new VideoDTO();
         videoDTO.setLectureid(video.getId());

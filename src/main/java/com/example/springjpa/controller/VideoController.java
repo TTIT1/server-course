@@ -1,10 +1,12 @@
 package com.example.springjpa.controller;
 
-import com.example.springjpa.dto.ApiResponse;
+import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.VideoDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.service.VideoService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/video")
+
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class VideoController {
 
-    private final VideoService videoService;
+      VideoService videoService;
 
 
     @GetMapping("/all")

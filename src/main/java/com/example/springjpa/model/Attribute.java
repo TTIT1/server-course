@@ -1,24 +1,27 @@
 package com.example.springjpa.model;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Data
 @NoArgsConstructor
 @Table(name = "attribute")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Attribute {
      @Id
      @GeneratedValue
-     private  Integer id;
+       Integer id;
      @Column(nullable = false,unique = true)
-     private String Ram;
+      String Ram;
     @Column(nullable = false,unique = true)
-    private  String Chip;
+      String Chip;
     @Column(nullable = false,unique = true)
-    private String VGA;
+     String VGA;
     @Column(nullable = false,unique = true)
-    private  String SSD;
+      String SSD;
 
 }

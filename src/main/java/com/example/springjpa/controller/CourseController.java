@@ -1,11 +1,14 @@
 package com.example.springjpa.controller;
 
 
-import com.example.springjpa.dto.ApiResponse;
+import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.CourseDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Course;
 import com.example.springjpa.service.CourseService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +18,10 @@ import java.util.List;
 
 @RequestMapping("/api/v2")
 @RestController
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class CourseController {
-    @Autowired
+
     CourseService courseService;
     @PostMapping("/All/New/Course")
     public ResponseEntity<ApiResponse<Course>> AllNewCourse(@RequestBody CourseDTO courseDTO){
@@ -43,8 +48,8 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
     @GetMapping("/Get/All/Course")
-    public ResponseEntity<ApiResponse<List<Course>>> getAllCourse(){
-        ApiResponse<List<Course>> apiResponse = new ApiResponse<>();
+    public ResponseEntity<ApiResponse<List<CourseDTO>>> getAllCourse(){
+        ApiResponse<List<CourseDTO>> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(courseService.getCourse());
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());

@@ -9,8 +9,9 @@ import com.example.springjpa.repository.FileRepository;
 import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.ResourceRepository;
 import com.example.springjpa.service.FileService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +19,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class FileServiceImpl implements FileService {
 
-    private final   FileRepository fileRepository;
+   FileRepository fileRepository;
 
-    private final LectureRepository lectureRepository;
+    LectureRepository lectureRepository;
 
-    private final ResourceRepository resourceRepository;
+   ResourceRepository resourceRepository;
 
     public FileDTO save(FileDTO fileDTO){
         Lecture lecture = lectureRepository.findById(fileDTO.getLectureid()).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));

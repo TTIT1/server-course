@@ -1,9 +1,11 @@
 package com.example.springjpa.model;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 
@@ -13,13 +15,14 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "LECTURE")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Lecture extends BaseEntity {
 
     @Column(name = "n_name", unique = true, nullable = false)
-    private String name;
+     String name;
     @ManyToOne
     @JoinColumn(name = "section_id")
-    private Section section;
+     Section section;
     @OneToOne(mappedBy = "lecture")
-    private Resource resource;
+     Resource resource;
 }

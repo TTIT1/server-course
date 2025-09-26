@@ -3,26 +3,26 @@ package com.example.springjpa.controller;
 
 
 import com.example.springjpa.service.SectionService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.springjpa.dto.ApiResponse;
+import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.SectionDTO;
 import com.example.springjpa.exception.ErrorCode;
-import com.example.springjpa.model.Section;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/section")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class SectionController {
 
-    private final SectionService sectionService;
+     SectionService sectionService;
 
     // CREATE
     @PostMapping("/add")

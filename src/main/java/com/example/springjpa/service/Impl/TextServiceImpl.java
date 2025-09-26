@@ -9,21 +9,23 @@ import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.ResourceRepository;
 import com.example.springjpa.repository.TextRepository;
 import com.example.springjpa.service.TextService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class TextServiceImpl implements TextService {
 
-    private final   TextRepository textRepository;
+    TextRepository textRepository;
 
-    private final ResourceRepository resourceRepository;
+    ResourceRepository resourceRepository;
 
-    private final LectureRepository lectureRepository;
+   LectureRepository lectureRepository;
     public TextDTO toModel(Text text){
         TextDTO textDTO = new TextDTO();
         textDTO.setId(text.getId());

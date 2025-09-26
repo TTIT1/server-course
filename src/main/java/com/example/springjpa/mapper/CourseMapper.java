@@ -1,4 +1,10 @@
 package com.example.springjpa.mapper;
 
-public class CourseMapper {
+import com.example.springjpa.dto.CourseDTO;
+import com.example.springjpa.model.Course;
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel ="spring")
+public interface CourseMapper {
+  Course toCourse(CourseDTO courseDTO);
 }

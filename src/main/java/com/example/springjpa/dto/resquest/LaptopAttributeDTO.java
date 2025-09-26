@@ -10,6 +10,13 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserResquest {
-    String email;
+public class LaptopAttributeDTO {
+     Integer idLaptop;
+     String nameLaptop;
+     String Ram;
+     String Chip;
+     String VGA;
+      String SSD;
+     String description;
+
 }

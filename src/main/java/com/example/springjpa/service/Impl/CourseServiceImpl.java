@@ -3,22 +3,29 @@ package com.example.springjpa.service.Impl;
 import com.example.springjpa.dto.CourseDTO;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
+import com.example.springjpa.mapper.CourseMapper;
 import com.example.springjpa.model.Author;
 import com.example.springjpa.model.Course;
 import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
 import com.example.springjpa.service.CourseService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class CourseServiceImpl implements CourseService {
-    private final CourseRepository courseRepository;
-    private   final AuthorRepository authorRepository;
+     CourseMapper courseMapper;
+     CourseRepository courseRepository;
+      AuthorRepository authorRepository;
     public CourseDTO toModelCourse(Course course){
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setDescription(course.getDescription());
@@ -32,19 +39,16 @@ public class CourseServiceImpl implements CourseService {
         if (courseRepository.findByTitle(courseDTO.getTitle()).isPresent()) {
             throw new AppExcepotion(ErrorCode.NOT_FOUND);
         }
-        Course course = Course.builder()
-                .title(courseDTO.getTitle())
-                .description(courseDTO.getDescription())
-                .build();
+       Course course  = courseMapper.toCourse(courseDTO);
         if (courseDTO.getAuthorIds() != null){
             List<Author> authors = authorRepository.findAllById(courseDTO.getAuthorIds());
             course.setAuthors(authors);
         }
         return   courseRepository.save(course);
     }
-    public List<Course> getCourse(){
+    public List<CourseDTO> getCourse(){
 //        return courseRepository.findAll().stream().map(this::toModelCourse).collect(Collectors.toList());
-        return courseRepository.findAll();
+        return courseRepository.findAll().stream().map(this::toModelCourse).collect(Collectors.toUnmodifiableList());
     }
     public  Course update(Integer id , CourseDTO courseDTO){
         Course course    = courseRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.USER_NOT_FOUND));
