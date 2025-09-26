@@ -2,6 +2,7 @@ package com.example.springjpa.controller;
 
 
 
+import com.example.springjpa.dto.resquest.SectionDTO;
 import com.example.springjpa.service.SectionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.springjpa.dto.response.ApiResponse;
-import com.example.springjpa.dto.SectionDTO;
 import com.example.springjpa.exception.ErrorCode;
 
 import java.util.List;

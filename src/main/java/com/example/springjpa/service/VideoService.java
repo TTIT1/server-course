@@ -1,6 +1,8 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.dto.VideoDTO;
+
+
+import com.example.springjpa.dto.resquest.VideoDTO;
 
 import java.util.List;
 

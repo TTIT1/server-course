@@ -1,8 +1,9 @@
 package com.example.springjpa.service.Impl;
 
 import com.example.springjpa.config.SecurityConfig;
-import com.example.springjpa.dto.UserDTO;
-import com.example.springjpa.dto.resquest.UserResquest;
+
+import com.example.springjpa.dto.resquest.UserDTO;
+
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.UserMapper;
@@ -47,14 +48,7 @@ public class UserServiceImpl implements UserService {
      return null;
 
     }
-//
-//    @Override
-//    public User CheckIdUser(UserDTO userDTO) {
-//           User  user
-//
-//
-//
-//    }
+
 
 
 }

@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "LECTURE")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Lecture extends BaseEntity {
-
+    
     @Column(name = "n_name", unique = true, nullable = false)
      String name;
     @ManyToOne

@@ -1,7 +1,8 @@
 package com.example.springjpa.controller;
 
 import com.example.springjpa.dto.response.ApiResponse;
-import com.example.springjpa.dto.TextDTO;
+
+import com.example.springjpa.dto.resquest.TextDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.service.TextService;
 import lombok.AccessLevel;

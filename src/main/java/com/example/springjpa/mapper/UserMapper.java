@@ -1,6 +1,7 @@
 package com.example.springjpa.mapper;
 
-import com.example.springjpa.dto.UserDTO;
+
+import com.example.springjpa.dto.resquest.UserDTO;
 import com.example.springjpa.model.User;
 import org.mapstruct.Mapper;
 

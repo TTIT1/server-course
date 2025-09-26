@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
 
                         // 👇 Tất cả route khác yêu cầu xác thực
-//                        .anyRequest().authenticated()
+                         .anyRequest().authenticated()
                 );
         return http.build();
     }

@@ -1,6 +1,6 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.dto.LaptopAttributeDTO;
+import com.example.springjpa.dto.resquest.LaptopAttributeDTO;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Attribute;

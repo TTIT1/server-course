@@ -1,7 +1,6 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.dto.LectureDTO;
-import com.example.springjpa.dto.SectionDTO;
+import com.example.springjpa.dto.resquest.LectureDTO;
 
 import java.util.List;
 

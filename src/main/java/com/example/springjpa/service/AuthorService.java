@@ -1,6 +1,7 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.dto.AuthorDTO;
+
+import com.example.springjpa.dto.resquest.AuthorDTO;
 import com.example.springjpa.model.Author;
 
 import java.util.List;

@@ -1,6 +1,7 @@
 package com.example.springjpa.service.Impl;
 
-import com.example.springjpa.dto.FileDTO;
+
+import com.example.springjpa.dto.resquest.FileDTO;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.File;

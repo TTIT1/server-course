@@ -1,6 +1,7 @@
 package com.example.springjpa.service.Impl;
 
-import com.example.springjpa.dto.SectionDTO;
+
+import com.example.springjpa.dto.resquest.SectionDTO;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Course;

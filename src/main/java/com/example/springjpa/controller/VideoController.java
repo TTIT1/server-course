@@ -1,7 +1,8 @@
 package com.example.springjpa.controller;
 
 import com.example.springjpa.dto.response.ApiResponse;
-import com.example.springjpa.dto.VideoDTO;
+
+import com.example.springjpa.dto.resquest.VideoDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.service.VideoService;
 import lombok.AccessLevel;

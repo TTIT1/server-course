@@ -1,6 +1,7 @@
 package com.example.springjpa.service;
 
-import com.example.springjpa.dto.FileDTO;
+
+import com.example.springjpa.dto.resquest.FileDTO;
 
 import java.util.List;
 
