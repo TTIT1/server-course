@@ -1,7 +1,7 @@
 package com.example.springjpa.controller;
 
 import com.example.springjpa.dto.response.ApiResponse;
-import com.example.springjpa.dto.AuthorDTO;
+import com.example.springjpa.dto.resquest.AuthorDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Author;
 import com.example.springjpa.service.AuthorService;
