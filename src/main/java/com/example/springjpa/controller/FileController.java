@@ -2,7 +2,7 @@ package com.example.springjpa.controller;
 
 import com.example.springjpa.dto.response.ApiResponse;
 
-import com.example.springjpa.dto.resquest.FileDTO;
+import com.example.springjpa.dto.resquest.FileRequest;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.service.FileService;
 import lombok.AccessLevel;
@@ -23,8 +23,8 @@ public class FileController {
         FileService fileService;
 
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<FileDTO>>> getAllFiles() {
-        ApiResponse<List<FileDTO>> apiResponse = new ApiResponse<>();
+    public ResponseEntity<ApiResponse<List<FileRequest>>> getAllFiles() {
+        ApiResponse<List<FileRequest>> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(fileService.findAllFiles());
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
@@ -33,8 +33,8 @@ public class FileController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<FileDTO>> addFile(@RequestBody FileDTO fileDTO) {
-        ApiResponse<FileDTO> apiResponse = new ApiResponse<>();
+    public ResponseEntity<ApiResponse<FileRequest>> addFile(@RequestBody FileRequest fileDTO) {
+        ApiResponse<FileRequest> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(fileService.save(fileDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
@@ -43,8 +43,8 @@ public class FileController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<ApiResponse<FileDTO>> updateFile(@RequestBody FileDTO fileDTO) {
-        ApiResponse<FileDTO> apiResponse = new ApiResponse<>();
+    public ResponseEntity<ApiResponse<FileRequest>> updateFile(@RequestBody FileRequest fileDTO) {
+        ApiResponse<FileRequest> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(fileService.updateFileById(fileDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());

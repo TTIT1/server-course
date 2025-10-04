@@ -2,18 +2,22 @@ package com.example.springjpa.controller;
 
 
 import com.example.springjpa.dto.response.ApiResponse;
-import com.example.springjpa.dto.resquest.UserDTO;
-import com.example.springjpa.dto.resquest.UserResquest;
+import com.example.springjpa.dto.response.IntrospectResponse;
+import com.example.springjpa.dto.response.UserResponse;
+
+import com.example.springjpa.dto.resquest.IntrospectrRequest;
+import com.example.springjpa.dto.resquest.UserRequest;
 import com.example.springjpa.exception.ErrorCode;
-import com.example.springjpa.model.User;
 import com.example.springjpa.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.catalina.mbeans.SparseUserDatabaseMBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -21,20 +25,34 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class UserController {
     UserService userService;
-    @PostMapping("/creat/new/user")
-    public ResponseEntity<ApiResponse> apiResponseRequestEntity (@RequestBody UserDTO userDTO){
-        ApiResponse<User> apiResponse = new ApiResponse<>();
-        apiResponse.setRsulte(userService.registerNewUserAccount(userDTO));
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
-        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
-    }
-    @GetMapping("/login")
-    public ResponseEntity<ApiResponse> apiResponseResponseEntity (@RequestBody UserDTO userDTO){
-        ApiResponse<User> apiResponse = new ApiResponse<>();
-        apiResponse.setRsulte(userService.loginUser(userDTO));
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
-        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
-    }
+     @PostMapping("/register/New/UserAccount")
+    public ResponseEntity<ApiResponse<UserResponse>> registerNewUserAccount(@RequestBody UserRequest userRequest){
+                    Boolean resulte = userService.registerNewUserAccount(userRequest);
+                    ApiResponse apiResponse = new ApiResponse();
+                    apiResponse.setRsulte(resulte);
+                    apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+                    return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+     }
+     @PostMapping("/login")
+     public ResponseEntity<ApiResponse<UserResponse>> loginUser(@RequestBody UserRequest userRequest){
+         UserResponse resulte = userService.loginUser(userRequest);
+         ApiResponse apiResponse = new ApiResponse();
+         apiResponse.setRsulte(resulte);
+         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+         apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+     }
+     @PostMapping("/check/token")
+    public ApiResponse<IntrospectResponse> apiResponse(@RequestBody IntrospectrRequest request){
+         Boolean check  = userService.validateToken(request.getToken(),request.getUsername());
+
+         return ApiResponse.<IntrospectResponse> builder()
+                 .rsulte(IntrospectResponse.builder()
+                         .valid(check)
+                         .build())
+                 .build();
+
+     }
+
 }

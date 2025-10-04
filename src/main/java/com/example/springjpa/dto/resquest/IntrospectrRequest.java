@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDTO {
-    String gmail;
-    String PassWord;
+public class IntrospectrRequest {
+    String token;
+    String username;
 }

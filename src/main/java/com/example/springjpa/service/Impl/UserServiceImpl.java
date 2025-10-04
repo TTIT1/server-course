@@ -1,9 +1,13 @@
 package com.example.springjpa.service.Impl;
 
-import com.example.springjpa.config.SecurityConfig;
+import com.example.springjpa.dto.response.IntrospectResponse;
+import com.example.springjpa.dto.resquest.IntrospectrRequest;
+import com.example.springjpa.security.JwtUtil;
+import com.example.springjpa.security.SecurityConfig;
 
-import com.example.springjpa.dto.resquest.UserDTO;
 
+import com.example.springjpa.dto.response.UserResponse;
+import com.example.springjpa.dto.resquest.UserRequest;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.UserMapper;
@@ -13,7 +17,9 @@ import com.example.springjpa.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,31 +30,42 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     SecurityConfig securityConfig;
     BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Override
-    public User registerNewUserAccount(UserDTO userDTO)throws AppExcepotion {
-        if (userDTO.getGmail().isEmpty()) {
-            throw new AppExcepotion(ErrorCode.INVALID_EMAIL);
-        }
 
-        User user = new User();
-        user.setPassWordUser(bCryptPasswordEncoder.encode(userDTO.getPassWord()));
-        user.setGmail(userDTO.getGmail());
-        return userRepository.save(user);
+
+    @Override
+    public Boolean registerNewUserAccount(UserRequest userRequest) {
+         if(userRepository.findBygmail(userRequest.getGmail()).isPresent()){
+             throw new AppExcepotion(ErrorCode.INVALID_EMAIL);
+         }else {
+             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+             User user = new User();
+             user.setPassWordUser(passwordEncoder.encode(userRequest.getPassWordUser()));
+             user.setGmail(userRequest.getGmail());
+             userRepository.save(user);
+             return true;
+         }
     }
 
     @Override
-    public User loginUser(UserDTO userDTO) {
-          User user  = userRepository.findBygmail(userDTO.getGmail()).orElseThrow(()->new AppExcepotion(ErrorCode.INVALID_EMAIL));
-     BCryptPasswordEncoder bCryptPasswordEncoder1 = new BCryptPasswordEncoder();
-     if(!bCryptPasswordEncoder1.matches(userDTO.getPassWord(),user.getPassWordUser())){
-
-          throw  new AppExcepotion(ErrorCode.SUCCESS);
-
-        }
-     return null;
-
+    public UserResponse loginUser(UserRequest userRequest) {
+               User user = userRepository.findBygmail(userRequest.getGmail())
+                       .orElseThrow(()->new AppExcepotion(ErrorCode.INVALID_CREDENTIALS));
+               PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+               Boolean check = passwordEncoder.matches(userRequest.getPassWordUser(), user.getPassWordUser());
+               if (!check){
+                   throw  new AppExcepotion(ErrorCode.INVALID_CREDENTIALS);
+               }
+               String token = JwtUtil .generateToken(userRequest.getGmail());
+                return  UserResponse.builder()
+                        .Auth(check)
+                        .token(token)
+                        .build();
     }
 
-
+    @Override
+    public Boolean validateToken(String token, String username) {
+               Boolean check = JwtUtil.validateToken(token,username);
+               return check;
+    }
 
 }

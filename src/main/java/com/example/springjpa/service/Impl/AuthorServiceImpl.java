@@ -1,7 +1,7 @@
 package com.example.springjpa.service.Impl;
 
 
-import com.example.springjpa.dto.resquest.AuthorDTO;
+import com.example.springjpa.dto.resquest.AuthorRequest;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.AuthorMapper;
@@ -29,8 +29,8 @@ public class AuthorServiceImpl implements AuthorService  {
 
    AuthorMapper authorMapper;
 
-    public AuthorDTO toModelAuthor(Author author) {
-        AuthorDTO authorDTO = new AuthorDTO();
+    public AuthorRequest toModelAuthor(Author author) {
+        AuthorRequest authorDTO = new AuthorRequest();
         authorDTO.setAge(author.getAge());
         authorDTO.setId(author.getId());
         authorDTO.setEmail(author.getEmail());
@@ -41,7 +41,7 @@ public class AuthorServiceImpl implements AuthorService  {
         return authorDTO;
     }
 
-    public AuthorDTO saveAuthor(AuthorDTO authorDTO) {
+    public AuthorRequest saveAuthor(AuthorRequest authorDTO) {
         if (authorRepository.findByEmail(authorDTO.getEmail()).isPresent()) {
             new AppExcepotion(ErrorCode.INVALID_EMAIL);
         }
@@ -54,8 +54,8 @@ public class AuthorServiceImpl implements AuthorService  {
 
     }
 
-    public List<AuthorDTO> getAll() {
-        List<AuthorDTO> authorDTOS = authorRepository.findAll().stream().map(this::toModelAuthor).collect(Collectors.toList());
+    public List<AuthorRequest> getAll() {
+        List<AuthorRequest> authorDTOS = authorRepository.findAll().stream().map(this::toModelAuthor).collect(Collectors.toList());
         if (authorDTOS.isEmpty()){
             throw new AppExcepotion(ErrorCode.NOT_FOUND);
         }
@@ -63,7 +63,7 @@ public class AuthorServiceImpl implements AuthorService  {
 
     }
 
-    public Author update(AuthorDTO authorDTO, Integer id) {
+    public Author update(AuthorRequest authorDTO, Integer id) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
         try {
                author = authorMapper.updateAuthor(author,authorDTO);

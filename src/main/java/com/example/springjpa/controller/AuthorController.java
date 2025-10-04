@@ -1,8 +1,12 @@
 package com.example.springjpa.controller;
 
 import com.example.springjpa.dto.response.ApiResponse;
+<<<<<<< HEAD
 
 import com.example.springjpa.dto.resquest.AuthorDTO;
+=======
+import com.example.springjpa.dto.resquest.AuthorRequest;
+>>>>>>> feature-login
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Author;
 import com.example.springjpa.service.AuthorService;
@@ -25,8 +29,8 @@ public class AuthorController {
 
      AuthorService authorService;
     @GetMapping("/get/all")
-    public ResponseEntity<ApiResponse<List<AuthorDTO>>> getAllApiResponseResponseEntity(){
-                    ApiResponse<List<AuthorDTO>> apiResponse = new ApiResponse<>();
+    public ResponseEntity<ApiResponse<List<AuthorRequest>>> getAllApiResponseResponseEntity(){
+                    ApiResponse<List<AuthorRequest>> apiResponse = new ApiResponse<>();
                     apiResponse.setRsulte(authorService.getAll());
                     apiResponse.setCode(ErrorCode.SUCCESS.getCode());
                     apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
@@ -34,8 +38,8 @@ public class AuthorController {
 
     }
     @PostMapping("/add/new/author")
-    public ResponseEntity<ApiResponse<AuthorDTO>>AddApiResponseResponseEntity(@RequestBody AuthorDTO authorDTO){
-                    ApiResponse<AuthorDTO> apiResponse = new ApiResponse<>();
+    public ResponseEntity<ApiResponse<AuthorRequest>>AddApiResponseResponseEntity(@RequestBody AuthorRequest authorDTO){
+                    ApiResponse<AuthorRequest> apiResponse = new ApiResponse<>();
 
                      apiResponse.setRsulte(authorService.saveAuthor(authorDTO));
                         apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
@@ -44,7 +48,7 @@ public class AuthorController {
 
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<Author>> UpdateResponseResponseEntity(@RequestBody AuthorDTO authorDTO,@PathVariable Integer id){
+    public ResponseEntity<ApiResponse<Author>> UpdateResponseResponseEntity(@RequestBody AuthorRequest authorDTO,@PathVariable Integer id){
             ApiResponse<Author> apiResponse = new ApiResponse<>();
             apiResponse.setRsulte(authorService.update(authorDTO,id));
             apiResponse.setCode(ErrorCode.SUCCESS.getCode());
