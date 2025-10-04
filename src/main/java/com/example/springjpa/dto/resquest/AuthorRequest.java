@@ -9,7 +9,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthorDTO {
+
+public class AuthorRequest {
       Integer id;
      String firstName;
      String lastName;

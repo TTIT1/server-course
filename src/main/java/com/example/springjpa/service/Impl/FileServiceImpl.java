@@ -1,7 +1,8 @@
 package com.example.springjpa.service.Impl;
 
 
-import com.example.springjpa.dto.resquest.FileDTO;
+
+import com.example.springjpa.dto.resquest.FileRequest;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.File;
@@ -23,13 +24,13 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class FileServiceImpl implements FileService {
 
-   FileRepository fileRepository;
+    FileRepository fileRepository;
 
     LectureRepository lectureRepository;
 
-   ResourceRepository resourceRepository;
+    ResourceRepository resourceRepository;
 
-    public FileDTO save(FileDTO fileDTO){
+    public FileRequest save(FileRequest fileDTO){
         Lecture lecture = lectureRepository.findById(fileDTO.getLectureid()).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
 
         try {
@@ -48,7 +49,7 @@ public class FileServiceImpl implements FileService {
 
 
     }
-    public FileDTO updateFileById( FileDTO fileDTO) {
+    public FileRequest updateFileById( FileRequest fileDTO) {
         Optional<File> file = fileRepository.findById(fileDTO.getId());
         if(file.isPresent()){
             File f = file.get();
@@ -59,8 +60,8 @@ public class FileServiceImpl implements FileService {
         return null;
     }
 
-    public  FileDTO toModelFileDTO(File file){
-        FileDTO fileDTO = new FileDTO();
+    public  FileRequest toModelFileDTO(File file){
+        FileRequest fileDTO = new FileRequest() ;
         fileDTO.setUrl(file.getUrl());
         fileDTO.setName(file.getName());
         fileDTO.setId(file.getId());
@@ -69,7 +70,7 @@ public class FileServiceImpl implements FileService {
         fileDTO.setLectureid(file.getLecture().getId());
         return fileDTO;
     }
-    public List<FileDTO> findAllFiles() {
+    public List<FileRequest> findAllFiles() {
         return fileRepository.findAll().stream().map(this::toModelFileDTO).collect(Collectors.toList());
 
     }

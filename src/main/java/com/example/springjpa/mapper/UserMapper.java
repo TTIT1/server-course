@@ -1,11 +1,11 @@
 package com.example.springjpa.mapper;
 
 
-import com.example.springjpa.dto.resquest.UserDTO;
+import com.example.springjpa.dto.resquest.UserRequest;
 import com.example.springjpa.model.User;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel ="spring")
 public interface UserMapper {
-    User toUserUser(UserDTO user);
+    User toUserUser(UserRequest userRequest);
 }

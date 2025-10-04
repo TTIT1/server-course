@@ -1,7 +1,6 @@
 package com.example.springjpa.mapper;
 
 
-import com.example.springjpa.dto.resquest.AuthorDTO;
 import com.example.springjpa.dto.resquest.CourseDTO;
 import com.example.springjpa.model.Author;
 import com.example.springjpa.model.Course;
