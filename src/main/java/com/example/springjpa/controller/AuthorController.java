@@ -3,7 +3,6 @@ package com.example.springjpa.controller;
 import com.example.springjpa.dto.response.ApiResponse;
 <<<<<<< HEAD
 
-import com.example.springjpa.dto.resquest.AuthorDTO;
 =======
 import com.example.springjpa.dto.resquest.AuthorRequest;
 >>>>>>> feature-login
