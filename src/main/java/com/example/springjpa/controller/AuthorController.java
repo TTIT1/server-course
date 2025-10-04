@@ -1,11 +1,7 @@
 package com.example.springjpa.controller;
 
 import com.example.springjpa.dto.response.ApiResponse;
-<<<<<<< HEAD
-
-=======
 import com.example.springjpa.dto.resquest.AuthorRequest;
->>>>>>> feature-login
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Author;
 import com.example.springjpa.service.AuthorService;
