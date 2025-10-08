@@ -24,7 +24,8 @@ public enum ErrorCode {
     BAD_REQUEST(5001, "Yêu cầu không hợp lệ"),
     NOT_FOUND(5002, "Không tìm thấy tài nguyên"),
     TIMEOUT(5003, "Quá thời gian chờ"),
-    SUCCESS(0, "Thành công")
+    SUCCESS(0, "Thành công"),
+    registerNew_SUCCESS(10, "Đăng ký thành công")
     ;
 
 

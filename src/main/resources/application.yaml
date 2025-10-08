@@ -1,0 +1,56 @@
+# spring.application.name: springjpa
+# spring.datasource.url: jdbc:mysql://localhost:3306/data_jpa?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+# spring.datasource.username: root
+# spring.datasource.password: 150204
+# spring.datasource.driver-class-name: com.mysql.cj.jdbc.Driver
+# spring.jpa.hibernate.ddl-auto: update
+# spring.jpa.show-sql: true
+# spring.jpa.database-platform: org.hibernate.dialect.MySQL8Dialect
+# server.port: 8080
+##
+
+# ##connect deploy
+# spring.application.name: SPRINGJPA
+# spring.datasource:
+#   url: ${DB_URL}
+#   username: ${DB_USERNAME}
+#   password: ${DB_PASSWORD}
+#
+# spring.jpa:
+#   show-sql: true
+#   properties:
+#     hibernate:
+#       dialect: org.hibernate.dialect.PostgreSQLDialect
+#       format_sql: true
+#       use_sql_comments: true
+#       jdbc.time_zone: UTC
+#
+# logging.level.org.springframework: DEBUG
+# server.port: ${PORT:8080}
+#select_key: ${SELECT_KEY}
+# connect localhost
+spring:
+  datasource:
+    url: jdbc:postgresql://dpg-d31atrggjchc73asoid0-a.oregon-postgres.render.com:5432/mydb_6l8i
+    username: dbuser
+    password: NwNElwxPhn3A9wTICi0fHllcRjg6Hjyj
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc.time_zone: UTC
+
+logging:
+  level:
+    org.springframework: DEBUG
+
+server:
+  port: ${PORT:8080}
+
+jwt:
+  select_key : "d98206d268d7ef846b1bc905ae19667507ac98cced24126bab0e2cc2b5291ad2712485f667fb98ecc77f370b0faa363b889b4aa6b3dd8f764c7961a44d445955"
