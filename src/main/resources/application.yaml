@@ -17,5 +17,5 @@
 
  logging.level.org.springframework: DEBUG
  server.port: ${PORT:8080}
-select_key: ${SELECT_KEY}
+ select_key: ${SELECT_KEY}
 
