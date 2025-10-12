@@ -35,16 +35,15 @@ public class SecurityConfig {
     private SwaggerConfig swaggerConfig;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-       http.authorizeHttpRequests(request->
-               request.requestMatchers(HttpMethod.POST,Public_Inpoint).permitAll()
-                       .requestMatchers(HttpMethod.GET,Public_Inpoint).permitAll()
-                       //everyone request check token
-                       .anyRequest().authenticated()
-       );
+        http.authorizeHttpRequests(request->
+                request.requestMatchers(HttpMethod.POST,Public_Inpoint).permitAll()
+                        .requestMatchers(HttpMethod.GET,Public_Inpoint).permitAll()
+                        // con lại bắt buộc phải có token
+                        .anyRequest().authenticated()
+        );
        // check token for request
        http.oauth2ResourceServer(oauth2->
                oauth2.jwt((jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))));
-
                   http.csrf(AbstractHttpConfigurer::disable);
        return http.build();
 
