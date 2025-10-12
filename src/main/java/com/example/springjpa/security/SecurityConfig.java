@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.JwtConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -35,24 +37,25 @@ public class SecurityConfig {
     private SwaggerConfig swaggerConfig;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(request->
-                request.requestMatchers(HttpMethod.POST,Public_Inpoint).permitAll()
-                        .requestMatchers(HttpMethod.GET,Public_Inpoint).permitAll()
-                        // con lại bắt buộc phải có token
-                        .anyRequest().authenticated()
-        );
-       // check token for request
-       http.oauth2ResourceServer(oauth2->
-               oauth2.jwt((jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))));
-                  http.csrf(AbstractHttpConfigurer::disable);
-       return http.build();
-
+    http.authorizeRequests(request -> 
+        request.requestMatchers(HttpMethod.POST,Public_Inpoint).permitAll()
+                .requestMatchers(HttpMethod.GET,Public_Inpoint).permitAll()
+    
+       );
+         // mọi request khác phải sắc thực
+         http.oauth2ResourceServer(oauth2 ->
+          oauth2.jwt(JwtConfigurer -> JwtConfigurer.decoder(jwtDecoder())));
+      // dắt csrf
+       http.csrf(AbstractHttpConfigurer::disable);
+     return http.build();
+       
     }
+
     @Bean
     JwtDecoder jwtDecoder(){
-        SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(),"HS512");
-       return NimbusJwtDecoder.withSecretKey(secretKeySpec).macAlgorithm(MacAlgorithm.HS512)
-               .build();
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), "HS512");
+        return NimbusJwtDecoder.withSecretKey(secretKeySpec)
+        .macAlgorithm(MacAlgorithm.HS512).build();
     };
 
     @Bean
