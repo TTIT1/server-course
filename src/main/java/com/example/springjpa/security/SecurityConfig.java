@@ -31,10 +31,8 @@ public class SecurityConfig {
       "/configuration/**",
       "/api/auth/**"
   };
-  @Value("${jwt.select_key}")
+  @Value("${select_key}")
   private String key;
-  @Autowired
-  private SwaggerConfig swaggerConfig;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
