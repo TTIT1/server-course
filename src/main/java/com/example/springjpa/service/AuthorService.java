@@ -3,6 +3,7 @@ package com.example.springjpa.service;
 
 import com.example.springjpa.dto.resquest.AuthorRequest;
 import com.example.springjpa.model.Author;
+import com.example.springjpa.model.AuthorCourse;
 
 import java.util.List;
 

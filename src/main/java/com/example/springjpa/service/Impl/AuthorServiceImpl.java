@@ -6,7 +6,9 @@ import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.AuthorMapper;
 import com.example.springjpa.model.Author;
+import com.example.springjpa.model.AuthorCourse;
 import com.example.springjpa.model.Course;
+import com.example.springjpa.repository.AuthorCourseRepository;
 import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
 import com.example.springjpa.service.AuthorService;
@@ -28,6 +30,7 @@ public class AuthorServiceImpl implements AuthorService  {
    CourseRepository courseRepository;
 
    AuthorMapper authorMapper;
+   AuthorCourseRepository authorCourseRepository;
 
     public AuthorRequest toModelAuthor(Author author) {
         AuthorRequest authorDTO = new AuthorRequest();
@@ -55,7 +58,7 @@ public class AuthorServiceImpl implements AuthorService  {
     }
 
     public List<AuthorRequest> getAll() {
-        List<AuthorRequest> authorDTOS = authorRepository.findAll().stream().map(this::toModelAuthor).collect(Collectors.toList());
+        List<AuthorRequest> authorDTOS = authorRepository.findAll().stream().map(this::toModelAuthor).collect(Collectors.toUnmodifiableList());
         if (authorDTOS.isEmpty()){
             throw new AppExcepotion(ErrorCode.NOT_FOUND);
         }

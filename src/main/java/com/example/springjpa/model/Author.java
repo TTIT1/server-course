@@ -30,7 +30,5 @@ public class Author extends BaseEntity{
     //@JsonIgnore
      List<Course> courses = new ArrayList<>();
 
-    
-
 
 }

@@ -9,19 +9,20 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "LaptopAttribute")
+@Table(name = "AuthorCourse")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LaptopAttribute {
+public class AuthorCourse {
+
     @EmbeddedId
-    LaptopAttributeId laptopAttributeId;
+    AuthorCourseId authorCourseId;
     @ManyToOne
-    @MapsId("laptopid")
-    @JoinColumn(name = "laptop_id")
-      Laptop laptop;
+    @MapsId("authorid")
+    @JoinColumn(name = "author_id")
+    Author author;
     @ManyToOne
-    @MapsId("attributeid")
-    @JoinColumn(name = "attribute_id")
-      Attribute attribute;
+    @MapsId("courseid")
+    @JoinColumn(name = "course_id")
+    Course course;
     @Column(name = "important")
-     String description;
+    String description;
 }

@@ -1,9 +1,13 @@
 package com.example.springjpa.controller;
 
 import com.example.springjpa.dto.response.ApiResponse;
+import com.example.springjpa.dto.response.AuthorCourseResponse;
+import com.example.springjpa.dto.resquest.AuthorCourseRequest;
 import com.example.springjpa.dto.resquest.AuthorRequest;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Author;
+import com.example.springjpa.model.AuthorCourse;
+import com.example.springjpa.service.AuthorCourseService;
 import com.example.springjpa.service.AuthorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +25,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class AuthorController {
-
+    AuthorCourseService authorCourseService;
      AuthorService authorService;
+     @PostMapping("/add/two")
+     public ResponseEntity<ApiResponse<AuthorCourseResponse>> addtwo(@RequestBody AuthorCourseRequest request){
+                     ApiResponse<AuthorCourseResponse> apiResponse = new ApiResponse<>();
+                        apiResponse.setRsulte(authorCourseService.add(request));
+                        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+                        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+                        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+
+     }
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse<List<AuthorRequest>>> getAllApiResponseResponseEntity(){
                     ApiResponse<List<AuthorRequest>> apiResponse = new ApiResponse<>();
