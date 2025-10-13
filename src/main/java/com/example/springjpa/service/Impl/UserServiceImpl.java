@@ -18,6 +18,7 @@ import com.example.springjpa.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.mapstruct.control.MappingControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,42 +36,39 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean registerNewUserAccount(UserRequest userRequest) {
-        if (userRepository.findBygmail(userRequest.getGmail()).isPresent()){
-            throw new AppExcepotion(ErrorCode.INVALID_CREDENTIALS);
-        }else {
-            PasswordEncoder encoder = new BCryptPasswordEncoder(10);
-             User user = new User();
-             user.setGmail(userRequest.getGmail());
-             user.setPassWordUser(encoder.encode(userRequest.getPassWordUser()));
-             userRepository.save(user);
-             throw new AppExcepotion(ErrorCode.registerNew_SUCCESS);
+        if(userRepository.findBygmail(userRequest.getGmail()).isPresent()){
+            throw  new AppExcepotion(ErrorCode.INVALID_EMAIL);
         }
-    }
-
+           PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+          User user = new User();
+          user.setPassWordUser(passwordEncoder.encode(userRequest.getPassWordUser()));
+          user.setGmail(userRequest.getGmail());
+          userRepository.save(user);
+                             return true;
+          }
     @Override
     public UserResponse loginUser(UserRequest userRequest) {
-           User user = userRepository.findBygmail(userRequest.getGmail()).orElseThrow(()->new
-                   AppExcepotion( ErrorCode.INVALID_CREDENTIALS));
-           PasswordEncoder encoder = new BCryptPasswordEncoder(10);
-         Boolean check = encoder.matches(userRequest.getPassWordUser(),user.getPassWordUser());
-         if(check){
-            String token =   JwtUtil.generateToken(user.getGmail());
-               return UserResponse.builder()
-                       .Auth(check)
-                       .token(token)
-                       .build();
-        }else {
-               throw new AppExcepotion(ErrorCode.INVALID_CREDENTIALS);
-           }
+        User user = userRepository.findBygmail(userRequest.getGmail()).orElseThrow(() -> new
+                AppExcepotion(ErrorCode.INVALID_CREDENTIALS));
+        PasswordEncoder encoder = new BCryptPasswordEncoder(10);
+        Boolean check = encoder.matches(userRequest.getPassWordUser(), user.getPassWordUser());
+        if (check) {
+            String token = JwtUtil.generateToken(user.getGmail());
+            return UserResponse.builder()
+                    .Auth(check)
+                    .token(token)
+                    .build();
+        } else {
+            throw new AppExcepotion(ErrorCode.INVALID_CREDENTIALS);
+        }
 
 
     }
 
     @Override
     public Boolean validateToken(IntrospectrRequest request) {
-            Boolean check = JwtUtil.validateToken(request);
-            return check;
+        Boolean check = JwtUtil.validateToken(request);
+        return check;
     }
-
-
 }
+

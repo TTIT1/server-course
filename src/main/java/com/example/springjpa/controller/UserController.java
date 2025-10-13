@@ -26,7 +26,7 @@ import java.util.Map;
 public class UserController {
     UserService userService;
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<UserResponse>> registerNewUserAccount(@RequestBody UserRequest userRequest){
+    public ResponseEntity<ApiResponse> registerNewUserAccount(@RequestBody UserRequest userRequest){
                     Boolean resulte = userService.registerNewUserAccount(userRequest);
                     ApiResponse apiResponse = new ApiResponse();
                     apiResponse.setRsulte(resulte);

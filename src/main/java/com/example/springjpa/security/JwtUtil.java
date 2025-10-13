@@ -47,7 +47,7 @@ public class JwtUtil {
                  .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
                  .claim("HUST", "ITE6")
                  .setExpiration(new Date(System.currentTimeMillis()+EXPIRATION_TIME))
-                 .signWith(SignatureAlgorithm.ES512,key)
+                 .signWith(SignatureAlgorithm.HS512,key)
                  .compact();
 
   }

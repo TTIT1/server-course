@@ -24,43 +24,41 @@ import java.security.Key;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
- private String [] Public_Inpoint = {"/swagger-ui/**",
-         "/v3/api-docs/**",
-         "/swagger-resources/**",
-         "/webjars/**",
-         "/configuration/**",
-       "/api/auth/**"
- };
-    @Value("${jwt.select_key}")
-   private   String key ;
-    @Autowired
-    private SwaggerConfig swaggerConfig;
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.authorizeRequests(request -> 
-        request.requestMatchers(HttpMethod.POST,Public_Inpoint).permitAll()
-                .requestMatchers(HttpMethod.GET,Public_Inpoint).permitAll()
-    
-       );
-         // mọi request khác phải sắc thực
-         http.oauth2ResourceServer(oauth2 ->
-          oauth2.jwt(JwtConfigurer -> JwtConfigurer.decoder(jwtDecoder())));
-      // dắt csrf
-       http.csrf(AbstractHttpConfigurer::disable);
-     return http.build();
-       
-    }
+  private String[] Public_Inpoint = { "/swagger-ui/**",
+      "/v3/api-docs/**",
+      "/swagger-resources/**",
+      "/webjars/**",
+      "/configuration/**",
+      "/api/auth/**"
+  };
+  @Value("${jwt.select_key}")
+  private String key;
+  @Autowired
+  private SwaggerConfig swaggerConfig;
 
-    @Bean
-    JwtDecoder jwtDecoder(){
-        SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), "HS512");
-        return NimbusJwtDecoder.withSecretKey(secretKeySpec)
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests(request ->
+        request.requestMatchers(HttpMethod.POST, Public_Inpoint).permitAll()
+        .requestMatchers(HttpMethod.GET, Public_Inpoint).permitAll()
+
+    );
+    http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtCustomizei -> jwtCustomizei.decoder(jwtDecoder())));
+
+    http.csrf(AbstractHttpConfigurer::disable);
+    return http.build();
+  }
+
+  @Bean
+  JwtDecoder jwtDecoder() {
+    SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), "HS512");
+    return NimbusJwtDecoder.withSecretKey(secretKeySpec)
         .macAlgorithm(MacAlgorithm.HS512).build();
-    };
+  };
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
 }
