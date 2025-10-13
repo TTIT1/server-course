@@ -26,7 +26,7 @@ import javax.xml.crypto.Data;
 @Component
 public class JwtUtil {
   @NonFinal
-  @Value("${jwt.select_key}")
+  @Value("${select_key}")
   String keyWork;
   @NonFinal
   static Key key;
