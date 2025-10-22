@@ -10,6 +10,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.util.List;
+import java.util.Set;
+
 
 @Entity
 @Data
@@ -22,7 +25,16 @@ import org.apache.commons.lang3.ObjectUtils;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User extends BaseEntity{
     @Column(name = "g_email", unique = true, nullable = false, length = 255)
-    String gmail;
-    @Column(name = "Password",unique = true,nullable = false)
-         String PassWordUser;
+     String gmail;
+
+    @Column(name = "name", unique = true, nullable = false)
+     String userName;
+
+    @Column(name = "password", unique = true, nullable = false)
+     String passwordUser;
+
+    @Column(name = "role", unique = false, nullable = false)
+     Set<String> roles;
+
+
 }

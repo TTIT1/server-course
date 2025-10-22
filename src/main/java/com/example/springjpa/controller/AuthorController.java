@@ -6,8 +6,8 @@ import com.example.springjpa.dto.resquest.AuthorCourseRequest;
 import com.example.springjpa.dto.resquest.AuthorRequest;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.Author;
-import com.example.springjpa.model.AuthorCourse;
-import com.example.springjpa.service.AuthorCourseService;
+
+
 import com.example.springjpa.service.AuthorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,27 +15,32 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authorization.method.AuthorizeReturnObject;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-
+//@PreAuthorize("isAuthenticated()") // chỉ người login mới vào được
+//@PreAuthorize("isAnonymous()")// chỉ người chưa login mới vào được
 @RestController
 @RequestMapping("/api/author")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class AuthorController {
-    AuthorCourseService authorCourseService;
-     AuthorService authorService;
-     @PostMapping("/add/two")
-     public ResponseEntity<ApiResponse<AuthorCourseResponse>> addtwo(@RequestBody AuthorCourseRequest request){
-                     ApiResponse<AuthorCourseResponse> apiResponse = new ApiResponse<>();
-                        apiResponse.setRsulte(authorCourseService.add(request));
-                        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-                        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
-                        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
 
-     }
+     AuthorService authorService;
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/add/two")
+   public ApiResponse<AuthorCourseResponse> authorCourseResponseApiResponse (@RequestBody AuthorCourseRequest request){
+       AuthorCourseResponse authorCourseResponse = authorService.saveAuthorCourse(request);
+       return ApiResponse.<AuthorCourseResponse>builder()
+               .rsulte(authorCourseResponse)
+               .code(ErrorCode.SUCCESS.getCode())
+               .messages(ErrorCode.SUCCESS.getMessages())
+               .build();
+   }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse<List<AuthorRequest>>> getAllApiResponseResponseEntity(){
                     ApiResponse<List<AuthorRequest>> apiResponse = new ApiResponse<>();
@@ -45,6 +50,8 @@ public class AuthorController {
                     return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
     }
+    @PreAuthorize("hasAnyRole('ADMIN, 'USER')")
+
     @PostMapping("/add/new/author")
     public ResponseEntity<ApiResponse<AuthorRequest>>AddApiResponseResponseEntity(@RequestBody AuthorRequest authorDTO){
                     ApiResponse<AuthorRequest> apiResponse = new ApiResponse<>();
@@ -55,6 +62,7 @@ public class AuthorController {
                     return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
     }
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Author>> UpdateResponseResponseEntity(@RequestBody AuthorRequest authorDTO,@PathVariable Integer id){
             ApiResponse<Author> apiResponse = new ApiResponse<>();
@@ -63,6 +71,7 @@ public class AuthorController {
             apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
             return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @GetMapping("/get/by/{id}")
      public ResponseEntity<ApiResponse<Author>> getbyid(@PathVariable Integer id){
              ApiResponse<Author> apiResponse = new ApiResponse<>();

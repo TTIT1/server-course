@@ -1,6 +1,10 @@
-package com.example.springjpa.dto.response;
+package com.example.springjpa.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,17 +12,20 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Set;
+import java.util.Date;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
-public class UserResponse {
-    String token;
-    boolean Auth ;
+public class RefreshToken extends  BaseEntity{
+
+    @Column(name = "refreshToken" ,unique = true,nullable = false,length = 1000)
     String refreshToken;
-    Set<String> roles;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+     User user;
 }

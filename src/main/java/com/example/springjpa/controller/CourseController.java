@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 public class CourseController {
 
     CourseService courseService;
+    @PreAuthorize("has")
     @PostMapping("/All/New/Course")
     public ResponseEntity<ApiResponse<Course>> AllNewCourse(@RequestBody CourseDTO courseDTO){
           ApiResponse<Course> apiResponse = new ApiResponse<>();

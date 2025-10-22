@@ -1,9 +1,10 @@
-package com.example.springjpa.security;
+package com.example.springjpa.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -11,12 +12,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
   // Các endpoint public không yêu cầu token
@@ -26,8 +30,12 @@ public class SecurityConfig {
           "/swagger-resources/**",
           "/webjars/**",
           "/configuration/**",
-          "/api/auth/**" // endpoint đăng nhập, đăng ký
+          "api/auth/register",
+          "api/auth/login",
+          "api/auth/check/token",
+          "api/auth/check/RefreshToken"
   };
+
 
   @Value("${select_key}")
   private String key;
@@ -37,14 +45,17 @@ public class SecurityConfig {
     http
             // Cấu hình quyền truy cập
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(PUBLIC_ENDPOINTS).permitAll() // Cho phép các endpoint public
+                    .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+
                     .anyRequest().authenticated() // Các request khác cần JWT hợp lệ
             )
-            // Cấu hình JWT decoder
             .oauth2ResourceServer(oauth2 ->
-                    oauth2.jwt(jwt -> jwt.decoder(jwtDecoder()))
+                    oauth2.jwt(jwt -> jwt
+                            .decoder(jwtDecoder())
+                            .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                    )
             )
-            // Tắt CSRF (vì API không dùng session)
+
             .csrf(AbstractHttpConfigurer::disable);
 
     return http.build();
@@ -60,6 +71,19 @@ public class SecurityConfig {
 
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+    return new BCryptPasswordEncoder(10);
   }
+
+
+  @Bean
+  public JwtAuthenticationConverter jwtAuthenticationConverter() {
+    JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+    converter.setAuthoritiesClaimName("scope");
+    converter.setAuthorityPrefix("ROLE_");
+    JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+    jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
+    return jwtConverter;
+  }
+
+
 }

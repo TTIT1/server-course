@@ -1,9 +1,11 @@
 package com.example.springjpa.service;
 
 
+import com.example.springjpa.dto.response.AuthorCourseResponse;
+import com.example.springjpa.dto.resquest.AuthorCourseRequest;
 import com.example.springjpa.dto.resquest.AuthorRequest;
 import com.example.springjpa.model.Author;
-import com.example.springjpa.model.AuthorCourse;
+
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ public interface AuthorService {
     List<Author> authorListByNameIngoreCase(String nameFind);
     List<Author> authorListByName(String nameFind);
     Author getAuthorById(Integer id);
-
+    AuthorCourseResponse saveAuthorCourse(AuthorCourseRequest request);
 }
 
 

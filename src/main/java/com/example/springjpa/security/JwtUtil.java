@@ -1,10 +1,10 @@
 package com.example.springjpa.security;
 
 import com.example.springjpa.dto.resquest.IntrospectrRequest;
-import com.example.springjpa.exception.AppExcepotion;
-import com.example.springjpa.exception.ErrorCode;
 
-import io.jsonwebtoken.JwtException;
+
+import com.example.springjpa.model.User;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -15,11 +15,15 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
 
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
+import java.util.StringJoiner;
 
-import javax.xml.crypto.Data;
+
 
 //sinh & kiểm tra token.
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -38,21 +42,40 @@ public class JwtUtil {
 
   @NonFinal
   static long EXPIRATION_TIME = 1000 * 60 * 60;
+  @NonFinal
+  static long TokenTme = Duration.ofMinutes(2).toMillis();
 
   // creat token
-  public static String generateToken(String username) {
+  public static String generateToken(User user) {
+      String id = String.valueOf(user.getId());
       return Jwts.builder()
-                 .setSubject(username)
-                 .setIssuedAt(new Date())
-                 .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
-                 .claim("HUST", "ITE6")
-                 .setExpiration(new Date(System.currentTimeMillis()+EXPIRATION_TIME))
-                 .signWith(SignatureAlgorithm.HS512,key)
-                 .compact();
+              .setSubject(user.getUserName())
+              .setIssuedAt(new Date())
+              .claim("id",user.getId())
+              .claim("scope",buildScope(user))
+              .setId(id)
+              .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
+              .setExpiration(new Date(System.currentTimeMillis()+TokenTme))
+              .signWith(SignatureAlgorithm.HS512,key)
+              .compact();
 
   }
+    public static String generateRefreshToken(User user) {
+        String id = String.valueOf(user.getId());
+        return Jwts.builder()
+                .setSubject(user.getUserName()+"Kaka")
+                .setIssuedAt(new Date())
+                .setId(id)
+                .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
+                .setExpiration(new Date(System.currentTimeMillis()+EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512,key)
+                .compact();
 
-  // Lấy username từ token
+    }
+
+
+
+    // Lấy username từ token
   public static String extractUsername(String token) {
       return Jwts. parserBuilder()
                   .setSigningKey(key)
@@ -61,19 +84,16 @@ public class JwtUtil {
                   .getBody()
                   .getSubject();
   }
-
   // Kiểm tra token có hợp lệ không
   public static Boolean validateToken(IntrospectrRequest request) {
                         try {
-                          String username = extractUsername(request.getUsername());
+                          String username = extractUsername(request.getToken());
                           if (username.equals(request.getUsername())&& !isTokenExpired(request.getToken()));
                             return true;
                         } catch (Exception e) {
                           return false;
                         }
   }
-    
-
   private static boolean isTokenExpired(String token) {
          Date date = Jwts.parserBuilder()
                          .setSigningKey(key)
@@ -83,4 +103,13 @@ public class JwtUtil {
                          .getExpiration();
             return date.before(new Date());
   }
+  private static String buildScope(User user){
+      StringJoiner stringJoiner = new StringJoiner(" ");
+      if(!CollectionUtils.isEmpty(user.getRoles())){
+          user.getRoles().forEach(stringJoiner::add);
+      }
+      return stringJoiner.toString();
+  }
+
+
 }

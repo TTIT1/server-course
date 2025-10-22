@@ -10,7 +10,6 @@ import java.util.Optional;
 @Repository
 public interface AuthorRepository extends JpaRepository<Author,Integer> {
     Optional<Author> findByEmail(String email);
-    // Select * from auth where first_name = 'nameFind'
     List<Author> findAllByfirstName(String nameFind);
     List<Author> findAllByfirstNameIgnoreCase(String nameFind);
 

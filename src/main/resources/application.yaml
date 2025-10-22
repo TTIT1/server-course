@@ -24,3 +24,4 @@ server:
   port: ${PORT:8080}
 
 select_key: ${SELECT_KEY}
+# connect localhost

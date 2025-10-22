@@ -33,9 +33,9 @@ public class Course  extends  BaseEntity{
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
-//    @JsonIgnore
+    @JsonIgnore
      List<Author> authors = new ArrayList<>();
-//     @JsonIgnore
+     @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
      List<Section> sections = new ArrayList<>();
 

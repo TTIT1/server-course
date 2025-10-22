@@ -1,14 +1,16 @@
 package com.example.springjpa.service.Impl;
 
 
+import com.example.springjpa.dto.response.AuthorCourseResponse;
+import com.example.springjpa.dto.resquest.AuthorCourseRequest;
 import com.example.springjpa.dto.resquest.AuthorRequest;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.AuthorMapper;
 import com.example.springjpa.model.Author;
-import com.example.springjpa.model.AuthorCourse;
+
 import com.example.springjpa.model.Course;
-import com.example.springjpa.repository.AuthorCourseRepository;
+
 import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
 import com.example.springjpa.service.AuthorService;
@@ -30,7 +32,7 @@ public class AuthorServiceImpl implements AuthorService  {
    CourseRepository courseRepository;
 
    AuthorMapper authorMapper;
-   AuthorCourseRepository authorCourseRepository;
+
 
     public AuthorRequest toModelAuthor(Author author) {
         AuthorRequest authorDTO = new AuthorRequest();
@@ -58,7 +60,9 @@ public class AuthorServiceImpl implements AuthorService  {
     }
 
     public List<AuthorRequest> getAll() {
+
         List<AuthorRequest> authorDTOS = authorRepository.findAll().stream().map(this::toModelAuthor).collect(Collectors.toUnmodifiableList());
+
         if (authorDTOS.isEmpty()){
             throw new AppExcepotion(ErrorCode.NOT_FOUND);
         }
@@ -88,6 +92,34 @@ public class AuthorServiceImpl implements AuthorService  {
     public Author getAuthorById(Integer id) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
         return author;
+    }
+
+    @Override
+    public AuthorCourseResponse saveAuthorCourse(AuthorCourseRequest request) {
+        if (authorRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new AppExcepotion(ErrorCode.INVALID_EMAIL);
+        }
+
+        Course course = new Course();
+        course.setTitle(request.getTitle());
+        course.setDescription(request.getDescription());
+        course = courseRepository.save(course);
+
+        Author author = new Author();
+        author.setEmail(request.getEmail());
+        author.setAge(request.getAge());
+        author.setLastName(request.getLastName());
+        author.setFirstName(request.getFirstName());
+        author = authorRepository.save(author);
+
+        author.getCourses().add(course);
+        course.getAuthors().add(author);
+
+        courseRepository.save(course);
+
+           return AuthorCourseResponse.builder()
+                   .valtile(true)
+                   .build();
     }
 
     public List<Author> authorListByName(String nameFind) {
