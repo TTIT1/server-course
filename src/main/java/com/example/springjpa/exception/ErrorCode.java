@@ -1,50 +1,54 @@
 package com.example.springjpa.exception;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.experimental.FieldDefaults;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.stereotype.Component;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+
 public enum ErrorCode {
-    UNAUTHORIZED(1001, "Chưa đăng nhập hoặc token hết hạn"),
-    FORBIDDEN(1002, "Không có quyền truy cập"),
-    INVALID_CREDENTIALS(1003, "Sai tên đăng nhập hoặc mật khẩu"),
-
-    // 🔹 Lỗi dữ liệu đầu vào
-    INVALID_INPUT(2001, "Dữ liệu không hợp lệ"),
-    MISSING_FIELD(2002, "Thiếu trường bắt buộc"),
-    INVALID_EMAIL(2003, "Email đã tồn tại"),
-
-    // 🔹 Lỗi nghiệp vụ
-    USER_EXISTS(3001, "Người dùng đã tồn tại"),
-    USER_NOT_FOUND(3002, "Không tìm thấy người dùng"),
-    DUPLICATE_RECORD(3003, "Bản ghi đã tồn tại"),
-
-    // 🔹 Lỗi hệ thống
-    INTERNAL_ERROR(4001, "Lỗi hệ thống"),
-    DATABASE_ERROR(4002, "Lỗi kết nối cơ sở dữ liệu"),
-    SERVICE_UNAVAILABLE(4003, "Dịch vụ tạm thời không khả dụng"),
-
-    // 🔹 Lỗi chung
-    BAD_REQUEST(5001, "Yêu cầu không hợp lệ"),
-    NOT_FOUND(5002, "Không tìm thấy tài nguyên"),
-    TIMEOUT(5003, "Quá thời gian chờ"),
-    SUCCESS(0, "Thành công"),
-    registerNew_SUCCESS(10, "Đăng ký thành công")
-    ;
 
 
-    ErrorCode(int code, String messages) {
+    UNAUTHORIZED(1001, "Not logged in or token expired", HttpStatus.UNAUTHORIZED),
+    FORBIDDEN(1002, "Access denied", HttpStatus.FORBIDDEN),
+    INVALID_CREDENTIALS(1003, "Invalid username or password", HttpStatus.UNAUTHORIZED),
+
+
+    INVALID_INPUT(2001, "Invalid input data", HttpStatus.BAD_REQUEST),
+    MISSING_FIELD(2002, "Missing required field", HttpStatus.BAD_REQUEST),
+    INVALID_EMAIL(2003, "Email already exists", HttpStatus.CONFLICT),
+
+
+    USER_EXISTS(3001, "User already exists", HttpStatus.CONFLICT),
+    USER_NOT_FOUND(3002, "User not found", HttpStatus.NOT_FOUND),
+    DUPLICATE_RECORD(3003, "Duplicate record", HttpStatus.CONFLICT),
+
+
+    INTERNAL_ERROR(4001, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
+    DATABASE_ERROR(4002, "Database connection error", HttpStatus.INTERNAL_SERVER_ERROR),
+    SERVICE_UNAVAILABLE(4003, "Service temporarily unavailable", HttpStatus.SERVICE_UNAVAILABLE),
+
+
+    BAD_REQUEST(5001, "Bad request", HttpStatus.BAD_REQUEST),
+    NOT_FOUND(5002, "Resource not found", HttpStatus.NOT_FOUND),
+    TIMEOUT(5003, "Request timeout", HttpStatus.REQUEST_TIMEOUT),
+
+
+    SUCCESS(0, "Success", HttpStatus.OK),
+    REGISTER_SUCCESS(10, "Registration successful", HttpStatus.CREATED);
+
+    final int code;
+    final String message;
+    final HttpStatusCode httpStatusCode;
+
+    ErrorCode(int code, String message, HttpStatusCode httpStatusCode) {
         this.code = code;
-        this.messages = messages;
+        this.message = message;
+        this.httpStatusCode = httpStatusCode;
     }
-
-    private int code;
-    private  String messages;
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getMessages() {
-        return messages;
-    }
-
-
-
 }

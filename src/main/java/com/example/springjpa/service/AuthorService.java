@@ -13,11 +13,12 @@ import java.util.List;
 public interface AuthorService {
     AuthorRequest saveAuthor (AuthorRequest authorDTO);
     List<AuthorRequest> getAll();
-    Author update(AuthorRequest authorDTO, Integer id);
+    Author update(AuthorRequest authorDTO, String id);
     List<Author> authorListByNameIngoreCase(String nameFind);
     List<Author> authorListByName(String nameFind);
-    Author getAuthorById(Integer id);
+    Author getAuthorById(String id);
     AuthorCourseResponse saveAuthorCourse(AuthorCourseRequest request);
+
 }
 
 

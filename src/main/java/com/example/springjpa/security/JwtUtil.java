@@ -3,6 +3,7 @@ package com.example.springjpa.security;
 import com.example.springjpa.dto.resquest.IntrospectrRequest;
 
 
+import com.example.springjpa.dto.resquest.RefreshTokenRequest;
 import com.example.springjpa.model.User;
 
 import io.jsonwebtoken.Jwts;
@@ -30,7 +31,7 @@ import java.util.StringJoiner;
 @Component
 public class JwtUtil {
   @NonFinal
-  @Value("${select_key}")
+  @Value("${jwt:select_key}")
   String keyWork;
   @NonFinal
   static Key key;
@@ -87,7 +88,7 @@ public class JwtUtil {
   // Kiểm tra token có hợp lệ không
   public static Boolean validateToken(IntrospectrRequest request) {
                         try {
-                          String username = extractUsername(request.getToken());
+                          String username = extractUsername(request.getUsername());
                           if (username.equals(request.getUsername())&& !isTokenExpired(request.getToken()));
                             return true;
                         } catch (Exception e) {
@@ -103,6 +104,17 @@ public class JwtUtil {
                          .getExpiration();
             return date.before(new Date());
   }
+
+  public static Boolean validateRefreshToken(RefreshTokenRequest request){
+      try {
+          String name = extractUsernameToken(request.getRefreshToken());
+          if (name !=null&& !isTokenExpiredToken(request.getRefreshToken()) );
+          return true;
+      }catch (Exception e){
+          return  false;
+      }
+  }
+
   private static String buildScope(User user){
       StringJoiner stringJoiner = new StringJoiner(" ");
       if(!CollectionUtils.isEmpty(user.getRoles())){
@@ -110,6 +122,22 @@ public class JwtUtil {
       }
       return stringJoiner.toString();
   }
-
+    public static String extractUsernameToken(String token) {
+        return Jwts. parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject()+"Kaka";
+    }
+    private static boolean isTokenExpiredToken(String token) {
+        Date date = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+        return date.before(new Date());
+    }
 
 }

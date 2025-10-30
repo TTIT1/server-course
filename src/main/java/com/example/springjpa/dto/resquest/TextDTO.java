@@ -14,6 +14,6 @@ public class TextDTO {
      String name;
      int size;
      String url;
-      int  lectureid;
+      String  lectureid;
      String text;
 }

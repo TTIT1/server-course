@@ -53,7 +53,7 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
-    public LectureDTO update(Integer id, LectureDTO lectureDTO) {
+    public LectureDTO update(String id, LectureDTO lectureDTO) {
         Lecture lecture = lectureRepository.findById(id).orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
        lecture.setName(lectureDTO.getName());
        if(lectureDTO.getSectionId()!=null){
@@ -64,13 +64,13 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
-    public LectureDTO getbyId(Integer id) {
+    public LectureDTO getbyId(String id) {
         Lecture lecture = lectureRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
         return toModelLecture(lecture);
     }
 
     @Override
-    public Boolean delete(Integer id) {
+    public Boolean delete(String id) {
        Lecture lecture = lectureRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
         lectureRepository.delete(lecture);
         return  true;

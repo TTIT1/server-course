@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Data
@@ -12,10 +13,12 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
 public class AuthorRequest {
-      Integer id;
+     String id;
      String firstName;
      String lastName;
      String email;
+     String password;
      int age;
-     List<Integer> courseIds; // chỉ chứa ID khoá học
+
+     List<String> courseIds; // chỉ chứa ID khoá học
 }

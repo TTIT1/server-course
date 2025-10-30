@@ -27,7 +27,7 @@ public class TextController {
         ApiResponse<TextDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(textService.add(textDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
@@ -37,7 +37,7 @@ public class TextController {
         ApiResponse<TextDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(textService.update(textDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -47,7 +47,7 @@ public class TextController {
         ApiResponse<List<TextDTO>> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(textService.getAll());
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 }

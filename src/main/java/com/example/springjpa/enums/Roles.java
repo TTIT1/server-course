@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 public enum Roles {
      ADMIN,
-     USER
+     USER,
+     AUTHOR
     ;
 }

@@ -11,8 +11,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LectureDTO {
-     Integer id;
+    String id;
      String name;
-     Integer sectionId;  // hoặc sectionName nếu cần
+    String sectionId;  // hoặc sectionName nếu cần
 
 }

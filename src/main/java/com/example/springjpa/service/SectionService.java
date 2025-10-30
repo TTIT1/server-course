@@ -8,7 +8,7 @@ import java.util.List;
 public interface SectionService {
     SectionDTO addSection(SectionDTO sectionDTO);
     List<SectionDTO> getAllSection();
-    SectionDTO getSectionById(Long id);
-    SectionDTO updateSection(Long id, SectionDTO sectionDTO);
-    void deleteSection(Long id);
+    SectionDTO getSectionById(String id);
+    SectionDTO updateSection(String id, SectionDTO sectionDTO);
+    void deleteSection(String id);
 }

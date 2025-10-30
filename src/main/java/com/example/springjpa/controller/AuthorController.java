@@ -37,7 +37,7 @@ public class AuthorController {
        return ApiResponse.<AuthorCourseResponse>builder()
                .rsulte(authorCourseResponse)
                .code(ErrorCode.SUCCESS.getCode())
-               .messages(ErrorCode.SUCCESS.getMessages())
+               .messages(ErrorCode.SUCCESS.getMessage())
                .build();
    }
     @PreAuthorize("hasRole('ADMIN')")
@@ -46,39 +46,40 @@ public class AuthorController {
                     ApiResponse<List<AuthorRequest>> apiResponse = new ApiResponse<>();
                     apiResponse.setRsulte(authorService.getAll());
                     apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
                     return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
     }
-    @PreAuthorize("hasAnyRole('ADMIN, 'USER')")
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUTHOR')")
     @PostMapping("/add/new/author")
     public ResponseEntity<ApiResponse<AuthorRequest>>AddApiResponseResponseEntity(@RequestBody AuthorRequest authorDTO){
                     ApiResponse<AuthorRequest> apiResponse = new ApiResponse<>();
 
                      apiResponse.setRsulte(authorService.saveAuthor(authorDTO));
-                        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+                        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
                         apiResponse.setCode(ErrorCode.NOT_FOUND.getCode());
                     return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
     }
     @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<Author>> UpdateResponseResponseEntity(@RequestBody AuthorRequest authorDTO,@PathVariable Integer id){
+    public ResponseEntity<ApiResponse<Author>> UpdateResponseResponseEntity(@RequestBody AuthorRequest authorDTO,@PathVariable String id){
             ApiResponse<Author> apiResponse = new ApiResponse<>();
             apiResponse.setRsulte(authorService.update(authorDTO,id));
             apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-            apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+            apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
             return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
     @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @GetMapping("/get/by/{id}")
-     public ResponseEntity<ApiResponse<Author>> getbyid(@PathVariable Integer id){
+     public ResponseEntity<ApiResponse<Author>> getbyid(@PathVariable String id){
              ApiResponse<Author> apiResponse = new ApiResponse<>();
              apiResponse.setRsulte(authorService.getAuthorById(id));
-             apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+             apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
              apiResponse.setCode(ErrorCode.SUCCESS.getCode());
              return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
 
 }

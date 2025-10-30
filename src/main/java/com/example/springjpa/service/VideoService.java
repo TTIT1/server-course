@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface VideoService {
     List<VideoDTO> findAll();
-    void deleteById(Integer id);
-    VideoDTO updateById(int id, VideoDTO videoDTO);
+    void deleteById(String id);
+    VideoDTO updateById(String id, VideoDTO videoDTO);
     VideoDTO save(VideoDTO videoDTO);
-    VideoDTO findById(Integer integer);
+    VideoDTO findById(String integer);
 }

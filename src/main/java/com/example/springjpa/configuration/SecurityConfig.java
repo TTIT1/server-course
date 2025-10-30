@@ -25,19 +25,18 @@ public class SecurityConfig {
 
   // Các endpoint public không yêu cầu token
   private static final String[] PUBLIC_ENDPOINTS = {
-          "/swagger-ui/**",
-          "/v3/api-docs/**",
-          "/swagger-resources/**",
-          "/webjars/**",
-          "/configuration/**",
-          "api/auth/register",
-          "api/auth/login",
-          "api/auth/check/token",
-          "api/auth/check/RefreshToken"
+      "/swagger-ui/**",
+      "/v3/api-docs/**",
+      "/swagger-resources/**",
+      "/webjars/**",
+      "/configuration/**",
+      "api/auth/register",
+      "api/auth/login",
+      "api/auth/check/token",
+      "api/auth/check/RefreshToken"
   };
 
-
-  @Value("${select_key}")
+  @Value("${jwt:select_key}")
   private String key;
 
   @Bean
@@ -49,15 +48,14 @@ public class SecurityConfig {
 
                     .anyRequest().authenticated() // Các request khác cần JWT hợp lệ
             )
-            .oauth2ResourceServer(oauth2 ->
-                    oauth2.jwt(jwt -> jwt
+            .oauth2ResourceServer(ouutho2->ouutho2
+                    .jwt(
+                    jwtConfigurer -> jwtConfigurer
                             .decoder(jwtDecoder())
                             .jwtAuthenticationConverter(jwtAuthenticationConverter())
                     )
             )
-
-            .csrf(AbstractHttpConfigurer::disable);
-
+      .csrf(AbstractHttpConfigurer::disable);
     return http.build();
   }
 
@@ -65,15 +63,14 @@ public class SecurityConfig {
   JwtDecoder jwtDecoder() {
     SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), "HmacSHA512");
     return NimbusJwtDecoder.withSecretKey(secretKeySpec)
-            .macAlgorithm(MacAlgorithm.HS512)
-            .build();
+        .macAlgorithm(MacAlgorithm.HS512)
+        .build();
   }
 
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder(10);
   }
-
 
   @Bean
   public JwtAuthenticationConverter jwtAuthenticationConverter() {
@@ -84,6 +81,5 @@ public class SecurityConfig {
     jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
     return jwtConverter;
   }
-
 
 }

@@ -12,8 +12,8 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CourseDTO {
-    Integer id;
+    String id;
      String title;
      String description;
-     List<Integer> authorIds; // chỉ chứa ID tác giả
+     List<String> authorIds; // chỉ chứa ID tác giả
 }

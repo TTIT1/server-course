@@ -12,9 +12,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SectionDTO {
-     Integer id;
+     String id;
      String name;
      int order;
-     Integer courseId;
+    String courseId;
 
 }

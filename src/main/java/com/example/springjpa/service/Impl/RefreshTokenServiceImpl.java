@@ -24,18 +24,39 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     RefreshTokenRepository refreshTokenRepository;
     UserRepository userRepository;
+
     public UserResponse checkRefreshToken(RefreshTokenRequest request) {
-        User user   =  userRepository.findById(request.getId()).orElseThrow(()->new AppExcepotion(ErrorCode.FORBIDDEN));
+
+        User user = userRepository.findById(request.getId()).orElseThrow(() -> new AppExcepotion(ErrorCode.FORBIDDEN));
+
         RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(request.getRefreshToken())
-                .orElseThrow(()->new AppExcepotion(ErrorCode.BAD_REQUEST));
-       String Refreshnew =   JwtUtil.generateRefreshToken(user);
-       refreshToken.setRefreshToken(Refreshnew);
-       refreshTokenRepository.save(refreshToken);
-       String tokennew = JwtUtil.generateToken(user);
-       return UserResponse.builder()
-               .refreshToken(refreshToken.getRefreshToken())
-               .token(tokennew)
-               .Auth(true)
-               .build();
+
+                .orElseThrow(() -> new AppExcepotion(ErrorCode.BAD_REQUEST));
+        RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest(refreshToken.getRefreshToken(), user.getId());
+        Boolean check = JwtUtil.validateRefreshToken(refreshTokenRequest);
+         if (!check){
+            refreshTokenRepository.deleteById(refreshToken.getId());
+             return UserResponse.builder()
+                     .refreshToken(refreshToken.getRefreshToken())
+                     .token("RefreshToken hết hạn")
+                     .Auth(false)
+                     .build();
+         }
+         // tạo refreshToken
+            String Refreshnew = JwtUtil.generateRefreshToken(user);
+
+            refreshToken.setRefreshToken(Refreshnew);
+
+            refreshTokenRepository.save(refreshToken);
+
+            String tokennew = JwtUtil.generateToken(user);
+
+            return UserResponse.builder()
+                    .refreshToken(refreshToken.getRefreshToken())
+                    .token(tokennew)
+                    .Auth(true)
+                    .build();
+
+
     }
 }

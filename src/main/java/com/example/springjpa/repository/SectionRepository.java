@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface SectionRepository extends JpaRepository<Section,Integer> {
-      Optional<Section> findById(Long integer);
+public interface SectionRepository extends JpaRepository<Section,String> {
+      Optional<Section> findById(String integer);
 }

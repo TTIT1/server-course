@@ -20,6 +20,9 @@ import com.example.springjpa.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +57,6 @@ public class UserServiceImpl implements UserService {
         }
 
           User user = new User();
-          user.setUserName(userRequest.getUserName());
           HashSet<String> set =new HashSet<>();
           set.add(Roles.USER.name());
           user.setRoles(set);
@@ -102,17 +104,25 @@ public class UserServiceImpl implements UserService {
           return userResponseGets;
     }
 
+
     @Override
-    public UserResponseGet getUser(Long id) {
+    public UserResponseGet getUser(String id) {
         User userResponseGet = userRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.BAD_REQUEST));
 
         return new UserResponseGet(userResponseGet.getGmail(), userResponseGet.getUserName(), userResponseGet.getRoles());
     }
 
+    @Override
+    public UserResponseGet getInfo() {
+       var context = SecurityContextHolder.getContext();
+         String name = context.getAuthentication().getName();
+         User user = userRepository.findByUserName(name).orElseThrow(
+                 ()->new AppExcepotion(ErrorCode.USER_NOT_FOUND));
+         return userMapper.toUserUser(user);
+    }
 
 
-
-    public Boolean updateUser(UserRequest userRequest , Long id){
+    public Boolean updateUser(UserRequest userRequest , String id){
         User user   = userRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.DUPLICATE_RECORD));
              user.setUserName(user.getUserName());
              user.setPasswordUser(user.getPasswordUser());

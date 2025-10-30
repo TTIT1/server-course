@@ -1,11 +1,11 @@
 package com.example.springjpa.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import de.huxhorn.sulky.ulid.ULID;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -17,14 +17,22 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PACKAGE)
 public class BaseEntity {
-    @Id
-    @GeneratedValue
-     Integer id;
-    @CreatedDate
-     LocalDateTime creatAt;
-    @UpdateTimestamp
-     LocalDateTime lassModifiedAt;
 
-     String createBy;
-     String lastMotifiedBy;
+    @Id
+    @Column(updatable = false, nullable = false)
+    private String id;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.id == null) {
+            this.id = new ULID().nextULID();
+        }
+    }
 }

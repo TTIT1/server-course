@@ -6,6 +6,7 @@ import com.example.springjpa.dto.response.IntrospectResponse;
 import com.example.springjpa.dto.response.UserResponse;
 
 import com.example.springjpa.dto.response.UserResponseGet;
+import com.example.springjpa.dto.resquest.AuthorRequest;
 import com.example.springjpa.dto.resquest.IntrospectrRequest;
 import com.example.springjpa.dto.resquest.RefreshTokenRequest;
 import com.example.springjpa.dto.resquest.UserRequest;
@@ -20,6 +21,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +43,7 @@ public class UserController {
                     ApiResponse apiResponse = new ApiResponse();
                     apiResponse.setRsulte(resulte);
                     apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
                     return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
      }
 
@@ -77,19 +79,25 @@ public class UserController {
                return ApiResponse.<List<UserResponseGet>>builder()
                        .rsulte(userResponseGets)
                        .code(ErrorCode.SUCCESS.getCode())
-                       .messages(ErrorCode.SUCCESS.getMessages())
+                       .messages(ErrorCode.SUCCESS.getMessage())
                        .build();
      }
 
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.claims['id']")
+
     @GetMapping("/get/{id}")
-    public ResponseEntity<UserResponseGet> userResponseGetResponseEntity(@PathVariable Long id) {
+    public ResponseEntity<UserResponseGet> userResponseGetResponseEntity(@PathVariable String id) {
         UserResponseGet userResponseGet = userService.getUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseGet);
     }
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.claims['id']")
+    @GetMapping("/info")
+    public ResponseEntity<UserResponseGet> getInfo() {
+        UserResponseGet userResponseGet = userService.getInfo();
+        return ResponseEntity.status(HttpStatus.OK).body(userResponseGet);
+    }
+
+    @PreAuthorize(" hasRole('USER') #id == authentication.principal.id")
    @PutMapping("/update/{id}")
-    public ResponseEntity<Boolean> booleanResponseEntity(@RequestBody UserRequest userRequest, @PathVariable Long id)
+    public ResponseEntity<Boolean> booleanResponseEntity(@RequestBody UserRequest userRequest, @PathVariable String id)
    {
        Boolean check = userService.updateUser(userRequest,id);
 
@@ -101,6 +109,9 @@ public class UserController {
                      UserResponse userResponse = refreshTokenService.checkRefreshToken(request);
                      return ResponseEntity.status(HttpStatus.OK).body(userResponse);
    }
+
+
+
 
 
 }

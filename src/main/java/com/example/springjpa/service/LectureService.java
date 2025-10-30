@@ -7,7 +7,7 @@ import java.util.List;
 public interface LectureService {
     LectureDTO addLecture (LectureDTO lectureDTO);
     List<LectureDTO> getAllLecture();
-    LectureDTO update (Integer id , LectureDTO lectureDTO);
-    LectureDTO getbyId(Integer id);
-    Boolean delete(Integer id);
+    LectureDTO update (String id , LectureDTO lectureDTO);
+    LectureDTO getbyId(String id);
+    Boolean delete(String id);
 }

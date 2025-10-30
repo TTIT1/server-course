@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 public class Resource {
     @Id
     @GeneratedValue
-      Integer id;
+      String id;
     @Column(name = "n_name",unique = true,nullable = false)
       String name;
     @Column(name = "s_size")

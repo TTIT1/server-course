@@ -15,7 +15,7 @@ public interface UserService {
   // User CheckIdUser(UserDTO userDTO);
   Boolean validateToken(IntrospectrRequest request);
   List<UserResponseGet > USER_RESPONSE_GET ();
-  UserResponseGet getUser(Long id );
-
-  Boolean updateUser(UserRequest userRequest , Long id );
+  UserResponseGet getUser(String id );
+  UserResponseGet getInfo();
+  Boolean updateUser(UserRequest userRequest , String id );
 }

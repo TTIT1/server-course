@@ -31,23 +31,23 @@ public class CourseController {
           ApiResponse<Course> apiResponse = new ApiResponse<>();
           apiResponse.setRsulte(courseService.save(courseDTO));
           apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-          apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+          apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
           return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
     @GetMapping("/Get/By/{id}")
-    public  ResponseEntity<ApiResponse<Course>> GetById(@PathVariable Integer id){
+    public  ResponseEntity<ApiResponse<Course>> GetById(@PathVariable String id){
            ApiResponse<Course> apiResponse = new ApiResponse<>();
            apiResponse.setRsulte(courseService.GetByID(id));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
     @PutMapping("/Update/By/{id}")
-    public  ResponseEntity<ApiResponse<Course>> UpdateByID(@PathVariable Integer id ,@RequestBody CourseDTO courseDTO){
+    public  ResponseEntity<ApiResponse<Course>> UpdateByID(@PathVariable String id ,@RequestBody CourseDTO courseDTO){
         ApiResponse<Course> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(courseService.update(id, courseDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
     @GetMapping("/Get/All/Course")
@@ -55,15 +55,15 @@ public class CourseController {
         ApiResponse<List<CourseDTO>> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(courseService.getCourse());
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
     @DeleteMapping("/Delete/By/{id}")
-    public  ResponseEntity<ApiResponse<Boolean>> DeleteById(@PathVariable Integer id){
+    public  ResponseEntity<ApiResponse<Boolean>> DeleteById(@PathVariable String id){
         ApiResponse<Boolean> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(courseService.DeleteById(id));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 }

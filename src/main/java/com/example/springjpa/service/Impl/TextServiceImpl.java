@@ -29,7 +29,7 @@ public class TextServiceImpl implements TextService {
    LectureRepository lectureRepository;
     public TextDTO toModel(Text text){
         TextDTO textDTO = new TextDTO();
-        textDTO.setId(text.getId());
+        textDTO.setText(text.getId());
         textDTO.setName(text.getName());
         textDTO.setUrl(text.getUrl());
         textDTO.setText(text.getConText());
@@ -56,7 +56,7 @@ public class TextServiceImpl implements TextService {
         return textDTO;
     }
     public TextDTO update(TextDTO textDTO) {
-        Text text = textRepository.findById(textDTO.getId())
+        Text text = textRepository.findById(textDTO.getText())
                 .orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
         try {
             text.setConText(textDTO.getText());

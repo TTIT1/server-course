@@ -30,7 +30,7 @@ public class SectionController {
         ApiResponse<SectionDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(sectionService.addSection(sectionDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
@@ -40,34 +40,34 @@ public class SectionController {
         ApiResponse<List<SectionDTO>> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(sectionService.getAllSection());
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 
     // GET BY ID
     @GetMapping("/get/{id}")
-    public ResponseEntity<ApiResponse<SectionDTO>> getById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<SectionDTO>> getById(@PathVariable String id) {
         ApiResponse<SectionDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(sectionService.getSectionById(id));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 
     // UPDATE
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<SectionDTO>> update(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<SectionDTO>> update(@PathVariable String id,
                                                           @RequestBody SectionDTO sectionDTO) {
         ApiResponse<SectionDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(sectionService.updateSection(id, sectionDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 
     // DELETE
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String id) {
         sectionService.deleteSection(id);
         ApiResponse<Void> apiResponse = new ApiResponse<>();
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());

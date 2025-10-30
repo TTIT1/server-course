@@ -29,17 +29,17 @@ public class VideoController {
         ApiResponse<List<VideoDTO>> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(videoService.findAll());
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<VideoDTO>> getVideoById(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<VideoDTO>> getVideoById(@PathVariable String id) {
         ApiResponse<VideoDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(videoService.findById(id));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -49,27 +49,27 @@ public class VideoController {
         ApiResponse<VideoDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(videoService.save(videoDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<VideoDTO>> updateVideo(@PathVariable int id, @RequestBody VideoDTO videoDTO) {
+    public ResponseEntity<ApiResponse<VideoDTO>> updateVideo(@PathVariable String id, @RequestBody VideoDTO videoDTO) {
         ApiResponse<VideoDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(videoService.updateById(id, videoDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteVideo(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Void>> deleteVideo(@PathVariable String id) {
         videoService.deleteById(id);
         ApiResponse<Void> apiResponse = new ApiResponse<>();
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 }

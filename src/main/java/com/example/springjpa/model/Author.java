@@ -9,6 +9,7 @@ import org.mapstruct.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,10 +26,14 @@ public class Author extends BaseEntity{
      String lastName;
     @Column(name = "g_email", unique = true, nullable = false, length = 255)
      String email;
+    @Column(name = "p_password",unique = false,nullable = false)
+    String passWord;
      int age;
-  @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors")
     //@JsonIgnore
-   List<Course> courses = new ArrayList<>();
+    List<Course> courses = new ArrayList<>();
+    @Column(name = "role", unique = false, nullable = false)
+    Set<String> roles;
 
 
 }

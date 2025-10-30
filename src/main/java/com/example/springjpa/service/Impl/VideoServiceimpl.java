@@ -40,17 +40,17 @@ VideoRepository videoRepository;
     public List<VideoDTO> findAll(){
         return videoRepository.findAll().stream().map(this::toModel).collect(Collectors.toList());
     }
-    public VideoDTO findById(Integer id){
+    public VideoDTO findById(String id){
         Video videoDTO = videoRepository.findById(id)
                 .orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
         return this.toModel(videoDTO);
 
     }
-    public void deleteById(Integer id){
+    public void deleteById(String id){
         Video video =  videoRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
         videoRepository.delete(video);
     }
-    public VideoDTO updateById(int id, VideoDTO videoDTO){
+    public VideoDTO updateById(String id, VideoDTO videoDTO){
         if(id != videoDTO.getId()){
             throw  new AppExcepotion(ErrorCode.INVALID_INPUT);
         }

@@ -56,14 +56,14 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public SectionDTO getSectionById(Long id) {
+    public SectionDTO getSectionById(String id) {
         Section section = sectionRepository.findById(id)
                 .orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
         return toModel(section);
     }
 
     @Override
-    public SectionDTO updateSection(Long id, SectionDTO sectionDTO) {
+    public SectionDTO updateSection(String id, SectionDTO sectionDTO) {
         Section section = sectionRepository.findById(id)
                 .orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
 
@@ -82,7 +82,7 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public void deleteSection(Long id) {
+    public void deleteSection(String id) {
         Section section = sectionRepository.findById(id)
                 .orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
         sectionRepository.delete(section);

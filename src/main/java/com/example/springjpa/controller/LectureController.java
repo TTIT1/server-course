@@ -27,7 +27,7 @@ public class LectureController {
              ApiResponse<LectureDTO> apiResponse = new ApiResponse<>();
                 apiResponse.setRsulte(lectureService.addLecture(lectureDTO));
                 apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-                apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+                apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
                 return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
     //Get
@@ -36,33 +36,33 @@ public class LectureController {
         ApiResponse<List<LectureDTO>> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(lectureService.getAllLecture());
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
     //getbyid
     @GetMapping("/get/by/{id}")
-    public ResponseEntity<ApiResponse<LectureDTO>> getAllLecture(@PathVariable Integer id){
+    public ResponseEntity<ApiResponse<LectureDTO>> getAllLecture(@PathVariable String id){
         ApiResponse<LectureDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(lectureService.getbyId(id));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
     @PutMapping("/update/by/{id}")
-    public ResponseEntity<ApiResponse<LectureDTO>> update (@PathVariable Integer id, @RequestBody LectureDTO LectureDTO){
+    public ResponseEntity<ApiResponse<LectureDTO>> update (@PathVariable String id, @RequestBody LectureDTO LectureDTO){
         ApiResponse<LectureDTO> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(lectureService.update(id,LectureDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
     //Dedele
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<Boolean>> aBoolean (@PathVariable Integer id){
+    public ResponseEntity<ApiResponse<Boolean>> aBoolean (@PathVariable String id){
            ApiResponse<Boolean> apiResponse = new ApiResponse<>();
           apiResponse.setRsulte(lectureService.delete(id));
           apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-          apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+          apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
          return   ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 

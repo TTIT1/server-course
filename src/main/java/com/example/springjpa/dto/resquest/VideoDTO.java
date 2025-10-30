@@ -10,10 +10,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VideoDTO {
-     Integer id;
+    String id;
      Integer length;
      String name;
      int size;
      String url;
-      int  lectureid;
+    String  lectureid;
 }

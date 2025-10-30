@@ -8,9 +8,9 @@ import java.util.List;
 
 
 public interface CourseService {
-    boolean DeleteById(Integer id);
-    Course GetByID(Integer id);
-    Course update(Integer id , CourseDTO courseDTO);
+    boolean DeleteById(String id);
+    Course GetByID(String id);
+    Course update(String id , CourseDTO courseDTO);
      List<CourseDTO> getCourse();
     Course save(CourseDTO courseDTO);
 

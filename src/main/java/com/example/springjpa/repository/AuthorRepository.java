@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AuthorRepository extends JpaRepository<Author,Integer> {
+public interface AuthorRepository extends JpaRepository<Author,String> {
     Optional<Author> findByEmail(String email);
     List<Author> findAllByfirstName(String nameFind);
     List<Author> findAllByfirstNameIgnoreCase(String nameFind);

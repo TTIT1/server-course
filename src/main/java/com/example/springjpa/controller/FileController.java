@@ -27,7 +27,8 @@ public class FileController {
         ApiResponse<List<FileRequest>> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(fileService.findAllFiles());
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
+
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -37,7 +38,7 @@ public class FileController {
         ApiResponse<FileRequest> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(fileService.save(fileDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
@@ -47,7 +48,7 @@ public class FileController {
         ApiResponse<FileRequest> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(fileService.updateFileById(fileDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessages());
+        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.ok(apiResponse);
     }
 }

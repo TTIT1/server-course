@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 @Repository
-public interface CourseRepository  extends JpaRepository<Course, Integer> {
+public interface CourseRepository  extends JpaRepository<Course, String> {
     Optional<Course> findByTitle(String title);
 
 
-    List<Course> findAllById(Integer id);
+    List<Course> findAllById(String id);
 }
