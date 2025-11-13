@@ -3,7 +3,7 @@ package com.example.springjpa.mapper;
 
 
 import com.example.springjpa.dto.resquest.AuthorRequest;
-import com.example.springjpa.model.Author;
+import com.example.springjpa.model.course.Author;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

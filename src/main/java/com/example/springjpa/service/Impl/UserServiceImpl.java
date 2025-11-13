@@ -2,9 +2,12 @@ package com.example.springjpa.service.Impl;
 
 import com.example.springjpa.dto.response.UserResponseGet;
 import com.example.springjpa.dto.resquest.IntrospectrRequest;
+import com.example.springjpa.dto.resquest.UserRequestregister;
 import com.example.springjpa.enums.Roles;
-import com.example.springjpa.model.RefreshToken;
+import com.example.springjpa.model.auth.RefreshToken;
+import com.example.springjpa.model.auth.Role;
 import com.example.springjpa.repository.RefreshTokenRepository;
+import com.example.springjpa.repository.RoleRepositoty;
 import com.example.springjpa.security.JwtUtil;
 
 
@@ -13,21 +16,19 @@ import com.example.springjpa.dto.resquest.UserRequest;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.UserMapper;
-import com.example.springjpa.model.User;
+import com.example.springjpa.model.auth.User;
 import com.example.springjpa.repository.UserRepository;
 import com.example.springjpa.configuration.SecurityConfig;
 import com.example.springjpa.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService {
     SecurityConfig securityConfig;
     BCryptPasswordEncoder bCryptPasswordEncoder;
     RefreshTokenRepository refreshTokenRepository;
+    RoleRepositoty  roleRepositoty;
 
     public UserResponseGet toUserResponse(User user){
              UserResponseGet userResponseGet =  UserResponseGet
@@ -51,15 +53,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean registerNewUserAccount(UserRequest userRequest) {
+    public Boolean registerNewUserAccount(UserRequestregister userRequest) {
         if(userRepository.findBygmail(userRequest.getGmail()).isPresent()){
             throw  new AppExcepotion(ErrorCode.INVALID_EMAIL);
         }
-
-          User user = new User();
-          HashSet<String> set =new HashSet<>();
-          set.add(Roles.USER.name());
-          user.setRoles(set);
+        Role roleUser = new Role();
+        roleUser.setName(Roles.USER.name());
+        roleUser.setDescription(Roles.Normal_user.name());
+        roleRepositoty.save(roleUser);
+         User user = new User();
+         user.setUserName(userRequest.getUserName());
+         user.setRoles(Set.of(roleUser));
           user.setPasswordUser(bCryptPasswordEncoder.encode(userRequest.getPassWordUser()));
           user.setGmail(userRequest.getGmail());
           userRepository.save(user);
@@ -125,7 +129,7 @@ public class UserServiceImpl implements UserService {
     public Boolean updateUser(UserRequest userRequest , String id){
         User user   = userRepository.findById(id).orElseThrow(()->new AppExcepotion(ErrorCode.DUPLICATE_RECORD));
              user.setUserName(user.getUserName());
-             user.setPasswordUser(user.getPasswordUser());
+             user.setPasswordUser(bCryptPasswordEncoder.encode(userRequest.getPassWordUser()));
              user.setGmail(userRequest.getGmail());
              userRepository.save(user);
              return true;

@@ -4,8 +4,8 @@ import com.example.springjpa.dto.response.UserResponse;
 import com.example.springjpa.dto.resquest.RefreshTokenRequest;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
-import com.example.springjpa.model.RefreshToken;
-import com.example.springjpa.model.User;
+import com.example.springjpa.model.auth.RefreshToken;
+import com.example.springjpa.model.auth.User;
 import com.example.springjpa.repository.RefreshTokenRepository;
 import com.example.springjpa.repository.UserRepository;
 import com.example.springjpa.security.JwtUtil;
@@ -30,8 +30,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         User user = userRepository.findById(request.getId()).orElseThrow(() -> new AppExcepotion(ErrorCode.FORBIDDEN));
 
         RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(request.getRefreshToken())
-
                 .orElseThrow(() -> new AppExcepotion(ErrorCode.BAD_REQUEST));
+
         RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest(refreshToken.getRefreshToken(), user.getId());
         Boolean check = JwtUtil.validateRefreshToken(refreshTokenRequest);
          if (!check){

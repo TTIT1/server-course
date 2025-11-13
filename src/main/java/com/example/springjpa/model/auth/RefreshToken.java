@@ -1,5 +1,6 @@
-package com.example.springjpa.model;
+package com.example.springjpa.model.auth;
 
+import com.example.springjpa.model.course.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
+
 
 @Entity
 @Data
@@ -21,11 +22,11 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
-public class RefreshToken extends  BaseEntity{
+public class RefreshToken extends BaseEntity {
 
     @Column(name = "refreshToken" ,unique = true,nullable = false,length = 1000)
     String refreshToken;
     @ManyToOne
     @JoinColumn(name = "user_id")
-     User user;
+    User user;
 }

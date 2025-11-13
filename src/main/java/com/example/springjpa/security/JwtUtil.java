@@ -4,8 +4,9 @@ import com.example.springjpa.dto.resquest.IntrospectrRequest;
 
 
 import com.example.springjpa.dto.resquest.RefreshTokenRequest;
-import com.example.springjpa.model.User;
 
+
+import com.example.springjpa.model.auth.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -44,7 +45,7 @@ public class JwtUtil {
   @NonFinal
   static long EXPIRATION_TIME = 1000 * 60 * 60;
   @NonFinal
-  static long TokenTme = Duration.ofMinutes(2).toMillis();
+  static long TokenTme = Duration.ofMinutes(5).toMillis();
 
   // creat token
   public static String generateToken(User user) {
@@ -64,17 +65,15 @@ public class JwtUtil {
     public static String generateRefreshToken(User user) {
         String id = String.valueOf(user.getId());
         return Jwts.builder()
-                .setSubject(user.getUserName()+"Kaka")
+                .setSubject(user.getUserName())
                 .setIssuedAt(new Date())
                 .setId(id)
+                .claim("scope", buildScope(user))
                 .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
-                .setExpiration(new Date(System.currentTimeMillis()+EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512,key)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
-
     }
-
-
 
     // Lấy username từ token
   public static String extractUsername(String token) {
@@ -89,8 +88,10 @@ public class JwtUtil {
   public static Boolean validateToken(IntrospectrRequest request) {
                         try {
                           String username = extractUsername(request.getUsername());
-                          if (username.equals(request.getUsername())&& !isTokenExpired(request.getToken()));
-                            return true;
+                            if (username.equals(request.getUsername()) && !isTokenExpired(request.getToken())) {
+                                return true;
+                            }
+                            return false;
                         } catch (Exception e) {
                           return false;
                         }
@@ -108,8 +109,11 @@ public class JwtUtil {
   public static Boolean validateRefreshToken(RefreshTokenRequest request){
       try {
           String name = extractUsernameToken(request.getRefreshToken());
-          if (name !=null&& !isTokenExpiredToken(request.getRefreshToken()) );
-          return true;
+          if (name != null && !isTokenExpiredToken(request.getRefreshToken())) {
+              return true;
+          }
+          return false;
+
       }catch (Exception e){
           return  false;
       }
@@ -118,17 +122,18 @@ public class JwtUtil {
   private static String buildScope(User user){
       StringJoiner stringJoiner = new StringJoiner(" ");
       if(!CollectionUtils.isEmpty(user.getRoles())){
-          user.getRoles().forEach(stringJoiner::add);
+          user.getRoles().forEach(role -> stringJoiner.add(role.getName()));
       }
       return stringJoiner.toString();
   }
     public static String extractUsernameToken(String token) {
-        return Jwts. parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject()+"Kaka";
+                .getSubject();
+
     }
     private static boolean isTokenExpiredToken(String token) {
         Date date = Jwts.parserBuilder()

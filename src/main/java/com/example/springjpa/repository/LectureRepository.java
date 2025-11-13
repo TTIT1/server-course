@@ -1,6 +1,6 @@
 package com.example.springjpa.repository;
 
-import com.example.springjpa.model.Lecture;
+import com.example.springjpa.model.course.Lecture;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

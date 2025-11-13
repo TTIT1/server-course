@@ -7,9 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import org.springframework.http.HttpStatusCode;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,11 +14,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
-public class ApiResponse<T> {
-      int code;
-      String messages;
-      HttpStatusCode httpStatusCode;
-     T rsulte;
-     List<T> tList;
-
+public class PermisstionResponse {
+    String name;
+    String description;
 }

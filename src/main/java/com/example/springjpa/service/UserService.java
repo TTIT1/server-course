@@ -4,12 +4,13 @@ import com.example.springjpa.dto.response.UserResponse;
 import com.example.springjpa.dto.response.UserResponseGet;
 import com.example.springjpa.dto.resquest.IntrospectrRequest;
 import com.example.springjpa.dto.resquest.UserRequest;
-import com.example.springjpa.model.User;
+import com.example.springjpa.dto.resquest.UserRequestregister;
+
 
 import java.util.List;
 
 public interface UserService {
-  Boolean registerNewUserAccount(UserRequest userRequest);
+  Boolean registerNewUserAccount(UserRequestregister userRequest);
 
   UserResponse loginUser(UserRequest userRequest);
   // User CheckIdUser(UserDTO userDTO);

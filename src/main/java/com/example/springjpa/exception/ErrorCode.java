@@ -39,7 +39,7 @@ public enum ErrorCode {
     TIMEOUT(5003, "Request timeout", HttpStatus.REQUEST_TIMEOUT),
 
 
-    SUCCESS(0, "Success", HttpStatus.OK),
+    SUCCESS(1000, "Success", HttpStatus.OK),
     REGISTER_SUCCESS(10, "Registration successful", HttpStatus.CREATED);
 
     final int code;

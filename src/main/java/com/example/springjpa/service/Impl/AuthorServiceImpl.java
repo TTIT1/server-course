@@ -2,24 +2,23 @@ package com.example.springjpa.service.Impl;
 
 
 import com.example.springjpa.dto.response.AuthorCourseResponse;
+import com.example.springjpa.dto.response.AuthorResponse;
 import com.example.springjpa.dto.resquest.AuthorCourseRequest;
 import com.example.springjpa.dto.resquest.AuthorRequest;
 import com.example.springjpa.enums.Roles;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.AuthorMapper;
-import com.example.springjpa.model.Author;
+import com.example.springjpa.model.course.Author;
 
-import com.example.springjpa.model.Course;
+import com.example.springjpa.model.course.Course;
 
-import com.example.springjpa.model.RefreshToken;
-import com.example.springjpa.model.User;
 import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
-import com.example.springjpa.repository.RefreshTokenRepository;
+
 import com.example.springjpa.repository.UserRepository;
 import com.example.springjpa.service.AuthorService;
-import jakarta.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
@@ -90,20 +88,14 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
 
     }
 
-    public Author update(AuthorRequest authorDTO, String id) {
-        Author author = authorRepository.findById(id).orElseThrow(() -> new AppExcepotion(ErrorCode.NOT_FOUND));
-        try {
-               author = authorMapper.updateAuthor(author,authorDTO);
-            List<Course> courses = courseRepository.findAllById(authorDTO.getCourseIds());
-            if (courses != null) {
-                author.setCourses(courses);
-            }
-            return authorRepository.save(author);
+    public AuthorResponse update(AuthorRequest authorDTO, String id) {
+           Author author = authorRepository.findById(id).orElseThrow(()-> new AppExcepotion(ErrorCode.NOT_FOUND));
 
-
-        } catch (RuntimeException e) {
-            throw new AppExcepotion(ErrorCode.INVALID_INPUT);
-        }
+           author = authorMapper.updateAuthor(author,authorDTO);
+           authorRepository.save(author);
+           return AuthorResponse.builder()
+                   .check(true)
+                   .build();
 
     }
 

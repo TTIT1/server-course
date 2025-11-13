@@ -32,8 +32,12 @@ public class SecurityConfig {
       "/configuration/**",
       "api/auth/register",
       "api/auth/login",
+          "api/auth/send-otp",
+          "api/auth/verify-otp",
       "api/auth/check/token",
-      "api/auth/check/RefreshToken"
+      "api/auth/check/RefreshToken",
+     "api/permission/add/permission",
+          "api/role/add/new/role"
   };
 
   @Value("${jwt:select_key}")
@@ -42,7 +46,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-            // Cấu hình quyền truy cập
+
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
 

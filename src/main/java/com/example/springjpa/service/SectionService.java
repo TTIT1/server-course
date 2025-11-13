@@ -2,7 +2,7 @@ package com.example.springjpa.service;
 
 
 import com.example.springjpa.dto.resquest.SectionDTO;
-import com.example.springjpa.model.Section;
+
 
 import java.util.List;
 public interface SectionService {

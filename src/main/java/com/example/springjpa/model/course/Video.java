@@ -1,4 +1,4 @@
-package com.example.springjpa.model;
+package com.example.springjpa.model.course;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

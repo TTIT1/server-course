@@ -1,7 +1,6 @@
-package com.example.springjpa.model;
+package com.example.springjpa.model.course;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;

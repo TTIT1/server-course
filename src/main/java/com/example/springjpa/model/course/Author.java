@@ -1,11 +1,10 @@
-package com.example.springjpa.model;
+package com.example.springjpa.model.course;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import org.mapstruct.Builder;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.Set;
 @Table(name ="AUTHOR_TBL")
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Author extends BaseEntity{
+public class Author extends BaseEntity {
 
     @Column(name = "f_name", length = 50, nullable = false)
      String firstName;

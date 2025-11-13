@@ -1,7 +1,7 @@
-package com.example.springjpa.model;
+package com.example.springjpa.model.course;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.Data;

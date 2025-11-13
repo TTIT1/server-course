@@ -1,6 +1,4 @@
-package com.example.springjpa.model;
-
-import jakarta.persistence.DiscriminatorValue;
+package com.example.springjpa.model.course;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.AccessLevel;
@@ -18,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 //@DiscriminatorValue("F")
 @PrimaryKeyJoinColumn(name = "File_id")
-public class File extends  Resource{
+public class File extends Resource {
       String type;
 }
 

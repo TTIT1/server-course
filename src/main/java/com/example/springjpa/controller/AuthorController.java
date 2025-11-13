@@ -2,14 +2,18 @@ package com.example.springjpa.controller;
 
 import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.response.AuthorCourseResponse;
+import com.example.springjpa.dto.response.AuthorResponse;
 import com.example.springjpa.dto.resquest.AuthorCourseRequest;
 import com.example.springjpa.dto.resquest.AuthorRequest;
 import com.example.springjpa.exception.ErrorCode;
-import com.example.springjpa.model.Author;
 
 
+import com.example.springjpa.model.course.Author;
 import com.example.springjpa.service.AuthorService;
+import com.example.springjpa.service.EmailService;
+import com.example.springjpa.service.OptService;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +30,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/author")
 @RequiredArgsConstructor
+
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class AuthorController {
 
      AuthorService authorService;
+
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add/two")
    public ApiResponse<AuthorCourseResponse> authorCourseResponseApiResponse (@RequestBody AuthorCourseRequest request){
@@ -64,8 +71,8 @@ public class AuthorController {
     }
     @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<Author>> UpdateResponseResponseEntity(@RequestBody AuthorRequest authorDTO,@PathVariable String id){
-            ApiResponse<Author> apiResponse = new ApiResponse<>();
+    public ResponseEntity<ApiResponse<AuthorResponse>> UpdateResponseResponseEntity(@RequestBody AuthorRequest authorDTO,@PathVariable String id){
+            ApiResponse<AuthorResponse> apiResponse = new ApiResponse<>();
             apiResponse.setRsulte(authorService.update(authorDTO,id));
             apiResponse.setCode(ErrorCode.SUCCESS.getCode());
             apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
@@ -80,6 +87,7 @@ public class AuthorController {
              apiResponse.setCode(ErrorCode.SUCCESS.getCode());
              return  ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
 
 
 }

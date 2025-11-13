@@ -23,22 +23,25 @@ public class GlobalExceptionHandler {
           ApiResponse<Object> objectApiResponse = new ApiResponse<>();
           objectApiResponse.setMessages("Error caused by the user :"+apiResponse.getMessage());
         objectApiResponse.setCode(errorCode.getCode());
+        objectApiResponse.setHttpStatusCode(errorCode.getHttpStatusCode());
           return ResponseEntity.status(errorCode.getHttpStatusCode()).body(objectApiResponse);
     }
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ApiResponse> exception(AppExcepotion appExcepotion){
-        ErrorCode errorCode = appExcepotion.getErrorCode();
-        ApiResponse<Object> objectApiResponse = new ApiResponse<>();
-        objectApiResponse.setMessages("Error by server :"+appExcepotion.getMessage());
-        objectApiResponse.setCode(errorCode.getCode());
-        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(objectApiResponse);
+    public ResponseEntity<ApiResponse> exception(RuntimeException ex) {
+        ApiResponse<Object> response = new ApiResponse<>();
+        response.setMessages("Error by server: " + ex.getMessage());
+        response.setCode(ErrorCode.INTERNAL_ERROR.getCode());
+        response.setHttpStatusCode(ErrorCode.INTERNAL_ERROR.getHttpStatusCode());
+        return ResponseEntity.status(ErrorCode.INTERNAL_ERROR.getHttpStatusCode()).body(response);
     }
+
     @ExceptionHandler(value = AccessDeniedException.class)
     public ResponseEntity<ApiResponse> apiResponseResponseEntity(AccessDeniedException exception){
         ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
         ApiResponse<Object> objectApiResponse = new ApiResponse<>();
         objectApiResponse.setMessages("Error by server :"+errorCode.getMessage());
         objectApiResponse.setCode(errorCode.getCode());
+        objectApiResponse.setHttpStatusCode(errorCode.getHttpStatusCode());
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(objectApiResponse);
     }
 

@@ -5,8 +5,9 @@ package com.example.springjpa.service.Impl;
 import com.example.springjpa.dto.resquest.FileRequest;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
-import com.example.springjpa.model.File;
-import com.example.springjpa.model.Lecture;
+
+import com.example.springjpa.model.course.File;
+import com.example.springjpa.model.course.Lecture;
 import com.example.springjpa.repository.FileRepository;
 import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.ResourceRepository;

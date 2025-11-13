@@ -5,7 +5,7 @@ import com.example.springjpa.dto.response.ApiResponse;
 
 import com.example.springjpa.dto.resquest.CourseDTO;
 import com.example.springjpa.exception.ErrorCode;
-import com.example.springjpa.model.Course;
+import com.example.springjpa.model.course.Course;
 import com.example.springjpa.service.CourseService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

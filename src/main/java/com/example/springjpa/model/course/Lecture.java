@@ -1,4 +1,4 @@
-package com.example.springjpa.model;
+package com.example.springjpa.model.course;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -22,7 +22,7 @@ public class Lecture extends BaseEntity {
      String name;
     @ManyToOne
     @JoinColumn(name = "section_id")
-     Section section;
+    Section section;
     @OneToOne(mappedBy = "lecture")
-     Resource resource;
+    Resource resource;
 }

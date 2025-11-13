@@ -1,14 +1,14 @@
-package com.example.springjpa.model;
-
+package com.example.springjpa.model.auth;
+import com.example.springjpa.model.course.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.ObjectUtils;
+
 
 import java.util.List;
 import java.util.Set;
@@ -23,7 +23,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class User extends BaseEntity{
+public class User extends BaseEntity {
     @Column(name = "g_email", unique = true, nullable = false, length = 255)
      String gmail;
 
@@ -34,7 +34,8 @@ public class User extends BaseEntity{
      String passwordUser;
 
     @Column(name = "role", unique = false, nullable = false)
-     Set<String> roles;
+    @ManyToMany
+     Set<Role> roles;
 
 
 }

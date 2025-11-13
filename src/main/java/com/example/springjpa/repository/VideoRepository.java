@@ -1,6 +1,6 @@
 package com.example.springjpa.repository;
 
-import com.example.springjpa.model.Video;
+import com.example.springjpa.model.course.Video;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

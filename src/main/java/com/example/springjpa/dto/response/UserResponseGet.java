@@ -1,5 +1,6 @@
 package com.example.springjpa.dto.response;
 
+import com.example.springjpa.model.auth.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -14,5 +15,5 @@ import java.util.Set;
 public class UserResponseGet {
     String gmail;
     String userName;
-    Set<String> roles;
+    Set<Role> roles;
 }

@@ -2,7 +2,7 @@ package com.example.springjpa.service;
 
 
 import com.example.springjpa.dto.resquest.CourseDTO;
-import com.example.springjpa.model.Course;
+import com.example.springjpa.model.course.Course;
 
 import java.util.List;
 

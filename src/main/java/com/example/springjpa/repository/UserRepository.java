@@ -1,7 +1,7 @@
 package com.example.springjpa.repository;
 
 import com.example.springjpa.dto.response.UserResponseGet;
-import com.example.springjpa.model.User;
+import com.example.springjpa.model.auth.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

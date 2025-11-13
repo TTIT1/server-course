@@ -1,21 +1,19 @@
 package com.example.springjpa.dto.resquest;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RefreshTokenRequest {
-       String RefreshToken;
-       String id;
-
-
+public class RoleRequest {
+  String name;
+  String description;
+  Set<String> permission;
 }

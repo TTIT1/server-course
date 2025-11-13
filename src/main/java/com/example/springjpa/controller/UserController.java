@@ -6,11 +6,10 @@ import com.example.springjpa.dto.response.IntrospectResponse;
 import com.example.springjpa.dto.response.UserResponse;
 
 import com.example.springjpa.dto.response.UserResponseGet;
-import com.example.springjpa.dto.resquest.AuthorRequest;
-import com.example.springjpa.dto.resquest.IntrospectrRequest;
-import com.example.springjpa.dto.resquest.RefreshTokenRequest;
-import com.example.springjpa.dto.resquest.UserRequest;
+import com.example.springjpa.dto.resquest.*;
 import com.example.springjpa.exception.ErrorCode;
+import com.example.springjpa.service.EmailService;
+import com.example.springjpa.service.OptService;
 import com.example.springjpa.service.RefreshTokenService;
 import com.example.springjpa.service.UserService;
 
@@ -35,10 +34,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class UserController {
+    OptService otpService;
+    EmailService emailService;
     UserService userService;
     RefreshTokenService refreshTokenService;
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> registerNewUserAccount(@RequestBody UserRequest userRequest){
+    public ResponseEntity<ApiResponse> registerNewUserAccount(@RequestBody UserRequestregister userRequest){
                     Boolean resulte = userService.registerNewUserAccount(userRequest);
                     ApiResponse apiResponse = new ApiResponse();
                     apiResponse.setRsulte(resulte);
@@ -109,6 +110,27 @@ public class UserController {
                      UserResponse userResponse = refreshTokenService.checkRefreshToken(request);
                      return ResponseEntity.status(HttpStatus.OK).body(userResponse);
    }
+    @PostMapping("/send-otp")
+    public ResponseEntity<?> sendOtp(@RequestParam String email) {
+        String otp = otpService.generateOTP(email,10);
+        try {
+            emailService.sendOtpEmail(email, otp);
+            return ResponseEntity.ok("Đã gửi OTP tới email.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Gửi mail thất bại: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<?> verifyOtp(@RequestParam String email, @RequestParam String otp) {
+        boolean ok = otpService.verifyOTP(email, otp);
+        if (ok) {
+
+            return ResponseEntity.ok("Xác thực thành công.");
+        } else {
+            return ResponseEntity.status(400).body("OTP không hợp lệ hoặc đã hết hạn.");
+        }
+    }
 
 
 

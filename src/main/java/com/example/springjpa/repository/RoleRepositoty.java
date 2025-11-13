@@ -1,9 +1,13 @@
 package com.example.springjpa.repository;
 
-import com.example.springjpa.model.course.Resource;
+import com.example.springjpa.model.auth.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface ResourceRepository extends JpaRepository<Resource,Integer> {
+public interface RoleRepositoty extends JpaRepository<Role,String> {
+
+
 }
