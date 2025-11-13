@@ -32,7 +32,7 @@ public class EmailServiceImpl implements EmailService {
         });
 
         Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("thetruongit1236@gmail.com"));
+        message.setFrom(new InternetAddress(gmail));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
         message.setSubject("Mã xác thực của bạn");
         message.setText("Mã OTP của bạn là: " + otp + "\nMã có hiệu lực trong 10 phút.");

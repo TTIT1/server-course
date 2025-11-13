@@ -1,3 +1,5 @@
+
+
 //package com.example.springjpa.model;
 //
 //import jakarta.persistence.Embeddable;

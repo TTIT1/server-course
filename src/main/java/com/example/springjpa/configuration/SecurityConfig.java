@@ -40,7 +40,7 @@ public class SecurityConfig {
           "api/role/add/new/role"
   };
 
-  @Value("${jwt:select_key}")
+  @Value("${select_key}")
   private String key;
 
   @Bean
