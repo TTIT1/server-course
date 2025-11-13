@@ -24,6 +24,5 @@ server:
   port: ${PORT:8080}
 
 select_key: ${SELECT_KEY}
-mail.username: ${GMAIL_USERNAME}
-mail.password: ${GMAIL_APP_PASSWORD}
-
+gmail_key: ${GMAIL_USERNAME}
+gmail_app_password: ${GMAIL_APP_PASSWORD}
