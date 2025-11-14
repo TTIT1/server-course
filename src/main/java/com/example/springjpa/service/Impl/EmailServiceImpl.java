@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Properties;
-@Service
 
+@Service
 public class EmailServiceImpl implements EmailService {
     @Value("${gmail_key}")
     String gmail;

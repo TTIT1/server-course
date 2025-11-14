@@ -32,7 +32,7 @@ import java.util.StringJoiner;
 @Component
 public class JwtUtil {
   @NonFinal
-  @Value("${select_key}")
+  @Value("${jwt.select_key}")
   String keyWork;
   @NonFinal
   static Key key;
