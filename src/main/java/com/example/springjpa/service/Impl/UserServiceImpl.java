@@ -19,7 +19,10 @@ import com.example.springjpa.mapper.UserMapper;
 import com.example.springjpa.model.auth.User;
 import com.example.springjpa.repository.UserRepository;
 import com.example.springjpa.configuration.SecurityConfig;
+import com.example.springjpa.service.EmailService;
+import com.example.springjpa.service.OptService;
 import com.example.springjpa.service.UserService;
+import jakarta.mail.MessagingException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -41,6 +44,8 @@ public class UserServiceImpl implements UserService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
     RefreshTokenRepository refreshTokenRepository;
     RoleRepositoty  roleRepositoty;
+    OptService optService;
+    EmailService emailService;
 
     public UserResponseGet toUserResponse(User user){
              UserResponseGet userResponseGet =  UserResponseGet
@@ -57,10 +62,8 @@ public class UserServiceImpl implements UserService {
         if(userRepository.findBygmail(userRequest.getGmail()).isPresent()){
             throw  new AppExcepotion(ErrorCode.INVALID_EMAIL);
         }
-        Role roleUser = new Role();
-        roleUser.setName(Roles.USER.name());
-        roleUser.setDescription(Roles.Normal_user.name());
-        roleRepositoty.save(roleUser);
+        Role roleUser = roleRepositoty.findByName(Roles.USER.name());
+
          User user = new User();
          user.setUserName(userRequest.getUserName());
          user.setRoles(Set.of(roleUser));
@@ -120,6 +123,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseGet getInfo() {
        var context = SecurityContextHolder.getContext();
          String name = context.getAuthentication().getName();
+         String role =  context.getAuthentication().getAuthorities().iterator().next().getAuthority();
          User user = userRepository.findByUserName(name).orElseThrow(
                  ()->new AppExcepotion(ErrorCode.USER_NOT_FOUND));
          return userMapper.toUserUser(user);
@@ -134,6 +138,18 @@ public class UserServiceImpl implements UserService {
              userRepository.save(user);
              return true;
     }
+
+    @Override
+    public Boolean forgotPassword(String email ,String password,String  confirmPassword) {
+        User user   = userRepository.findBygmail(email).orElseThrow(()->new AppExcepotion(ErrorCode.USER_NOT_FOUND));
+        user.setPasswordUser(bCryptPasswordEncoder.encode(password));
+        userRepository.save(user);
+        return true;
+
+    }
+
+
+
 
 }
 

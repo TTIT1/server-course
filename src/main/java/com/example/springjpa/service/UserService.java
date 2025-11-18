@@ -19,4 +19,6 @@ public interface UserService {
   UserResponseGet getUser(String id );
   UserResponseGet getInfo();
   Boolean updateUser(UserRequest userRequest , String id );
+  Boolean forgotPassword(String email ,String password ,String confirmPassword);
+
 }

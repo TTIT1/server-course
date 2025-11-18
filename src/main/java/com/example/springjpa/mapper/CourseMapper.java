@@ -9,6 +9,6 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel ="spring")
 public interface CourseMapper {
-  Course toCourse(CourseDTO courseDTO);
+    Course toCourse(CourseDTO courseDTO);
     Course updateCourse(@MappingTarget Course course, CourseDTO courseDTO);
 }

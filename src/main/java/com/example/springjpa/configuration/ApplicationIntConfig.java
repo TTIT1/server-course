@@ -41,7 +41,7 @@ RoleRepositoty roleRepositoty;
             if (userRepository.findByUserName("admin").isEmpty()) {
                 Role roleAdmin = new Role();
                 roleAdmin.setName(Roles.ADMIN.name());
-                roleAdmin.setDescription(Roles.Administrator.name());
+                roleAdmin.setDescription("Quản trị hệ thống");
                 roleRepositoty.save(roleAdmin);
                 User user = User.builder()
                         .userName("admin")
@@ -54,6 +54,9 @@ RoleRepositoty roleRepositoty;
             }
         };
     }
+
+
+
 //
 ////    @Bean
 ////    @Order(2)

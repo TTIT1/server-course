@@ -21,7 +21,7 @@ public class ApiResponse<T> {
       int code;
       String messages;
       HttpStatusCode httpStatusCode;
-     T rsulte;
+      T rsulte;
      List<T> tList;
 
 }

@@ -1,5 +1,6 @@
 package com.example.springjpa.dto.response;
 
+import com.example.springjpa.model.auth.Permission;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,6 @@ import java.util.Set;
 public class RoleResponse {
   String name;
   String description;
-  Set<PermisstionResponse> permission;
+  Set<Permission> permission;
 
 }

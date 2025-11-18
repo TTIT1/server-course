@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -120,10 +121,20 @@ public class JwtUtil {
   }
 
   private static String buildScope(User user){
+      // ý tuowuonwgr là trong user lấy ra role và rolw laasys ra permission
       StringJoiner stringJoiner = new StringJoiner(" ");
-      if(!CollectionUtils.isEmpty(user.getRoles())){
-          user.getRoles().forEach(role -> stringJoiner.add(role.getName()));
-      }
+      if(!CollectionUtils.isEmpty(user.getRoles()))
+          user.getRoles().forEach(role->
+          {
+              stringJoiner.add("ROLE_"+role.getName());
+              if(!CollectionUtils.isEmpty(role.getPermissions())){
+              role.getPermissions().forEach(permission->
+              stringJoiner.add(permission.getName()));
+              }
+
+
+      });
+
       return stringJoiner.toString();
   }
     public static String extractUsernameToken(String token) {

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +21,10 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FileController {
 
-        FileService fileService;
+    FileService fileService;
 
+    // Xem danh sách file tài liệu – ai có quyền xem khóa học/bài học
+    @PreAuthorize("hasAnyAuthority('course.view_all','course.view_free','course.view_purchased','lesson.view_any') or hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<FileRequest>>> getAllFiles() {
         ApiResponse<List<FileRequest>> apiResponse = new ApiResponse<>();
@@ -32,7 +35,8 @@ public class FileController {
         return ResponseEntity.ok(apiResponse);
     }
 
-
+    // Tải file lên – material.upload
+    @PreAuthorize("hasAuthority('material.upload') or hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<FileRequest>> addFile(@RequestBody FileRequest fileDTO) {
         ApiResponse<FileRequest> apiResponse = new ApiResponse<>();
@@ -42,7 +46,8 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
-
+    // Cập nhật file – material.update
+    @PreAuthorize("hasAuthority('material.update') or hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<ApiResponse<FileRequest>> updateFile(@RequestBody FileRequest fileDTO) {
         ApiResponse<FileRequest> apiResponse = new ApiResponse<>();

@@ -26,3 +26,39 @@
 # select_key: ${SELECT_KEY}
 # gmail_key: ${GMAIL_USERNAME}
 # gmail_app_password: ${GMAIL_APP_PASSWORD}
+spring:
+  datasource:
+    url: jdbc:postgresql://dpg-d49vgangi27c739oo90g-a.oregon-postgres.render.com:5432/dbttit
+    username: dbttit_user
+    password: UiJGM1z350qkFK6NoyA1Wso9hAWSpeMI
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc.time_zone: UTC
+
+logging:
+  level:
+    org.springframework: DEBUG
+
+server:
+  port: ${PORT:8080}
+jwt:
+  select_key: "d98206d268d7ef846b1bc905ae19667507ac98cced24126bab0e2cc2b5291ad2712485f667fb98ecc77f370b0faa363b889b4aa6b3dd8f764c7961a44d445955"
+
+gmail:
+  gmail_key: "thetruongit1236@gmail.com"
+  gmail_app_password: "whmkcnjoguzlchmr"
+
+api:
+  #public_endpoints: ${PUBLIC_ENDPOINTS}
+  public_endpoints: "/swagger-ui/**,/v3/api-docs/**,/swagger-resources/**,/webjars/**,/configuration/**,api/auth/register,api/auth/login,api/auth/send-otp,
+api/auth/verify-otp,api/auth/reset-password,api/auth/check/token,api/auth/check/RefreshToken,
+api/permission/add/permission,api/role/add/new/role,api/role/get/all/role
+"

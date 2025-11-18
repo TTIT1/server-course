@@ -9,6 +9,8 @@ import com.example.springjpa.enums.Roles;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.AuthorMapper;
+import com.example.springjpa.model.auth.Role;
+import com.example.springjpa.model.auth.User;
 import com.example.springjpa.model.course.Author;
 
 import com.example.springjpa.model.course.Course;
@@ -16,9 +18,11 @@ import com.example.springjpa.model.course.Course;
 import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
 
+import com.example.springjpa.repository.RoleRepositoty;
 import com.example.springjpa.repository.UserRepository;
 import com.example.springjpa.service.AuthorService;
 
+import com.example.springjpa.service.RoleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
@@ -41,6 +46,7 @@ public class AuthorServiceImpl implements AuthorService  {
    AuthorMapper authorMapper;
 
    UserRepository userRepository;
+   RoleRepositoty  roleRepositoty;
 
 BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -56,11 +62,13 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
         return authorDTO;
     }
 
-    public AuthorRequest saveAuthor(AuthorRequest authorDTO) {
+    public AuthorResponse saveAuthor(AuthorRequest authorDTO) {
         if (authorRepository.findByEmail(authorDTO.getEmail()).isPresent()) {
             new AppExcepotion(ErrorCode.INVALID_EMAIL);
         }
-    Author author    =  new Author();
+
+
+        Author author   =  new Author();
         author.setPassWord(bCryptPasswordEncoder.encode(authorDTO.getPassword()));
         author.setAge(authorDTO.getAge());
         author.setEmail(authorDTO.getEmail());
@@ -73,7 +81,18 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
             List<Course> courseIds = courseRepository.findAllById(authorDTO.getCourseIds());
             author.setCourses(courseIds);
         }
-       return toModelAuthor(authorRepository.save(author));
+
+        Role role   =roleRepositoty.findByName(Roles.AUTHOR.name());
+        User user = new User();
+        user.setUserName(authorDTO.getFirstName());
+        user.setPasswordUser(bCryptPasswordEncoder.encode(authorDTO.getPassword()));
+        user.setGmail(authorDTO.getEmail());
+        user.setRoles(Set.of(role));
+        userRepository.save(user);
+        toModelAuthor(authorRepository.save(author));
+        return AuthorResponse.builder()
+                .check(true)
+                .build();
 
     }
 

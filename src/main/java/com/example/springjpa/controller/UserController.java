@@ -60,7 +60,7 @@ public class UserController {
                          .build())
                  .build();
      }
-     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'AUTHOR')")
      @PostMapping("/check/token")
     public ApiResponse<IntrospectResponse> apiResponse(@RequestBody IntrospectrRequest request){
             Boolean check = userService.validateToken(request);
@@ -70,12 +70,10 @@ public class UserController {
                             .build())
                     .build();
      }
-     @PreAuthorize("hasRole('ADMIN')")
-     @GetMapping("/get/all/user")
+    @PreAuthorize("hasAuthority('user.view') or hasRole('ADMIN')")
+    @GetMapping("/get/all/user")
     public ApiResponse<List<UserResponseGet>> apiResponse (){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.warn("username "+authentication.getName());
-        log.warn("rolse "+authentication.getAuthorities());
                List<UserResponseGet> userResponseGets = userService.USER_RESPONSE_GET();
                return ApiResponse.<List<UserResponseGet>>builder()
                        .rsulte(userResponseGets)
@@ -85,18 +83,20 @@ public class UserController {
      }
 
 
+    @PreAuthorize("hasAnyAuthority('user.view','profile.view') or hasRole('ADMIN')")
     @GetMapping("/get/{id}")
     public ResponseEntity<UserResponseGet> userResponseGetResponseEntity(@PathVariable String id) {
         UserResponseGet userResponseGet = userService.getUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseGet);
     }
+    @PreAuthorize("hasAnyAuthority('profile.view','user.view')")
     @GetMapping("/info")
     public ResponseEntity<UserResponseGet> getInfo() {
         UserResponseGet userResponseGet = userService.getInfo();
         return ResponseEntity.status(HttpStatus.OK).body(userResponseGet);
     }
 
-    @PreAuthorize(" hasRole('USER') #id == authentication.principal.id")
+    @PreAuthorize("hasAnyAuthority('user.update','profile.update') and #id == authentication.principal.id")
    @PutMapping("/update/{id}")
     public ResponseEntity<Boolean> booleanResponseEntity(@RequestBody UserRequest userRequest, @PathVariable String id)
    {
@@ -112,6 +112,7 @@ public class UserController {
    }
     @PostMapping("/send-otp")
     public ResponseEntity<?> sendOtp(@RequestParam String email) {
+
         String otp = otpService.generateOTP(email,10);
         try {
             emailService.sendOtpEmail(email, otp);
@@ -131,7 +132,15 @@ public class UserController {
             return ResponseEntity.status(400).body("OTP không hợp lệ hoặc đã hết hạn.");
         }
     }
-
+   @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestParam String email, @RequestParam String password ,@RequestParam String confirmPassword) {
+        Boolean ok = userService.forgotPassword(email,password,confirmPassword);
+       if (ok) {
+           return ResponseEntity.ok(ok);
+       } else {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ok);
+       }
+   }
 
 
 

@@ -23,32 +23,21 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-  // Các endpoint public không yêu cầu token
-  private static final String[] PUBLIC_ENDPOINTS = {
-      "/swagger-ui/**",
-      "/v3/api-docs/**",
-      "/swagger-resources/**",
-      "/webjars/**",
-      "/configuration/**",
-      "api/auth/register",
-      "api/auth/login",
-          "api/auth/send-otp",
-          "api/auth/verify-otp",
-      "api/auth/check/token",
-      "api/auth/check/RefreshToken",
-     "api/permission/add/permission",
-          "api/role/add/new/role"
-  };
 
-  @Value("${select_key}")
+    @Value("${api.public_endpoints}")
+    private String publicEndpoints;
+
+  @Value("${jwt.select_key}")
   private String key;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
+      String[] publicEndpoint =  publicEndpoints.split(",");
+
+      http
 
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+                    .requestMatchers(publicEndpoint).permitAll()
 
                     .anyRequest().authenticated() // Các request khác cần JWT hợp lệ
             )
@@ -79,8 +68,7 @@ public class SecurityConfig {
   @Bean
   public JwtAuthenticationConverter jwtAuthenticationConverter() {
     JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
-    converter.setAuthoritiesClaimName("scope");
-    converter.setAuthorityPrefix("ROLE_");
+    converter.setAuthorityPrefix("");
     JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
     jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
     return jwtConverter;

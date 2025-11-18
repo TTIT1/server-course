@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface RoleRepositoty extends JpaRepository<Role,String> {
-
+ Role findByName(String name);
 
 }

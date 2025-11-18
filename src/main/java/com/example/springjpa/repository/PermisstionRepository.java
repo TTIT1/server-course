@@ -11,4 +11,5 @@ import java.util.Set;
 public interface PermisstionRepository extends JpaRepository<Permission,String> {
 
     Optional<Permission> findAllByName(String name);
+    Optional<Permission> findByName(String name);
 }

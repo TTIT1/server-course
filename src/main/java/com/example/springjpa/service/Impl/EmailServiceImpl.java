@@ -13,9 +13,9 @@ import java.util.Properties;
 
 @Service
 public class EmailServiceImpl implements EmailService {
-    @Value("${gmail_key}")
+    @Value("${gmail.gmail_key}")
     String gmail;
-     @Value("${gmail_app_password}")
+     @Value("${gmail.gmail_app_password}")
      String password;
   
     public void sendOtpEmail(String to, String otp) throws MessagingException {

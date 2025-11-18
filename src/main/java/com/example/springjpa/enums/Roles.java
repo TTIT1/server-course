@@ -5,7 +5,5 @@ public enum Roles {
      ADMIN,
      USER,
      AUTHOR,
-    Normal_user,
-    Administrator
     ;
 }

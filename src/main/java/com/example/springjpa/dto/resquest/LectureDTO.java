@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LectureDTO {
     String id;
-     String name;
+    String name;
     String sectionId;  // hoặc sectionName nếu cần
 
 }

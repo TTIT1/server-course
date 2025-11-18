@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public interface AuthorService {
-    AuthorRequest saveAuthor (AuthorRequest authorDTO);
+    AuthorResponse saveAuthor (AuthorRequest authorDTO);
     List<AuthorRequest> getAll();
     AuthorResponse update(AuthorRequest authorDTO, String id);
     List<Author> authorListByNameIngoreCase(String nameFind);
