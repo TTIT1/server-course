@@ -24,7 +24,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurityConfig {
 
 
-    @Value("${api.public_endpoints}")
+    @Value("${public_endpoints}")
     private String publicEndpoints;
 
   @Value("${jwt.select_key}")
