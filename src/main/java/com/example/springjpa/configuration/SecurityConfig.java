@@ -27,7 +27,7 @@ public class SecurityConfig {
     @Value("${public_endpoints}")
     private String publicEndpoints;
 
-  @Value("${jwt.select_key}")
+  @Value("${select_key}")
   private String key;
 
   @Bean
