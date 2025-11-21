@@ -1,0 +1,4 @@
+package com.example.springjpa.dto.resquest;
+
+public class UserResetPasswordRequest {
+}
