@@ -1,6 +1,7 @@
 package com.example.springjpa.dto.resquest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class UserRequest{
             required = true,
             format = "password"
     )
-    String PassWordUser;
+    @JsonProperty("passWordUser")
+    String passWordUser;
 }
