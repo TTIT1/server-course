@@ -13,12 +13,14 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserRequest{
 
-
-
-
     @Schema(description = "Tên đăng nhập", example = "admin@gmail.com", required = true)
     String gmail;
 
-    @Schema(description = "Mật khẩu", example = "admin123", required = true)
+    @Schema(
+            description = "Mật khẩu",
+            example = "admin123",
+            required = true,
+            format = "password"
+    )
     String PassWordUser;
 }
