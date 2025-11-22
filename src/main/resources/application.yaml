@@ -2,6 +2,13 @@ spring:
   application:
     name: SPRINGJPA
 
+  redis:
+   redis_host: ${REDIS_HOST}
+   redis_port: ${REDIS_PORT}
+   redis_username: ${USER_NAME}
+   redis_password: ${REDIS_PASSWORD}
+   ssl : ${SLL}
+
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -27,3 +34,4 @@ select_key: ${SELECT_KEY}
 gmail_key: ${GMAIL_USERNAME}
 gmail_app_password: ${GMAIL_APP_PASSWORD}
 public_endpoints: ${PUBLIC_ENDPOINTS}
+
