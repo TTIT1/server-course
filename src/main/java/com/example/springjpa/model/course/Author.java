@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +28,8 @@ public class Author extends BaseEntity {
      String email;
     @Column(name = "p_password",unique = false,nullable = false)
     String passWord;
-     int age;
+
+     LocalDate age;
     @ManyToMany(mappedBy = "authors")
     //@JsonIgnore
     List<Course> courses = new ArrayList<>();

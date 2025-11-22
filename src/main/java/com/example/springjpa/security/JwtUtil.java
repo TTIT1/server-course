@@ -6,7 +6,9 @@ import com.example.springjpa.dto.resquest.IntrospectrRequest;
 import com.example.springjpa.dto.resquest.RefreshTokenRequest;
 
 
+import com.example.springjpa.model.auth.RefreshToken;
 import com.example.springjpa.model.auth.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -15,7 +17,7 @@ import lombok.AccessLevel;
 
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
-import org.apache.commons.lang3.concurrent.ConcurrentUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -25,7 +27,7 @@ import java.security.Key;
 import java.time.Duration;
 import java.util.Date;
 import java.util.StringJoiner;
-
+import java.util.UUID;
 
 
 //sinh & kiểm tra token.
@@ -51,12 +53,12 @@ public class JwtUtil {
   // creat token
   public static String generateToken(User user) {
       String id = String.valueOf(user.getId());
+
       return Jwts.builder()
               .setSubject(user.getUserName())
               .setIssuedAt(new Date())
-              .claim("id",user.getId())
               .claim("scope",buildScope(user))
-              .setId(id)
+              .setId(UUID.randomUUID().toString())
               .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
               .setExpiration(new Date(System.currentTimeMillis()+TokenTme))
               .signWith(SignatureAlgorithm.HS512,key)
@@ -69,8 +71,7 @@ public class JwtUtil {
                 .setSubject(user.getUserName())
                 .setIssuedAt(new Date())
                 .setId(id)
-                .claim("scope", buildScope(user))
-                .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
+                .setIssuer("HANOI REFRESH TOKEN")
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
@@ -107,7 +108,30 @@ public class JwtUtil {
             return date.before(new Date());
   }
 
-  public static Boolean validateRefreshToken(RefreshTokenRequest request){
+
+ public static String extractJti(String token) {
+     return Jwts.parserBuilder()
+             .setSigningKey(key)
+             .build()
+             .parseClaimsJws(token)
+             .getBody()
+             .getId();
+
+ }
+
+    public long getExpirationRemaining(String token) {
+               Claims claims = Jwts.parserBuilder()
+               .setSigningKey(key)
+               .build()
+               .parseClaimsJws(token)
+               .getBody();
+               Date eDate = claims.getExpiration();
+               long nowMillis = System.currentTimeMillis();
+               long diff  = eDate.getTime()-nowMillis;
+        return diff > 0 ? diff / 1000 : 0;
+    }
+
+    public static Boolean validateRefreshToken(RefreshToken request){
       try {
           String name = extractUsernameToken(request.getRefreshToken());
           if (name != null && !isTokenExpiredToken(request.getRefreshToken())) {
@@ -137,6 +161,7 @@ public class JwtUtil {
 
       return stringJoiner.toString();
   }
+  // get user .name for resfeshtoken
     public static String extractUsernameToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -146,6 +171,17 @@ public class JwtUtil {
                 .getSubject();
 
     }
+
+    public static String extractRefreshTokenId(String token) {
+       return Jwts.parserBuilder()
+               .setSigningKey(key)
+               .build()
+               .parseClaimsJws(token)
+               .getBody()
+               .getId();
+
+    }
+
     private static boolean isTokenExpiredToken(String token) {
         Date date = Jwts.parserBuilder()
                 .setSigningKey(key)

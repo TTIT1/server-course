@@ -3,6 +3,7 @@ package com.example.springjpa.service.Impl;
 import com.example.springjpa.dto.response.UserResponseGet;
 import com.example.springjpa.dto.resquest.IntrospectrRequest;
 import com.example.springjpa.dto.resquest.UserRequestregister;
+import com.example.springjpa.dto.resquest.UserResetPasswordRequest;
 import com.example.springjpa.enums.Roles;
 import com.example.springjpa.model.auth.RefreshToken;
 import com.example.springjpa.model.auth.Role;
@@ -30,6 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,6 +48,7 @@ public class UserServiceImpl implements UserService {
     RoleRepositoty  roleRepositoty;
     OptService optService;
     EmailService emailService;
+    JwtUtil jwtUtil;
 
     public UserResponseGet toUserResponse(User user){
              UserResponseGet userResponseGet =  UserResponseGet
@@ -66,12 +69,13 @@ public class UserServiceImpl implements UserService {
 
          User user = new User();
          user.setUserName(userRequest.getUserName());
+         user.setDob(LocalDate.of(userRequest.getBirthDate().getYear(),userRequest.getBirthDate().getMonth(),userRequest.getBirthDate().getDayOfMonth()));
          user.setRoles(Set.of(roleUser));
           user.setPasswordUser(bCryptPasswordEncoder.encode(userRequest.getPassWordUser()));
           user.setGmail(userRequest.getGmail());
           userRepository.save(user);
                              return true;
-          }
+    }
     @Override
     public UserResponse loginUser(UserRequest userRequest) {
         User user = userRepository.findBygmail(userRequest.getGmail()).orElseThrow(() -> new
@@ -140,15 +144,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean forgotPassword(String email ,String password,String  confirmPassword) {
-        User user   = userRepository.findBygmail(email).orElseThrow(()->new AppExcepotion(ErrorCode.USER_NOT_FOUND));
-        user.setPasswordUser(bCryptPasswordEncoder.encode(password));
+    public Boolean forgotPassword(UserResetPasswordRequest  userRequest) {
+        User user   = userRepository.findBygmail(userRequest.getEmail()).orElseThrow(()->new AppExcepotion(ErrorCode.USER_NOT_FOUND));
+        user.setPasswordUser(bCryptPasswordEncoder.encode(userRequest.getPassword()));
         userRepository.save(user);
         return true;
 
     }
-
-
 
 
 }

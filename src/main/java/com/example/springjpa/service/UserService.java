@@ -5,6 +5,7 @@ import com.example.springjpa.dto.response.UserResponseGet;
 import com.example.springjpa.dto.resquest.IntrospectrRequest;
 import com.example.springjpa.dto.resquest.UserRequest;
 import com.example.springjpa.dto.resquest.UserRequestregister;
+import com.example.springjpa.dto.resquest.UserResetPasswordRequest;
 
 
 import java.util.List;
@@ -19,6 +20,6 @@ public interface UserService {
   UserResponseGet getUser(String id );
   UserResponseGet getInfo();
   Boolean updateUser(UserRequest userRequest , String id );
-  Boolean forgotPassword(String email ,String password ,String confirmPassword);
+  Boolean forgotPassword(UserResetPasswordRequest userResetPasswordRequest);
 
 }

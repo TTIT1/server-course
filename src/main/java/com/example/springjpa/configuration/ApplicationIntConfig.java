@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,7 +34,7 @@ import java.util.Set;
 
 public class ApplicationIntConfig {
     PasswordEncoder passwordEncoder;
-RoleRepositoty roleRepositoty;
+    RoleRepositoty roleRepositoty;
     @Bean
     @Order(1)
     ApplicationRunner initAdmin(UserRepository userRepository) {
@@ -45,6 +46,7 @@ RoleRepositoty roleRepositoty;
                 roleRepositoty.save(roleAdmin);
                 User user = User.builder()
                         .userName("admin")
+                        .dob(LocalDate.of(2000,11,20))
                          .roles(Set.of(roleAdmin))
                         .passwordUser(passwordEncoder.encode("admin123"))
                         .gmail("admin@gmail.com")

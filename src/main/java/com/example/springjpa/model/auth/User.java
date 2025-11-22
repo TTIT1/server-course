@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @SuperBuilder
-@Table(name = "User_Se")
+@Table(name = "User_Auth")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -30,9 +31,10 @@ public class User extends BaseEntity {
     @Column(name = "name", unique = true, nullable = false)
      String userName;
 
-    @Column(name = "password", unique = true, nullable = false)
+    @Column(name = "password", unique = false, nullable = false)
      String passwordUser;
-
+    @Column(name = "dob",unique = false,nullable = false)
+    LocalDate dob;
     @Column(name = "role", unique = false, nullable = false)
     @ManyToMany
      Set<Role> roles;
