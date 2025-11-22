@@ -11,6 +11,10 @@ import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.security.JwtUtil;
 import com.example.springjpa.service.EmailService;
 import com.example.springjpa.service.Impl.TokenBlacklistService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+
 import com.example.springjpa.service.OptService;
 import com.example.springjpa.service.RefreshTokenService;
 import com.example.springjpa.service.UserService;
@@ -66,18 +70,30 @@ public class UserController {
     }
 
 
-
-    @PostMapping("/login")
-    public ApiResponse<UserResponse> login(@RequestBody UserRequest userRequest){
-         UserResponse userResponse = userService.loginUser(userRequest);
-         return ApiResponse.<UserResponse> builder()
-                 .rsulte(UserResponse.builder()
-                         .token(userResponse.getToken())
-                         .Auth(userResponse.isAuth())
-                         .refreshToken(userResponse.getRefreshToken())
-                         .build())
-                 .build();
-     }
+@Operation(summary = "Đăng nhập user", description = "API đăng nhập với username và password")
+@PostMapping("/login")
+public ApiResponse<UserResponse> login(
+    @Parameter(description = "Thông tin đăng nhập", examples = @ExampleObject(
+        name = "Test Account",
+        summary = "Tài khoản test",
+        value = """
+            {
+                "username": "admin@gmail.com",
+                "password": "admin123"
+            }
+            """
+    ))
+    @RequestBody UserRequest userRequest) {
+    
+    UserResponse userResponse = userService.loginUser(userRequest);
+    return ApiResponse.<UserResponse>builder()
+            .result(UserResponse.builder()
+                    .token(userResponse.getToken())
+                    .auth(userResponse.isAuth())
+                    .refreshToken(userResponse.getRefreshToken())
+                    .build())
+            .build();
+}
      @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'AUTHOR')")
      @PostMapping("/check/token")
     public ApiResponse<IntrospectResponse> apiResponse(@RequestBody IntrospectrRequest request){
