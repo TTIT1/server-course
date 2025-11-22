@@ -53,7 +53,6 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
     public AuthorRequest toModelAuthor(Author author) {
         AuthorRequest authorDTO = new AuthorRequest();
         authorDTO.setAge(author.getAge());
-        authorDTO.setId(author.getId());
         authorDTO.setEmail(author.getEmail());
         authorDTO.setFirstName(author.getFirstName());
         authorDTO.setLastName(author.getLastName());

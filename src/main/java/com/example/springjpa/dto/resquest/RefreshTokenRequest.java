@@ -15,7 +15,4 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RefreshTokenRequest {
        String RefreshToken;
-       String id;
-
-
 }

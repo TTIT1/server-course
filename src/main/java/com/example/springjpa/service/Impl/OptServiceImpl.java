@@ -1,6 +1,11 @@
 package com.example.springjpa.service.Impl;
 
+import com.example.springjpa.exception.AppExcepotion;
+import com.example.springjpa.exception.ErrorCode;
+import com.example.springjpa.model.auth.User;
+import com.example.springjpa.repository.UserRepository;
 import com.example.springjpa.service.OptService;
+import com.example.springjpa.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,13 +23,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OptServiceImpl implements OptService {
     SecureRandom random = new SecureRandom();
     Map<String,OTPEntry> store = new ConcurrentHashMap<>();
-
+  UserRepository  userRepository;;
     @Override
     public String generateOTP(String email, int minutesValid) {
+        User user = userRepository.findBygmail(email).orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
+
         int opt = random.nextInt(900000);
         long expiry = Instant.now().getEpochSecond()+minutesValid * 60;
         OTPEntry entry = new OTPEntry(String.valueOf(opt), expiry);
-      store.put(email,new OTPEntry(String.valueOf(opt), expiry));
+        store.put(email,new OTPEntry(String.valueOf(opt), expiry));
       return String.valueOf(opt);
     }
 

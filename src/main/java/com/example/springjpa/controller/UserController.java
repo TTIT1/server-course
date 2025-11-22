@@ -8,11 +8,14 @@ import com.example.springjpa.dto.response.UserResponse;
 import com.example.springjpa.dto.response.UserResponseGet;
 import com.example.springjpa.dto.resquest.*;
 import com.example.springjpa.exception.ErrorCode;
+import com.example.springjpa.security.JwtUtil;
 import com.example.springjpa.service.EmailService;
+import com.example.springjpa.service.Impl.TokenBlacklistService;
 import com.example.springjpa.service.OptService;
 import com.example.springjpa.service.RefreshTokenService;
 import com.example.springjpa.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,8 +42,10 @@ public class UserController {
     EmailService emailService;
     UserService userService;
     RefreshTokenService refreshTokenService;
+    JwtUtil  jwtUtil;
+    TokenBlacklistService  tokenBlacklistService;
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> registerNewUserAccount(@RequestBody UserRequestregister userRequest){
+    public ResponseEntity<ApiResponse> registerNewUserAccount(@Valid@RequestBody UserRequestregister userRequest){
                     Boolean resulte = userService.registerNewUserAccount(userRequest);
                     ApiResponse apiResponse = new ApiResponse();
                     apiResponse.setRsulte(resulte);
@@ -47,6 +53,18 @@ public class UserController {
                     apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
                     return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
      }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
+        String jwt = token.replace("Bearer ", "");
+        log.info(jwt);
+        String jti = jwtUtil.extractJti(jwt);
+        long expiration = jwtUtil.getExpirationRemaining(jwt);
+
+        tokenBlacklistService.blacklistToken(jti, expiration);
+
+        return ResponseEntity.ok("Logged out successfully");
+    }
+
 
 
     @PostMapping("/login")
@@ -126,15 +144,14 @@ public class UserController {
     public ResponseEntity<?> verifyOtp(@RequestParam String email, @RequestParam String otp) {
         boolean ok = otpService.verifyOTP(email, otp);
         if (ok) {
-
             return ResponseEntity.ok("Xác thực thành công.");
         } else {
             return ResponseEntity.status(400).body("OTP không hợp lệ hoặc đã hết hạn.");
         }
     }
    @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestParam String email, @RequestParam String password ,@RequestParam String confirmPassword) {
-        Boolean ok = userService.forgotPassword(email,password,confirmPassword);
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody UserResetPasswordRequest userResetPasswordRequest) {
+        Boolean ok = userService.forgotPassword(userResetPasswordRequest);
        if (ok) {
            return ResponseEntity.ok(ok);
        } else {

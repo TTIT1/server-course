@@ -27,13 +27,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     public UserResponse checkRefreshToken(RefreshTokenRequest request) {
 
-        User user = userRepository.findById(request.getId()).orElseThrow(() -> new AppExcepotion(ErrorCode.FORBIDDEN));
+
 
         RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(request.getRefreshToken())
                 .orElseThrow(() -> new AppExcepotion(ErrorCode.BAD_REQUEST));
 
-        RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest(refreshToken.getRefreshToken(), user.getId());
-        Boolean check = JwtUtil.validateRefreshToken(refreshTokenRequest);
+        Boolean check = JwtUtil.validateRefreshToken(refreshToken);
+        User user   = userRepository.findById(refreshToken.getUser().getId()).orElseThrow(() -> new AppExcepotion(ErrorCode.BAD_REQUEST));
          if (!check){
             refreshTokenRepository.deleteById(refreshToken.getId());
              return UserResponse.builder()
