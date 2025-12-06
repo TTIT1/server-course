@@ -48,7 +48,7 @@ public class JwtUtil {
   @NonFinal
   static long EXPIRATION_TIME = 1000 * 60 * 60;
   @NonFinal
-  static long TokenTme = Duration.ofMinutes(5).toMillis();
+  static long TokenTme = Duration.ofMinutes(10).toMillis();
 
   // creat token
   public static String generateToken(User user) {

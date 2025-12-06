@@ -59,24 +59,4 @@ public class ApplicationIntConfig {
 
 
 
-//
-////    @Bean
-////    @Order(2)
-////    ApplicationRunner cleanExpiredTokens(RefreshTokenRepository refreshTokenRepository) {
-////        return args -> {
-////            List<RefreshToken> refreshTokens = refreshTokenRepository.findAll();
-////            if (!refreshTokens.isEmpty()) {
-////                for (RefreshToken token : refreshTokens) {
-////                    RefreshTokenRequest refreshTokenRequest =
-////                            new RefreshTokenRequest(token.getRefreshToken(), token.getUser().getId());
-////                    boolean valid = JwtUtil.validateRefreshToken(refreshTokenRequest);
-////                    if (valid) {
-////                        refreshTokenRepository.deleteById(token.getId());
-////                        log.warn("delete refresh token timeout");
-////                    }
-////                }
-////            }
-////        };
-////    }
-//
 }

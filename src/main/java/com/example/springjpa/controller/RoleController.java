@@ -4,7 +4,6 @@ import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.response.RoleResponse;
 import com.example.springjpa.dto.resquest.RoleRequest;
 import com.example.springjpa.exception.ErrorCode;
-import com.example.springjpa.repository.RoleRepositoty;
 import com.example.springjpa.service.RoleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -3,7 +3,6 @@ package com.example.springjpa.configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,7 +34,7 @@ public class SecurityConfig {
       String[] publicEndpoint =  publicEndpoints.split(",");
 
       http
-
+              .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(publicEndpoint).permitAll()
 
@@ -47,8 +46,8 @@ public class SecurityConfig {
                             .decoder(jwtDecoder())
                             .jwtAuthenticationConverter(jwtAuthenticationConverter())
                     )
-            )
-      .csrf(AbstractHttpConfigurer::disable);
+            );
+
     return http.build();
   }
 

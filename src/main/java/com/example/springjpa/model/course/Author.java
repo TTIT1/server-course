@@ -28,8 +28,8 @@ public class Author extends BaseEntity {
      String email;
     @Column(name = "p_password",unique = false,nullable = false)
     String passWord;
-
-     LocalDate age;
+    @Column(name = "dob", nullable = false)
+    LocalDate dob;
     @ManyToMany(mappedBy = "authors")
     //@JsonIgnore
     List<Course> courses = new ArrayList<>();

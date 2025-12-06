@@ -69,7 +69,6 @@ public class GlobalExceptionHandler {
              ErrorCode errorCode = ErrorCode.INTERNAL_ERROR;
              Map<String,Object> mapAutribute1 = null;
              try {
-                     
                         errorCode =ErrorCode.valueOf(enumkey);
                 var autribute = exception.getBindingResult().getAllErrors().getFirst().unwrap(ConstraintViolation.class);
                    mapAutribute1 = autribute.getConstraintDescriptor().getAttributes();

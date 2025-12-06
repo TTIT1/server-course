@@ -29,6 +29,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +53,7 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public AuthorRequest toModelAuthor(Author author) {
         AuthorRequest authorDTO = new AuthorRequest();
-        authorDTO.setAge(author.getAge());
+        authorDTO.setDob(author.getDob());
         authorDTO.setEmail(author.getEmail());
         authorDTO.setFirstName(author.getFirstName());
         authorDTO.setLastName(author.getLastName());
@@ -69,7 +70,7 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
 
         Author author   =  new Author();
         author.setPassWord(bCryptPasswordEncoder.encode(authorDTO.getPassword()));
-        author.setAge(authorDTO.getAge());
+        author.setDob(authorDTO.getDob());
         author.setEmail(authorDTO.getEmail());
         author.setFirstName(authorDTO.getFirstName());
         author.setLastName(authorDTO.getLastName());
@@ -86,6 +87,7 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
         user.setUserName(authorDTO.getFirstName());
         user.setPasswordUser(bCryptPasswordEncoder.encode(authorDTO.getPassword()));
         user.setGmail(authorDTO.getEmail());
+        user.setDob(authorDTO.getDob());
         user.setRoles(Set.of(role));
         userRepository.save(user);
         toModelAuthor(authorRepository.save(author));
@@ -137,7 +139,7 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
 
         Author author = new Author();
         author.setEmail(request.getEmail());
-        author.setAge(request.getAge());
+        author.setDob(request.getAge());
         author.setLastName(request.getLastName());
         author.setFirstName(request.getFirstName());
         author = authorRepository.save(author);
