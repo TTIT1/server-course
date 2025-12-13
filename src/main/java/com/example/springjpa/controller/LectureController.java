@@ -58,9 +58,9 @@ public class LectureController {
     // Update – lesson.update_own / update_any
     @PreAuthorize("hasAnyAuthority('lesson.update_own','lesson.update_any') or hasRole('ADMIN')")
     @PutMapping("/update/by/{id}")
-    public ResponseEntity<ApiResponse<LectureDTO>> update(@PathVariable String id, @RequestBody LectureDTO LectureDTO) {
+    public ResponseEntity<ApiResponse<LectureDTO>> update(@PathVariable String id, @RequestBody LectureDTO lectureDTO) {
         ApiResponse<LectureDTO> apiResponse = new ApiResponse<>();
-        apiResponse.setRsulte(lectureService.update(id, LectureDTO));
+        apiResponse.setRsulte(lectureService.update(id, lectureDTO));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);

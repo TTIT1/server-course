@@ -42,6 +42,7 @@ public class GlobalExceptionHandler {
     private static final String MAX = "max";
     @ExceptionHandler(value = AppExcepotion.class)
     public ResponseEntity<ApiResponse> exceptionRuntime(AppExcepotion apiResponse) {
+
         ErrorCode errorCode = apiResponse.getErrorCode();
         ApiResponse<Object> objectApiResponse = new ApiResponse<>();
         objectApiResponse.setMessages("Error caused by the user :" + apiResponse.getMessage());
@@ -52,6 +53,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse> exception(RuntimeException ex) {
+        ErrorCode errorCode = ErrorCode.INVALID_KEY;
+           String enumkey = ex.getMessage().toString();
+           log.info("test lôi reuntime  ++++++++++++++++++++++++++++++++++++++++++++++++++++ " +enumkey);
         ApiResponse<Object> response = new ApiResponse<>();
         response.setMessages("Error by server: " + ex.getMessage());
         response.setCode(ErrorCode.INTERNAL_ERROR.getCode());
@@ -65,8 +69,7 @@ public class GlobalExceptionHandler {
              ErrorCode errorCode = ErrorCode.INTERNAL_ERROR;
              Map<String,Object> mapAutribute1 = null;
              try {
-                     
-
+                        errorCode =ErrorCode.valueOf(enumkey);
                 var autribute = exception.getBindingResult().getAllErrors().getFirst().unwrap(ConstraintViolation.class);
                    mapAutribute1 = autribute.getConstraintDescriptor().getAttributes();
               

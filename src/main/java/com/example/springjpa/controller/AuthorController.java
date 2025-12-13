@@ -10,13 +10,10 @@ import com.example.springjpa.exception.ErrorCode;
 
 import com.example.springjpa.model.course.Author;
 import com.example.springjpa.service.AuthorService;
-import com.example.springjpa.service.EmailService;
-import com.example.springjpa.service.OptService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,8 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-//@PreAuthorize("isAuthenticated()") // chỉ người login mới vào được
-//@PreAuthorize("isAnonymous()")// chỉ người chưa login mới vào được
+
 @RestController
 @RequestMapping("/api/author")
 @RequiredArgsConstructor
@@ -61,7 +57,7 @@ public class AuthorController {
     // Tạo tác giả – quyền author.view + user.create (tùy bạn gán) hoặc ADMIN
     @PreAuthorize("hasAnyAuthority('author.view','user.create') or hasRole('ADMIN')")
     @PostMapping("/add/new/author")
-    public ResponseEntity<ApiResponse<AuthorResponse>> addApiResponseResponseEntity(@RequestBody AuthorRequest authorDTO){
+    public ResponseEntity<ApiResponse<AuthorResponse>> addApiResponseResponseEntity(@Valid @RequestBody AuthorRequest authorDTO){
         ApiResponse<AuthorResponse> apiResponse = new ApiResponse<>();
         apiResponse.setRsulte(authorService.saveAuthor(authorDTO));
         apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
@@ -69,7 +65,7 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
-    // Cập nhật tác giả – quyền author.approve hoặc user.update hoặc role AUTHOR
+
     @PreAuthorize("hasAnyAuthority('author.approve','user.update') or hasRole('AUTHOR') or hasRole('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<AuthorResponse>> updateResponseResponseEntity(@RequestBody AuthorRequest authorDTO, @PathVariable String id){
@@ -80,7 +76,6 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
-    // Xem chi tiết tác giả – quyền author.view hoặc role AUTHOR/ADMIN
     @PreAuthorize("hasAnyAuthority('author.view','user.view') or hasRole('AUTHOR') or hasRole('ADMIN')")
     @GetMapping("/get/by/{id}")
     public ResponseEntity<ApiResponse<Author>> getById(@PathVariable String id){

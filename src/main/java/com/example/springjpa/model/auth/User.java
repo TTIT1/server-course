@@ -1,9 +1,11 @@
 package com.example.springjpa.model.auth;
 import com.example.springjpa.model.course.BaseEntity;
+import com.example.springjpa.model.course.Purchase;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -38,6 +40,8 @@ public class User extends BaseEntity {
     @Column(name = "role", unique = false, nullable = false)
     @ManyToMany
      Set<Role> roles;
+      @OneToMany(mappedBy = "user")
+     List<Purchase> purchases;
 
 
 }

@@ -1,6 +1,7 @@
 package com.example.springjpa.dto.resquest;
 import com.example.springjpa.validation.DobConstraint;
 import com.example.springjpa.validation.StrConstraint;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -28,7 +29,8 @@ public class AuthorRequest {
     @StrConstraint(min = 8,message = "INVALID_PASSWORD")
      String password;
     @DobConstraint(min = 23 ,message = "INVALID_AGE")
-     LocalDate age;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+     LocalDate dob;
 
      List<String> courseIds; // chỉ chứa ID khoá học
 }

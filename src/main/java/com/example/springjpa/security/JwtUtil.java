@@ -3,7 +3,6 @@ package com.example.springjpa.security;
 import com.example.springjpa.dto.resquest.IntrospectrRequest;
 
 
-import com.example.springjpa.dto.resquest.RefreshTokenRequest;
 
 
 import com.example.springjpa.model.auth.RefreshToken;
@@ -17,7 +16,7 @@ import lombok.AccessLevel;
 
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
-import org.apache.commons.lang3.RandomStringUtils;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -48,7 +47,7 @@ public class JwtUtil {
   @NonFinal
   static long EXPIRATION_TIME = 1000 * 60 * 60;
   @NonFinal
-  static long TokenTme = Duration.ofMinutes(5).toMillis();
+  static long TokenTme = Duration.ofMinutes(30).toMillis();
 
   // creat token
   public static String generateToken(User user) {
@@ -58,6 +57,7 @@ public class JwtUtil {
               .setSubject(user.getUserName())
               .setIssuedAt(new Date())
               .claim("scope",buildScope(user))
+              .claim("id", id)
               .setId(UUID.randomUUID().toString())
               .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
               .setExpiration(new Date(System.currentTimeMillis()+TokenTme))
@@ -86,6 +86,17 @@ public class JwtUtil {
                   .getBody()
                   .getSubject();
   }
+
+  // lay id của user trong token
+    public static String valiuserIDToken(String token) {
+              return Jwts.parserBuilder()
+                      .setSigningKey(key)
+                      .build()
+                      .parseClaimsJws(token)
+                      .getBody()
+                      .getId();
+
+    }
   // Kiểm tra token có hợp lệ không
   public static Boolean validateToken(IntrospectrRequest request) {
                         try {
@@ -145,7 +156,7 @@ public class JwtUtil {
   }
 
   private static String buildScope(User user){
-      // ý tuowuonwgr là trong user lấy ra role và rolw laasys ra permission
+    
       StringJoiner stringJoiner = new StringJoiner(" ");
       if(!CollectionUtils.isEmpty(user.getRoles()))
           user.getRoles().forEach(role->

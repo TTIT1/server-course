@@ -1,11 +1,8 @@
 package com.example.springjpa.controller;
 
 
-import com.example.springjpa.dto.response.ApiResponse;
-import com.example.springjpa.dto.response.IntrospectResponse;
-import com.example.springjpa.dto.response.UserResponse;
+import com.example.springjpa.dto.response.*;
 
-import com.example.springjpa.dto.response.UserResponseGet;
 import com.example.springjpa.dto.resquest.*;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.security.JwtUtil;
@@ -27,14 +24,11 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -49,7 +43,7 @@ public class UserController {
     JwtUtil  jwtUtil;
     TokenBlacklistService  tokenBlacklistService;
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> registerNewUserAccount(@Valid@RequestBody UserRequestregister userRequest){
+    public ResponseEntity<ApiResponse<UserRegisterResponse>> registerNewUserAccount(@Valid@RequestBody UserRequestregister userRequest){
                     Boolean resulte = userService.registerNewUserAccount(userRequest);
                     ApiResponse apiResponse = new ApiResponse();
                     apiResponse.setRsulte(resulte);
@@ -58,15 +52,16 @@ public class UserController {
                     return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
      }
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<UserRegisterResponse> logout(@RequestHeader("Authorization") String token) {
         String jwt = token.replace("Bearer ", "");
         log.info(jwt);
         String jti = jwtUtil.extractJti(jwt);
         long expiration = jwtUtil.getExpirationRemaining(jwt);
 
         tokenBlacklistService.blacklistToken(jti, expiration);
-
-        return ResponseEntity.ok("Logged out successfully");
+        UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
+        userRegisterResponse.setValid(true);
+        return ResponseEntity.status(HttpStatus.OK).body(userRegisterResponse);
     }
 
     @PostMapping("/login")
@@ -109,7 +104,6 @@ public class UserController {
         UserResponseGet userResponseGet = userService.getUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseGet);
     }
-    @PreAuthorize("hasAnyAuthority('profile.view','user.view')")
     @GetMapping("/info")
     public ResponseEntity<UserResponseGet> getInfo() {
         UserResponseGet userResponseGet = userService.getInfo();
