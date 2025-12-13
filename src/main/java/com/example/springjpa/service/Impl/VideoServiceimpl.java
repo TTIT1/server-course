@@ -27,7 +27,6 @@ VideoRepository videoRepository;
     LectureRepository lectureRepository;
     public VideoDTO toModel(Video video){
         VideoDTO videoDTO = new VideoDTO();
-        videoDTO.setLectureid(video.getId());
         videoDTO.setName(video.getName());
         videoDTO.setSize(video.getSize());
         videoDTO.setUrl(video.getUrl());
@@ -66,11 +65,11 @@ VideoRepository videoRepository;
         Lecture lecture = lectureRepository.findById(videoDTO.getLectureid())
                 .orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
         List<Video>videos = videoRepository.findAll();
-        for (Video video :videos){
-            if(video.getLecture().getId() == videoDTO.getLectureid()){
-                throw  new AppExcepotion(ErrorCode.DUPLICATE_RECORD);
-            }
-        }
+//        for (Video video :videos){
+//            if(video.getLecture().getId() == videoDTO.getLectureid()){
+//                throw  new AppExcepotion(ErrorCode.DUPLICATE_RECORD);
+//            }
+//        }
         Video video = new Video();
         video.setName(videoDTO.getName());
         video.setSize(videoDTO.getSize());

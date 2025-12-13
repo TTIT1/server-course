@@ -69,7 +69,7 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
         Author author   =  new Author();
-        author.setPassWord(bCryptPasswordEncoder.encode(authorDTO.getPassword()));
+        author.setPassword(bCryptPasswordEncoder.encode(authorDTO.getPassword()));
         author.setDob(authorDTO.getDob());
         author.setEmail(authorDTO.getEmail());
         author.setFirstName(authorDTO.getFirstName());

@@ -7,8 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class UserRegisterResponse {
     boolean valid;

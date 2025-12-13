@@ -29,6 +29,7 @@ public enum ErrorCode {
     USER_EXISTS(3001, "User already exists", HttpStatus.CONFLICT),
     USER_NOT_FOUND(3002, "User not found", HttpStatus.NOT_FOUND),
     DUPLICATE_RECORD(3003, "Duplicate record", HttpStatus.CONFLICT),
+    COURSE_NOT_PURCHASED(3004, "User has not purchased this course", HttpStatus.FORBIDDEN),
 
 
     INTERNAL_ERROR(4001, "Internal server error {min}", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -39,6 +40,9 @@ public enum ErrorCode {
     BAD_REQUEST(5001, "Bad request", HttpStatus.BAD_REQUEST),
     NOT_FOUND(5002, "Resource not found", HttpStatus.NOT_FOUND),
     TIMEOUT(5003, "Request timeout", HttpStatus.REQUEST_TIMEOUT),
+
+    COURSE_ALREADY_PURCHASED(6001, "User has already purchased this course", HttpStatus.BAD_REQUEST),
+
 
 
     SUCCESS(1000, "Success", HttpStatus.OK),

@@ -1,35 +1,45 @@
 package com.example.springjpa.model.course;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.huxhorn.sulky.ulid.ULID;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-
-@Data
-@AllArgsConstructor
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
-@Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-//@DiscriminatorColumn(name = "resource_type")// đặt tên cho cột chứ các dữ  liệu lớp con kế thừa vì các lớp con với lớp cha
-// chung trong 1 bảng vì Single table mà bên các lops con thì có anotation khác để phân biệt data DiscriminatorValue
 public class Resource {
-    @Id
-    @GeneratedValue
-      String id;
-    @Column(name = "n_name",unique = true,nullable = false)
-      String name;
-    @Column(name = "s_size")
-      int size;
-    @Column(name = "u_url")
-     String url;
-    @OneToOne(cascade = CascadeType.ALL)// KHI QUAN HỆ 1 VS 1 THÊM NÀY ĐỂ LẤY ID LECTURE
-    @JoinColumn(name = "lecture_id")
-      Lecture lecture  ;
 
+    @Id
+    @Column(updatable = false, nullable = false)
+    private String id;
+
+
+    @Column(name = "n_name", unique = true, nullable = false)
+    String name;
+
+    @Column(name = "s_size")
+    int size;
+
+    @Column(name = "u_url")
+    String url;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "lecture_id")
+    @JsonIgnore
+    Lecture lecture;
+  
+    @PrePersist
+    public void prePersist() {
+        if (this.id == null) {
+            this.id = new ULID().nextULID();
+        }
+    }
 }

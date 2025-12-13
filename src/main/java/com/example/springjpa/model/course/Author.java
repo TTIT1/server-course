@@ -27,7 +27,8 @@ public class Author extends BaseEntity {
     @Column(name = "g_email", unique = true, nullable = false, length = 255)
      String email;
     @Column(name = "p_password",unique = false,nullable = false)
-    String passWord;
+    String password;
+
     @Column(name = "dob", nullable = false)
     LocalDate dob;
     @ManyToMany(mappedBy = "authors")

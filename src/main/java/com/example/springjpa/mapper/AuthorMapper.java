@@ -11,6 +11,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel ="spring")
 public interface AuthorMapper {
      @Mapping(target = "courses", ignore = true)
+     @Mapping(target= "roles", ignore=true)
      Author toAuthor(AuthorRequest authorDTO);
      Author updateAuthor(@MappingTarget Author author, AuthorRequest authorDTO);
    

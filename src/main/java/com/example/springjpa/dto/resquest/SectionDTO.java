@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -15,6 +17,7 @@ public class SectionDTO {
      String id;
      String name;
      int order;
-    String courseId;
+     String courseId;
+
 
 }

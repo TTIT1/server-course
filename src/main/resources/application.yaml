@@ -28,9 +28,9 @@
 # gmail_app_password: ${GMAIL_APP_PASSWORD}
 spring:
   datasource:
-    url: jdbc:postgresql://dpg-d49vgangi27c739oo90g-a.oregon-postgres.render.com:5432/dbttit
-    username: dbttit_user
-    password: UiJGM1z350qkFK6NoyA1Wso9hAWSpeMI
+    url: jdbc:postgresql://dpg-d4uemq9r0fns7390kusg-a.oregon-postgres.render.com:5432/ttit
+    username: ttit_user
+    password: tarLtODsmnJveK9kCex8fmoLVcSCQfQQ
 
   redis:
     host: redis-14131.crce262.us-east-1-1.ec2.cloud.redislabs.com
