@@ -1,5 +1,7 @@
 package com.example.springjpa.configuration;
 
+import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,18 +17,16 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.crypto.spec.SecretKeySpec;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
 
-    @Value("${public_endpoints}")
+    @Value("${api.public_endpoints}")
     private String publicEndpoints;
 
-  @Value("${select_key}")
+  @Value("${jwt.select_key}")
   private String key;
 
   @Bean

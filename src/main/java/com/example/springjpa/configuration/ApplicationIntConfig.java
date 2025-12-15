@@ -1,31 +1,25 @@
 package com.example.springjpa.configuration;
 
 
-import com.example.springjpa.enums.Roles;
+import java.time.LocalDate;
+import java.util.Set;
 
-import com.example.springjpa.model.auth.RefreshToken;
-import com.example.springjpa.model.auth.Role;
-import com.example.springjpa.model.auth.User;
-import com.example.springjpa.repository.RefreshTokenRepository;
-import com.example.springjpa.repository.RoleRepositoty;
-import com.example.springjpa.repository.UserRepository;
-import com.example.springjpa.security.JwtUtil;
-
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.example.springjpa.enums.Roles;
+import com.example.springjpa.model.auth.Role;
+import com.example.springjpa.model.auth.User;
+import com.example.springjpa.repository.RoleRepositoty;
+import com.example.springjpa.repository.UserRepository;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @RequiredArgsConstructor

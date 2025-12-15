@@ -1,19 +1,28 @@
 package com.example.springjpa.controller;
 
-import com.example.springjpa.dto.response.ApiResponse;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.resquest.TextDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.service.TextService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/text")
@@ -25,10 +34,11 @@ public class TextController {
 
     // Thêm text – quyền material.upload
     @PreAuthorize("hasAuthority('material.upload') or hasRole('ADMIN')")
-    @PostMapping("/add")
-    public ResponseEntity<ApiResponse<TextDTO>> addText(@RequestBody TextDTO textDTO) {
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<TextDTO>> addText(@RequestBody TextDTO textDTO , @RequestParam("file") MultipartFile file) {
+        String urlText = file.getOriginalFilename().toString(); 
         ApiResponse<TextDTO> apiResponse = new ApiResponse<>();
-        apiResponse.setRsulte(textService.add(textDTO));
+        apiResponse.setRsulte(textService.add(textDTO ,urlText));
         apiResponse.setCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);

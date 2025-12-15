@@ -1,27 +1,43 @@
 package com.example.springjpa.controller;
 
-import com.example.springjpa.dto.response.ApiResponse;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.resquest.VideoDTO;
 import com.example.springjpa.exception.ErrorCode;
+import com.example.springjpa.service.Impl.CloudinaryServiceImpl;
 import com.example.springjpa.service.VideoService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/video")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+
 public class VideoController {
 
     VideoService videoService;
+    CloudinaryServiceImpl cloudinaryServiceImpl;
 
     // Xem danh sách video – bất kỳ ai có quyền xem bài học/khóa học
     @PreAuthorize("hasAnyAuthority('lesson.view_any','course.view_all','course.view_free','course.view_purchased') or hasRole('ADMIN')")
@@ -47,13 +63,22 @@ public class VideoController {
 
     // Tạo video – tác giả/quản trị có quyền material.upload
     @PreAuthorize("hasAuthority('material.upload') or hasRole('ADMIN')")
-    @PostMapping("/save")
-    public ResponseEntity<ApiResponse<VideoDTO>> saveVideo(@RequestBody VideoDTO videoDTO) {
-        ApiResponse<VideoDTO> apiResponse = new ApiResponse<>();
-        apiResponse.setRsulte(videoService.save(videoDTO));
-        apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<VideoDTO>> saveVideo(@RequestParam("videoDTO") String videoDTOJson ,@RequestParam("file") MultipartFile file) {
+                  ObjectMapper mapper = new ObjectMapper();
+              VideoDTO dto;
+            try {
+                dto = mapper.readValue(videoDTOJson, VideoDTO.class);
+                 ApiResponse<VideoDTO> apiResponse = new ApiResponse<>();
+                    apiResponse.setRsulte(videoService.save(dto,file));
+                    apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
+                 return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Lỗi khi phân tích JSON: " + e.getMessage());
+                
+            }
+       
     }
 
     // Cập nhật video – quyền material.update

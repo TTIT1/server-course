@@ -1,5 +1,6 @@
 package com.example.springjpa.dto.resquest;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,6 @@ public class TextDTO {
      Integer id;
      String name;
      int size;
-     String url;
-      String  lectureid;
+     String  lectureid;
      String text;
 }

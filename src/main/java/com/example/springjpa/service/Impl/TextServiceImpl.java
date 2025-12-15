@@ -1,6 +1,11 @@
 package com.example.springjpa.service.Impl;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.example.springjpa.dto.resquest.TextDTO;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
@@ -10,13 +15,10 @@ import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.ResourceRepository;
 import com.example.springjpa.repository.TextRepository;
 import com.example.springjpa.service.TextService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
@@ -31,20 +33,19 @@ public class TextServiceImpl implements TextService {
         TextDTO textDTO = new TextDTO();
         textDTO.setText(text.getId());
         textDTO.setName(text.getName());
-        textDTO.setUrl(text.getUrl());
         textDTO.setText(text.getConText());
         textDTO.setSize(text.getSize());
         textDTO.setLectureid(text.getLecture().getId());
 
         return textDTO;
     }
-    public TextDTO add(TextDTO textDTO) {
+    public TextDTO add(TextDTO textDTO,String urlText) {
         Lecture lecture = lectureRepository.findById(textDTO.getLectureid()).orElseThrow(() ->
                 new AppExcepotion(ErrorCode.NOT_FOUND));
         try {
             Text text = new Text();
             text.setConText(textDTO.getText());
-            text.setUrl(textDTO.getUrl());
+            text.setUrl(urlText);
             text.setName(textDTO.getName());
             text.setSize(textDTO.getSize());
             text.setLecture(lecture);
