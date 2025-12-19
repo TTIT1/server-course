@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserService {
          user.setRoles(Set.of(roleUser));
           user.setPasswordUser(bCryptPasswordEncoder.encode(userRequest.getPassWordUser()));
           user.setGmail(userRequest.getGmail());
+          user.setUpdatedBy(userRequest.getGmail());
           userRepository.save(user);
                              return true;
     }
@@ -141,6 +142,7 @@ public class UserServiceImpl implements UserService {
              user.setUserName(user.getUserName());
              user.setPasswordUser(bCryptPasswordEncoder.encode(userRequest.getPassWordUser()));
              user.setGmail(userRequest.getGmail());
+             user.setUpdatedBy(userRequest.getGmail());
              userRepository.save(user);
              return true;
     }

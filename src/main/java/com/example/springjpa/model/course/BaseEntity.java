@@ -29,6 +29,10 @@ public class BaseEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+
     @PrePersist
     public void prePersist() {
         if (this.id == null) {
