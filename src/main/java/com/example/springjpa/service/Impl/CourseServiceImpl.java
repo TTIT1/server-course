@@ -1,27 +1,29 @@
 package com.example.springjpa.service.Impl;
 
-import com.example.springjpa.dto.resquest.*;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.example.springjpa.dto.resquest.CouresUserRequest;
+import com.example.springjpa.dto.resquest.CourseDTO;
+import com.example.springjpa.dto.resquest.LectureDTO;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.CourseMapper;
-import com.example.springjpa.model.course.*;
+import com.example.springjpa.model.course.Author;
+import com.example.springjpa.model.course.Course;
 import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
 import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.PurchaseRepository;
 import com.example.springjpa.service.CourseService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Service;
-
-import javax.swing.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -76,6 +78,7 @@ public class CourseServiceImpl implements CourseService {
                 .flatMap(section -> section.getLecture().stream())
                 .map(courseMapper::toLectureDto).collect(Collectors.toSet());
                courseDTO.setLectures(allLectures);
+        
 
       return courseDTO;
     }
