@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.springjpa.dto.resquest.VideoDTO;
 import com.example.springjpa.exception.AppExcepotion;
@@ -26,7 +25,7 @@ import lombok.experimental.FieldDefaults;
 public class VideoServiceimpl implements VideoService {
 
 VideoRepository videoRepository;
- CloudinaryServiceImpl cloudinaryServiceImpl;
+ //CloudinaryServiceImpl cloudinaryServiceImpl;
 
     LectureRepository lectureRepository;
     public VideoDTO toModel(Video video){
@@ -64,33 +63,21 @@ VideoRepository videoRepository;
         }
 
     }
-    public VideoDTO save(VideoDTO videoDTO,MultipartFile file){
+    public VideoDTO save(VideoDTO videoDTO ){
         Lecture lecture = lectureRepository.findById(videoDTO.getLectureid())
                 .orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
         List<Video>videos = videoRepository.findAll();
-        // check xem file user send true hay false
-      
-        String contentType = file.getContentType();
-        String filename = file.getOriginalFilename();
-
-        if (contentType == null || filename == null) {
-            throw new RuntimeException("File không hợp lệ");
-        }
        
-        boolean isVideo = contentType.startsWith("video/")&& (filename.endsWith(".mp4") || filename.endsWith(".mov"));
-        if (!isVideo) {
-            throw new RuntimeException("Vui lòng tải lên một tệp video hợp lệ (MP4 hoặc MOV)");
-        }
-
-        String urlVideo = cloudinaryServiceImpl.uploadVideo(file);
         Video video = new Video();
         video.setName(videoDTO.getName());
         video.setSize(videoDTO.getSize());
         video.setLength(videoDTO.getLength());
-        video.setUrl(urlVideo);
+        video.setUrl(videoDTO.getUrl());
         video.setLecture(lecture) ;
         return toModel(videoRepository.save(video)) ;
 
 
     }
+
+   
 }

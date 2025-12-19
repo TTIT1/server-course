@@ -3,7 +3,6 @@ package com.example.springjpa.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.resquest.VideoDTO;
 import com.example.springjpa.exception.ErrorCode;
+import com.example.springjpa.model.course.Video;
 import com.example.springjpa.service.Impl.CloudinaryServiceImpl;
 import com.example.springjpa.service.VideoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,33 +64,21 @@ public class VideoController {
 
     // Tạo video – tác giả/quản trị có quyền material.upload
     @PreAuthorize("hasAuthority('material.upload') or hasRole('ADMIN')")
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    //@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/upload/video")
     public ResponseEntity<ApiResponse<VideoDTO>> saveVideo(
 
-    @Parameter(
-        description = "JSON dạng String. Ví dụ: {\"length\":\"120\",\"name\":\"video.mp4\",\"size\":\"52428800\",\"lectureid\":\"lec_001\"}",
-        required = true
-    )
-    @RequestParam("videoDTO") String videoDTOJson,
-
-    @Parameter(description = "File video", required = true)
-
-    @RequestParam("file") MultipartFile file
-    
+        @RequestBody  VideoDTO videoDTO   
     ) {
-                  ObjectMapper mapper = new ObjectMapper();
-              VideoDTO dto;
-            try {
-                dto = mapper.readValue(videoDTOJson, VideoDTO.class);
+                
+         
+            
                  ApiResponse<VideoDTO> apiResponse = new ApiResponse<>();
-                    apiResponse.setRsulte(videoService.save(dto,file));
+                    apiResponse.setRsulte(videoService.save(videoDTO));
                     apiResponse.setCode(ErrorCode.SUCCESS.getCode());
                     apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
                  return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException("Lỗi khi phân tích JSON: " + e.getMessage());
-                
-            }
+          
        
     }
 

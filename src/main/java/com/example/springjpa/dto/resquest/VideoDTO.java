@@ -17,5 +17,6 @@ public class VideoDTO {
      Integer length;
      String name;
      int size;
+     String url;
     String  lectureid;
 }
