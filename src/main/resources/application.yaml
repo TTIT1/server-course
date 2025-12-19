@@ -34,3 +34,9 @@ select_key: ${SELECT_KEY}
 gmail_key: ${GMAIL_USERNAME}
 gmail_app_password: ${GMAIL_APP_PASSWORD}
 public_endpoints: ${PUBLIC_ENDPOINTS}
+
+cloudinary:
+  cloud-name: your_cloud_name
+  api-key: your_api_key
+  api-secret: your_api_secret
+  secure: true

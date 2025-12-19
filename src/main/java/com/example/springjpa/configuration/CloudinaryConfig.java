@@ -14,17 +14,17 @@ import com.cloudinary.Cloudinary;
 @Configurable
 public class CloudinaryConfig {
 
-    @Value("${cloudinary.cloud-name}")
-    private String cloudName;
+   @Value("${CLOUDINARY_CLOUD_NAME}")
+private String cloudName;
 
-    @Value("${cloudinary.api-key}")
-    private String apiKey;
+@Value("${CLOUDINARY_API_KEY}")
+private String apiKey;
 
-    @Value("${cloudinary.api-secret}")
-    private String apiSecret;
+@Value("${CLOUDINARY_API_SECRET}")
+private String apiSecret;
 
-    @Value("${cloudinary.secure}")
-    private boolean secure;
+@Value("${CLOUDINARY_SECURE:true}")
+private boolean secure;
 
     @Bean
     public Cloudinary cloudinary() {
