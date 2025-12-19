@@ -1,34 +1,20 @@
 package com.example.springjpa.exception;
 
 import java.lang.reflect.InaccessibleObjectException;
+import java.util.Map;
+import java.util.Objects;
 
-import com.example.springjpa.dto.response.ApiResponse;
-import com.nimbusds.jose.shaded.gson.Gson;
-
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import com.example.springjpa.dto.response.ApiResponse;
 
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
+import jakarta.validation.ConstraintViolation;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice

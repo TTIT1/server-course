@@ -1,6 +1,12 @@
 package com.example.springjpa.service.Impl;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.springjpa.dto.resquest.VideoDTO;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
@@ -9,13 +15,10 @@ import com.example.springjpa.model.course.Video;
 import com.example.springjpa.repository.LectureRepository;
 import com.example.springjpa.repository.VideoRepository;
 import com.example.springjpa.service.VideoService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +26,13 @@ import java.util.stream.Collectors;
 public class VideoServiceimpl implements VideoService {
 
 VideoRepository videoRepository;
+ CloudinaryServiceImpl cloudinaryServiceImpl;
 
     LectureRepository lectureRepository;
     public VideoDTO toModel(Video video){
         VideoDTO videoDTO = new VideoDTO();
         videoDTO.setName(video.getName());
         videoDTO.setSize(video.getSize());
-        videoDTO.setUrl(video.getUrl());
         videoDTO.setLength(video.getLength());
         videoDTO.setId(video.getId());
         return videoDTO;
@@ -61,20 +64,30 @@ VideoRepository videoRepository;
         }
 
     }
-    public VideoDTO save(VideoDTO videoDTO){
+    public VideoDTO save(VideoDTO videoDTO,MultipartFile file){
         Lecture lecture = lectureRepository.findById(videoDTO.getLectureid())
                 .orElseThrow(()->new AppExcepotion(ErrorCode.NOT_FOUND));
         List<Video>videos = videoRepository.findAll();
-//        for (Video video :videos){
-//            if(video.getLecture().getId() == videoDTO.getLectureid()){
-//                throw  new AppExcepotion(ErrorCode.DUPLICATE_RECORD);
-//            }
-//        }
+        // check xem file user send true hay false
+      
+        String contentType = file.getContentType();
+        String filename = file.getOriginalFilename();
+
+        if (contentType == null || filename == null) {
+            throw new RuntimeException("File không hợp lệ");
+        }
+       
+        boolean isVideo = contentType.startsWith("video/")&& (filename.endsWith(".mp4") || filename.endsWith(".mov"));
+        if (!isVideo) {
+            throw new RuntimeException("Vui lòng tải lên một tệp video hợp lệ (MP4 hoặc MOV)");
+        }
+
+        String urlVideo = cloudinaryServiceImpl.uploadVideo(file);
         Video video = new Video();
         video.setName(videoDTO.getName());
         video.setSize(videoDTO.getSize());
-        video.setUrl(videoDTO.getUrl());
         video.setLength(videoDTO.getLength());
+        video.setUrl(urlVideo);
         video.setLecture(lecture) ;
         return toModel(videoRepository.save(video)) ;
 

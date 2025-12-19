@@ -23,10 +23,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
 
-    @Value("${public_endpoints}")
+    @Value("${api.public_endpoints}")
     private String publicEndpoints;
 
-  @Value("${select_key}")
+  @Value("${jwt.select_key}")
   private String key;
 
   @Bean

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
 import com.example.springjpa.model.course.Purchase;
 
 @Repository
@@ -23,6 +22,7 @@ public interface  PurchaseRepository extends JpaRepository<Purchase, String> {
         @Param("userId") String userId,
          @Param("courseId") String courseId
         );
+        // kiem tra xem user da mua khoa hoc chua
 
     @Query("""
             SELECT COUNT(p) > 0 
