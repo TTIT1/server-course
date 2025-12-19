@@ -1,17 +1,36 @@
 package com.example.springjpa.controller;
 
 
-import com.example.springjpa.dto.response.*;
+import java.util.List;
 
-import com.example.springjpa.dto.resquest.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.springjpa.dto.response.ApiResponse;
+import com.example.springjpa.dto.response.IntrospectResponse;
+import com.example.springjpa.dto.response.UserRegisterResponse;
+import com.example.springjpa.dto.response.UserResponse;
+import com.example.springjpa.dto.response.UserResponseGet;
+import com.example.springjpa.dto.resquest.IntrospectrRequest;
+import com.example.springjpa.dto.resquest.RefreshTokenRequest;
+import com.example.springjpa.dto.resquest.UserRequest;
+import com.example.springjpa.dto.resquest.UserRequestregister;
+import com.example.springjpa.dto.resquest.UserResetPasswordRequest;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.security.JwtUtil;
 import com.example.springjpa.service.EmailService;
 import com.example.springjpa.service.Impl.TokenBlacklistService;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-
 import com.example.springjpa.service.OptService;
 import com.example.springjpa.service.RefreshTokenService;
 import com.example.springjpa.service.UserService;
@@ -20,15 +39,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController

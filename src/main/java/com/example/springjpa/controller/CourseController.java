@@ -1,23 +1,30 @@
 package com.example.springjpa.controller;
 
 
-import com.example.springjpa.dto.response.ApiResponse;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.springjpa.dto.response.ApiResponse;
 import com.example.springjpa.dto.resquest.CouresUserRequest;
 import com.example.springjpa.dto.resquest.CourseDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.course.Course;
 import com.example.springjpa.service.CourseService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequestMapping("/api/v2")
 @RestController
@@ -83,7 +90,7 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
     @PreAuthorize("#couresUserRequest.userId == authentication.token.claims['id'] or hasRole('ADMIN')")
-    @PostMapping("/get/course/user/buy")
+    @PostMapping("/get/course/user/pay")
     public  ResponseEntity<ApiResponse<CourseDTO>> getcourseuserbuy(@RequestBody CouresUserRequest couresUserRequest) {
       ApiResponse< CourseDTO> apiResponse = new ApiResponse<>();
                     apiResponse.setRsulte(courseService.getFullCourse(couresUserRequest));

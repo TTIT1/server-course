@@ -1,13 +1,13 @@
 package com.example.springjpa.service;
 
 
-import com.example.springjpa.dto.resquest.TextDTO;
-
 import java.util.List;
+
+import com.example.springjpa.dto.resquest.TextDTO;
 
 
 public interface TextService {
-    TextDTO add(TextDTO textDTO);
+    TextDTO add(TextDTO textDTO,String file);
     TextDTO update(TextDTO textDTO);
     List<TextDTO> getAll();
 
