@@ -25,6 +25,7 @@ import com.example.springjpa.service.VideoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -64,7 +65,19 @@ public class VideoController {
     // Tạo video – tác giả/quản trị có quyền material.upload
     @PreAuthorize("hasAuthority('material.upload') or hasRole('ADMIN')")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ApiResponse<VideoDTO>> saveVideo(@RequestParam("videoDTO") String videoDTOJson ,@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ApiResponse<VideoDTO>> saveVideo(
+
+    @Parameter(
+        description = "JSON dạng String. Ví dụ: {\"length\":\"120\",\"name\":\"video.mp4\",\"size\":\"52428800\",\"lectureid\":\"lec_001\"}",
+        required = true
+    )
+    @RequestParam("videoDTO") String videoDTOJson,
+
+    @Parameter(description = "File video", required = true)
+
+    @RequestParam("file") MultipartFile file
+    
+    ) {
                   ObjectMapper mapper = new ObjectMapper();
               VideoDTO dto;
             try {
