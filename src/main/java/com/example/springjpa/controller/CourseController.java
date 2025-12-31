@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springjpa.dto.response.ApiResponse;
-import com.example.springjpa.dto.resquest.CouresUserRequest;
 import com.example.springjpa.dto.resquest.CourseDTO;
 import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.model.course.Course;
@@ -89,16 +88,16 @@ public class CourseController {
         apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
-    @PreAuthorize("#couresUserRequest.userId == authentication.token.claims['id'] or hasRole('ADMIN')")
-    @PostMapping("/get/course/user/pay")
-    public  ResponseEntity<ApiResponse<CourseDTO>> getcourseuserbuy(@RequestBody CouresUserRequest couresUserRequest) {
-      ApiResponse< CourseDTO> apiResponse = new ApiResponse<>();
-                    apiResponse.setRsulte(courseService.getFullCourse(couresUserRequest));
-                    apiResponse.setCode(ErrorCode.SUCCESS.getCode());
-                    apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
-                    return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    // @PreAuthorize("#couresUserRequest.userId == authentication.token.claims['id'] or hasRole('ADMIN')")
+    // @PostMapping("/get/course/user/pay")
+    // public  ResponseEntity<ApiResponse<CourseDTO>> getcourseuserbuy(@RequestBody CouresUserRequest couresUserRequest) {
+    //   ApiResponse< CourseDTO> apiResponse = new ApiResponse<>();
+    //                 apiResponse.setRsulte(courseService.getFullCourse(couresUserRequest));
+    //                 apiResponse.setCode(ErrorCode.SUCCESS.getCode());
+    //                 apiResponse.setMessages(ErrorCode.SUCCESS.getMessage());
+    //                 return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
 
-    }
+    // }
 
 }

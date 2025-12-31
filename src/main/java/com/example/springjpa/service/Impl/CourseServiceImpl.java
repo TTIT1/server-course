@@ -17,7 +17,7 @@ import com.example.springjpa.model.course.Course;
 import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
 import com.example.springjpa.repository.LectureRepository;
-import com.example.springjpa.repository.PurchaseRepository;
+
 import com.example.springjpa.service.CourseService;
 
 import lombok.AccessLevel;
@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
   CourseMapper courseMapper;
   CourseRepository courseRepository;
   AuthorRepository authorRepository;
-  PurchaseRepository purchaseRepository;
+ 
   LectureRepository lectureRepository;
 
   public CourseDTO toModelCourse(Course course) {
@@ -57,31 +57,31 @@ public class CourseServiceImpl implements CourseService {
     return courseRepository.save(course);
   }
 
-    @Override
+    // @Override
 
-    public CourseDTO getFullCourse(CouresUserRequest req) {
+    // public CourseDTO getFullCourse(CouresUserRequest req) {
 
-        Boolean purchased = purchaseRepository.hasPurchase(
-                req.getUserId(), req.getCourseId()
-        );
+    //     Boolean purchased = purchaseRepository.hasPurchase(
+    //             req.getUserId(), req.getCourseId()
+    //     );
 
-        if (!purchased) {
-            throw new AppExcepotion(ErrorCode.COURSE_NOT_PURCHASED);
-        }
+    //     if (!purchased) {
+    //         throw new AppExcepotion(ErrorCode.COURSE_NOT_PURCHASED);
+    //     }
 
-        Course course = courseRepository.findByCourseId(req.getCourseId());
+    //     Course course = courseRepository.findByCourseId(req.getCourseId());
 
-        CourseDTO courseDTO = courseMapper.toDto(course);
-        courseDTO.setSections(courseMapper.toSectionDtos(course.getSections()));
-        Set<LectureDTO> allLectures = course.getSections()
-                .stream()
-                .flatMap(section -> section.getLecture().stream())
-                .map(courseMapper::toLectureDto).collect(Collectors.toSet());
-               courseDTO.setLectures(allLectures);
+    //     CourseDTO courseDTO = courseMapper.toDto(course);
+    //     courseDTO.setSections(courseMapper.toSectionDtos(course.getSections()));
+    //     Set<LectureDTO> allLectures = course.getSections()
+    //             .stream()
+    //             .flatMap(section -> section.getLecture().stream())
+    //             .map(courseMapper::toLectureDto).collect(Collectors.toSet());
+    //            courseDTO.setLectures(allLectures);
         
 
-      return courseDTO;
-    }
+    //   return courseDTO;
+   // }
 
 
 

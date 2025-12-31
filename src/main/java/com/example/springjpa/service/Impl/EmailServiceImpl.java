@@ -1,21 +1,25 @@
 package com.example.springjpa.service.Impl;
 
-import com.example.springjpa.service.EmailService;
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
-import lombok.Data;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Properties;
+import com.example.springjpa.service.EmailService;
+
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl implements EmailService {
-    @Value("${gmail_key}")
+    @Value("${gmail.gmail_key}")
     String gmail;
-     @Value("${gmail_app_password}")
+     @Value("${gmail.gmail_app_password}")
      String password;
   
     public void sendOtpEmail(String to, String otp) throws MessagingException {

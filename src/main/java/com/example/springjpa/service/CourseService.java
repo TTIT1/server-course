@@ -14,7 +14,7 @@ public interface CourseService {
     Course update(String id , CourseDTO courseDTO);
      List<CourseDTO> getCourse();
     Course save(CourseDTO courseDTO);
-   CourseDTO getFullCourse(CouresUserRequest  couresUserRequest);
+   //CourseDTO getFullCourse(CouresUserRequest  couresUserRequest);
 
 
 }

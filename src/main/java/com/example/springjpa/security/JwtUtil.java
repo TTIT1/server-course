@@ -1,32 +1,27 @@
 package com.example.springjpa.security;
 
+import java.security.Key;
+import java.time.Duration;
+import java.util.Date;
+import java.util.StringJoiner;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
 import com.example.springjpa.dto.resquest.IntrospectrRequest;
-
-
-
-
 import com.example.springjpa.model.auth.RefreshToken;
 import com.example.springjpa.model.auth.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
-
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-
-
-import java.security.Key;
-import java.time.Duration;
-import java.util.Date;
-import java.util.StringJoiner;
-import java.util.UUID;
 
 
 //sinh & kiểm tra token.
@@ -34,7 +29,7 @@ import java.util.UUID;
 @Component
 public class JwtUtil {
   @NonFinal
-  @Value("${select_key}")
+  @Value("${jwt.select_key}")
   String keyWork;
   @NonFinal
   static Key key;

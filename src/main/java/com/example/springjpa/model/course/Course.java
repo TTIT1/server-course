@@ -1,8 +1,9 @@
 package com.example.springjpa.model.course;
 
-import com.example.springjpa.model.course.Section;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -40,7 +41,8 @@ public class Course extends BaseEntity {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<Section> sections = new HashSet<>();
 
-    @OneToMany(mappedBy = "course")
-    @JsonIgnore
-    List<Purchase> purchases;
+ 
+
+    @Column(name = "p_price", nullable = false, precision = 19, scale = 2)
+    BigDecimal price;
 }
