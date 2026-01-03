@@ -32,14 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-### ENV FILES ###
-src/main/resources/.env
-*.env
-### SPRING CONFIG ###
-application.yml
-application.yaml
-application-*.yml
-application-*.yaml
+
 
 # Giữ lại file mẫu
 !application-example.yml

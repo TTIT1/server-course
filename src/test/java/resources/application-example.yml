@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: SPRINGJPA
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    username: ${REDIS_USERNAME:default}
+    password: ${REDIS_PASSWORD}
+    ssl: false
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc.time_zone: UTC
+
+logging:
+  level:
+    org.springframework: DEBUG
+
+server:
+  port: ${PORT:8080}
+
+jwt:
+  select_key: ${JWT_SELECT_KEY}
+
+gmail:
+  gmail_key: ${GMAIL_USERNAME}
+  gmail_app_password: ${GMAIL_APP_PASSWORD}
+
+api:
+  public_endpoints: >
+    /swagger-ui/**,
+    /v3/api-docs/**,
+    /swagger-resources/**,
+    /webjars/**,
+    /configuration/**,
+    /api/auth/register,
+    /api/auth/login,
+    /api/auth/send-otp,
+    /api/auth/verify-otp,
+    /api/auth/reset-password,
+    /api/auth/check/token,
+    /api/auth/check/refreshToken,
+    /api/permission/add/permission,
+    /api/role/add/new/role,
+    /api/role/get/all/role
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+  secure: true
