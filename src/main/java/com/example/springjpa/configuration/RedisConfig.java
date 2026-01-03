@@ -22,19 +22,19 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {
-@Value("${spring.redis.host}")
+ @Value("${redis.host}")
 private String redisHost;
 
-@Value("${spring.redis.port}")
+@Value("${redis.port}")
 private int redisPort;
 
-@Value("${spring.redis.username:}")
+@Value("${redis.username:}")
 private String redisUsername;
 
-@Value("${spring.redis.password:}")
+@Value("${redis.password:}")
 private String redisPassword;
 
-@Value("${spring.redis.ssl:false}")
+@Value("${redis.ssl:false}")
 private boolean sslEnabled;
 
 
