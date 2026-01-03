@@ -1,0 +1,42 @@
+vspring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    username: ${REDIS_USERNAME}
+    password: ${REDIS_PASSWORD}
+    ssl: ${REDIS_SSL:false}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc.time_zone: UTC
+
+server:
+  port: ${PORT:8080}
+
+jwt:
+  select_key: ${JWT_SELECT_KEY}
+
+gmail:
+  gmail_key: ${GMAIL_USERNAME}
+  gmail_app_password: ${GMAIL_APP_PASSWORD}
+
+api:
+  public_endpoints: ${PUBLIC_ENDPOINTS}
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+  secure: true
