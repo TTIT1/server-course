@@ -41,5 +41,6 @@ src/main/resources/.env
 /application-*.yml
 /application-*.yaml
 
-# Giữ lại file mẫu
-!/application-example.yml
+
+# Ignore spring config (ABSOLUTE)
+src/main/resources/application-example.yml
