@@ -1,9 +1,7 @@
 package com.example.springjpa.configuration;
 
-import io.lettuce.core.ClientOptions;
-import io.lettuce.core.SocketOptions;
-import io.lettuce.core.SslOptions;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import java.time.Duration;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,26 +14,29 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.time.Duration;
+import io.lettuce.core.ClientOptions;
+import io.lettuce.core.SocketOptions;
+import io.lettuce.core.SslOptions;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {
+@Value("${spring.redis.host}")
+private String redisHost;
 
-    @Value("${spring.redis.host}")
-    private String redisHost;
+@Value("${spring.redis.port}")
+private int redisPort;
 
-    @Value("${spring.redis.port}")
-    private int redisPort;
+@Value("${spring.redis.username:}")
+private String redisUsername;
 
-    @Value("${spring.redis.username:}")
-    private String redisUsername;
+@Value("${spring.redis.password:}")
+private String redisPassword;
 
-    @Value("${spring.redis.password}")
-    private String redisPassword;
+@Value("${spring.redis.ssl:false}")
+private boolean sslEnabled;
 
-    @Value("${spring.redis.ssl:false}")
-    private boolean sslEnabled;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
