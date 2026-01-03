@@ -42,7 +42,5 @@ src/main/resources/.env
 /application-*.yaml
 
 
-# Ignore spring config (ABSOLUTE)
-src/main/resources/application-example.yml
 # ENV files
 .env
