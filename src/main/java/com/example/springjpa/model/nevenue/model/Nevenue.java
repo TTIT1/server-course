@@ -1,4 +1,4 @@
-package com.example.springjpa.model.nevenue;
+package com.example.springjpa.model.nevenue.model;
 
 import com.example.springjpa.model.course.Author;
 import com.example.springjpa.model.course.Course;

@@ -29,8 +29,6 @@ public enum ErrorCode {
     USER_EXISTS(3001, "User already exists", HttpStatus.CONFLICT),
     USER_NOT_FOUND(3002, "User not found", HttpStatus.NOT_FOUND),
     DUPLICATE_RECORD(3003, "Duplicate record", HttpStatus.CONFLICT),
-    COURSE_NOT_PURCHASED(3004, "User has not purchased this course", HttpStatus.FORBIDDEN),
-
 
     INTERNAL_ERROR(4001, "Internal server error {min}", HttpStatus.INTERNAL_SERVER_ERROR),
     DATABASE_ERROR(4002, "Database connection error", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -48,7 +46,17 @@ public enum ErrorCode {
     SUCCESS(1000, "Success", HttpStatus.OK),
     REGISTER_SUCCESS(10, "Registration successful", HttpStatus.CREATED),
 
-    INVALID_AGE(9999,"You are not old enough to learn this  {min}",HttpStatus.UNAUTHORIZED);
+    INVALID_AGE(9999,"You are not old enough to learn this  {min}",HttpStatus.UNAUTHORIZED),
+
+
+    // oser
+    COURSE_NOT_PURCHASED(3004, "User has not purchased this course", HttpStatus.FORBIDDEN),
+    WALLET_NOT_FOUND(3005, "Wallet not found for user", HttpStatus.NOT_FOUND),
+
+
+    INSUFFICIENT_BALANCE(3007, "Insufficient wallet balance", HttpStatus.BAD_REQUEST),
+
+    COURSE_NOT_FOUND(3005, "Course not found", HttpStatus.NOT_FOUND);
 
     final int code;
     final String message;

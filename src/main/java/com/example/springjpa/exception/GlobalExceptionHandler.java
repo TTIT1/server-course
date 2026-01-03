@@ -41,13 +41,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> exception(RuntimeException ex) {
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
            String enumkey = ex.getMessage().toString();
-           log.info("test lôi reuntime  ++++++++++++++++++++++++++++++++++++++++++++++++++++ " +enumkey);
+          
         ApiResponse<Object> response = new ApiResponse<>();
         response.setMessages("Error by server: " + ex.getMessage());
         response.setCode(ErrorCode.INTERNAL_ERROR.getCode());
         response.setHttpStatusCode(ErrorCode.INTERNAL_ERROR.getHttpStatusCode());
         return ResponseEntity.status(ErrorCode.INTERNAL_ERROR.getHttpStatusCode()).body(response);
     }
+    
 // bbawtsloiox từ annotatin
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handleAccessDenied(MethodArgumentNotValidException exception) {
