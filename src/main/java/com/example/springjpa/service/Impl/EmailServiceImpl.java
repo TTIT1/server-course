@@ -17,10 +17,12 @@ import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl implements EmailService {
-    @Value("${gmail.gmail_key}")
-    String gmail;
-     @Value("${gmail.gmail_app_password}")
-     String password;
+  @Value("${gmail.gmail_key}")
+private String gmail;
+
+@Value("${gmail.gmail_app_password}")
+private String password;
+
   
     public void sendOtpEmail(String to, String otp) throws MessagingException {
         Properties props = new Properties();

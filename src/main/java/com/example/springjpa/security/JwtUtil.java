@@ -28,6 +28,7 @@ import lombok.experimental.NonFinal;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Component
 public class JwtUtil {
+
   @NonFinal
   @Value("${jwt.select_key}")
   String keyWork;

@@ -21,13 +21,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+ @Value("${jwt.select_key}")
+private String key;
 
-
-    @Value("${api.public_endpoints}")
-    private String publicEndpoints;
-
-  @Value("${jwt.select_key}")
-  private String key;
+  @Value("${api.public_endpoints}")
+  private String publicEndpoints;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
