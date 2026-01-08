@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 
 public class Nevenue extends BaseEntity {
-         @ManyToOne(fetch = FetchType.LAZY)
+      @ManyToOne(fetch = FetchType.LAZY)
        Course  course;
       @ManyToOne(fetch = FetchType.LAZY)
        Author author;

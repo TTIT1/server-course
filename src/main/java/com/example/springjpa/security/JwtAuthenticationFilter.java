@@ -1,6 +1,14 @@
 package com.example.springjpa.security;
 
+import java.io.IOException;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import com.example.springjpa.service.Impl.TokenBlacklistService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,10 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -54,4 +58,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+    
+ 
+  public  String getIdByUsertoToken(){
+     HttpServletRequest request =
+        ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+        .getRequest();
+        String authHeader = request.getHeader("Authorization");
+          String token = authHeader.substring(7);
+        return  JwtUtil .valiuserIDToken(token);
+  
+  }
 }
