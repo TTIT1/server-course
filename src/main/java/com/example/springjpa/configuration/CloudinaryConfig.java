@@ -16,14 +16,16 @@ public class CloudinaryConfig {
 @Value("${CLOUDINARY_NAME}")
 private String cloudName;
 
-@Value("${CLOUDINARY_API_KEY}")
+@Value("${cloudinary.api-key}")
 private String apiKey;
 
-@Value("${CLOUDINARY_API_SECRET}")
+@Value("${cloudinary.api-secret}")
 private String apiSecret;
 
-@Value("${CLOUDINARY_SECURE:true}")
-private boolean secure;
+@Value("${cloudinary.secure}")
+private boolean cloudSecure;
+
+
 
     @Bean
     public Cloudinary cloudinary() {
@@ -31,7 +33,7 @@ private boolean secure;
         config.put("cloud_name", cloudName);
         config.put("api_key", apiKey);
         config.put("api_secret", apiSecret);
-        config.put("secure", String.valueOf(secure));
+        config.put("secure", String.valueOf(cloudSecure));
         return new Cloudinary(config);
     }
 }

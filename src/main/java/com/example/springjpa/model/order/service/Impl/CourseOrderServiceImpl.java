@@ -1,14 +1,22 @@
 package com.example.springjpa.model.order.service.Impl;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.springjpa.dto.response.CouresAllResponse.CourseDetailResponse;
 import com.example.springjpa.enums.order.OrderStatus;
 import com.example.springjpa.enums.wallet.WalletTransactionStatus;
 import com.example.springjpa.enums.wallet.WalletTransactionType;
 import com.example.springjpa.exception.AppExcepotion;
 import com.example.springjpa.exception.ErrorCode;
+import com.example.springjpa.mapper.CourseMapper;
 import com.example.springjpa.model.auth.User;
 import com.example.springjpa.model.course.Course;
+import com.example.springjpa.model.nevenue.dto.Request.NevenueRequest;
+import com.example.springjpa.model.nevenue.repository.NevenueRepository;
+import com.example.springjpa.model.nevenue.service.NevenueService;
 import com.example.springjpa.model.order.CourseOrder;
 import com.example.springjpa.model.order.CourseOrderRepository;
 import com.example.springjpa.model.order.dto.response.CourseOrderResponse;
@@ -17,17 +25,20 @@ import com.example.springjpa.model.order.mapper.CourseOrderMapper;
 import com.example.springjpa.model.order.service.CourseOrderService;
 import com.example.springjpa.model.wallet.Wallet;
 import com.example.springjpa.model.wallet.WalletTransaction;
+import com.example.springjpa.repository.AuthorRepository;
 import com.example.springjpa.repository.CourseRepository;
 import com.example.springjpa.repository.UserRepository;
 import com.example.springjpa.repository.WalletRepository;
 import com.example.springjpa.repository.WalletTransactionRepository;
+import com.example.springjpa.security.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 
 @Service
 @RequiredArgsConstructor
-
+@Log4j2
 public class CourseOrderServiceImpl implements CourseOrderService {
     
     private final CourseOrderRepository courseOrderRepository;
@@ -36,7 +47,16 @@ public class CourseOrderServiceImpl implements CourseOrderService {
     private final CourseRepository courseRepository;
     private final UserRepository userrepository;
     private final WalletTransactionRepository walletTransactionRepository ;
-    public CourseOrderResponse saveCourseOrder(CourseOrderRequest courseOrderResquest) {
+    private final NevenueService nevenueService;
+    private final AuthorRepository authorRepository;
+    private final NevenueRepository nevenueRepository;
+    private final JwtAuthenticationFilter authenticationFilter;
+    private final CourseMapper courseMapper;
+    
+    public CourseOrderResponse saveCourseOrder( CourseOrderRequest courseOrderResquest) {
+      
+       
+
         Boolean check = courseOrderRepository.existsByUserIdAndCourseId(courseOrderResquest.getUserId(), courseOrderResquest.getCourseId());
         if(check){
             throw  new AppExcepotion(ErrorCode.COURSE_ALREADY_PURCHASED);
@@ -62,14 +82,15 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 
         walletRepository.save(wallet);
 
-        // Boolean walletTransaction = walletTransactionRepository.existsByWalletId(wallet.getId());
-
+       
+         
         // if(walletTransaction){
              WalletTransaction transaction = new WalletTransaction();
              transaction.setStatus(WalletTransactionStatus.SUCCESS);
              transaction.setType(WalletTransactionType.PURCHASE);
              transaction.setAmount(course.getPrice());
              transaction.setWallet(wallet);
+             transaction.setUpdatedBy(authenticationFilter.getIdByUsertoToken());
              walletTransactionRepository.save(transaction);
         //}
         
@@ -78,20 +99,52 @@ public class CourseOrderServiceImpl implements CourseOrderService {
                     courseOrder.setUser(user);
                     courseOrder.setCourse(course);
                     courseOrder.setStatus(OrderStatus.PAID);
+                    courseOrder.setPrice(course.getPrice());
+                    courseOrder.setUpdatedBy(authenticationFilter .getIdByUsertoToken());
                     courseOrderRepository.save(courseOrder);
+        
+       List<String> author = authorRepository.findAuthorIdsByCourseId(course.getId());
+        NevenueRequest nevenueRequest = new NevenueRequest();
+        nevenueRequest.setAuthorId(author);
+        nevenueRequest.setCouresorderId(courseOrder.getId());
+        nevenueRequest.setCourseId(course.getId());
+         
+        nevenueService.addNevenue(nevenueRequest);
 
-              return CourseOrderResponse.builder()
-                .userId(user.getId())
-                .courseId(course.getId())
-                .price(course.getPrice())
-                .status(courseOrder.getStatus())
-                .build();
+       return  CourseOrderResponse.builder()
+              .userId(courseOrder.getUser().getId())
+              .courseId(courseOrder.getCourse().getId())
+              .price(courseOrder.getPrice().abs())
+              .status(courseOrder.getStatus())
+       .build();
 
         
     }
 
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public CourseDetailResponse getPurchasedCourseDetail(String courseId) {
+       
+        String userId = authenticationFilter.getIdByUsertoToken();
+        userrepository.findById(userId)
+                .orElseThrow(() -> new AppExcepotion(ErrorCode.USER_NOT_FOUND));
+
+        boolean hasBought = courseOrderRepository.userHasBoughtCourse(userId, courseId);
+        if (!hasBought) {
+            throw new AppExcepotion(ErrorCode.COURSE_NOT_PURCHASED);
+        }
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new AppExcepotion(ErrorCode.COURSE_NOT_FOUND));
+
+        return courseMapper.toCourseDetailDTO(course);
+    }
+
+
    
     
-
+    
     
 }

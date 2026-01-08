@@ -28,6 +28,7 @@ import lombok.experimental.NonFinal;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Component
 public class JwtUtil {
+
   @NonFinal
   @Value("${jwt.select_key}")
   String keyWork;
@@ -44,22 +45,19 @@ public class JwtUtil {
   @NonFinal
   static long TokenTme = Duration.ofMinutes(30).toMillis();
 
-  // creat token
   public static String generateToken(User user) {
-      String id = String.valueOf(user.getId());
-
+  // generateToken
       return Jwts.builder()
-              .setSubject(user.getUserName())
-              .setIssuedAt(new Date())
-              .claim("scope",buildScope(user))
-              .claim("id", id)
-              .setId(UUID.randomUUID().toString())
-              .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
-              .setExpiration(new Date(System.currentTimeMillis()+TokenTme))
-              .signWith(SignatureAlgorithm.HS512,key)
-              .compact();
-
-  }
+      .setSubject(user.getUserName())
+      .setIssuedAt(new Date())
+      .claim("scope", buildScope(user))
+      .claim("id", user.getId())             
+      .setId(UUID.randomUUID().toString()) 
+      .setIssuer("HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY")
+      .setExpiration(new Date(System.currentTimeMillis() + TokenTme))
+      .signWith(SignatureAlgorithm.HS512, key)
+      .compact();
+}
     public static String generateRefreshToken(User user) {
         String id = String.valueOf(user.getId());
         return Jwts.builder()
@@ -82,16 +80,14 @@ public class JwtUtil {
                   .getSubject();
   }
 
-  // lay id của user trong token
-    public static String valiuserIDToken(String token) {
-              return Jwts.parserBuilder()
-                      .setSigningKey(key)
-                      .build()
-                      .parseClaimsJws(token)
-                      .getBody()
-                      .getId();
-
-    }
+  public static String valiuserIDToken(String token) {
+    return Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .get("id", String.class); 
+}
   // Kiểm tra token có hợp lệ không
   public static Boolean validateToken(IntrospectrRequest request) {
                         try {

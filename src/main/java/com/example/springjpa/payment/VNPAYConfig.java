@@ -13,26 +13,27 @@ import lombok.Getter;
 
 public class VNPAYConfig {
 
-    @Value("${payment.vnPay.url}")
-    private String vnp_PayUrl;
+  @Value("${payment.vnPay.url}")
+private String vnp_PayUrl;
 
-    @Value("${payment.vnPay.returnUrl}")
-    private String vnp_ReturnUrl;
+@Value("${payment.vnPay.returnUrl}")
+private String vnp_ReturnUrl;
 
-    @Value("${payment.vnPay.tmnCode}")
-    private String vnp_TmnCode;
+@Value("${payment.vnPay.tmnCode}")
+private String vnp_TmnCode;
 
-    @Value("${payment.vnPay.secretKey}")
-    private String secretKey;
+@Value("${payment.vnPay.secretKey}")
+private String secretKey;
 
-    @Value("${payment.vnPay.version}")
-    private String vnp_Version;
+@Value("${payment.vnPay.version}")
+private String vnp_Version;
 
-    @Value("${payment.vnPay.command}")
-    private String vnp_Command;
+@Value("${payment.vnPay.command}")
+private String vnp_Command;
 
-    @Value("${payment.vnPay.orderType}")
-    private String orderType;
+@Value("${payment.vnPay.orderType}")
+private String orderType;
+
 
     public Map<String, String> getBaseParams() {
         Map<String, String> params = new HashMap<>();
