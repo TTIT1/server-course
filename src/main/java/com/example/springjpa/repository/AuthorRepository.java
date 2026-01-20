@@ -17,8 +17,13 @@ public interface AuthorRepository extends JpaRepository<Author,String> {
     List<Author> findAllByfirstName(String nameFind);
     List<Author> findAllByfirstNameIgnoreCase(String nameFind);
     List<Author> findAllByCourses_Id(String courseId);
-    @Query("select a.id from Author a join a.courses c where c.id =: courseID")
-    List<String>findAuthorIdsByCourseId(@Param("courseId") String courseId);
+ @Query("""
+    SELECT DISTINCT a
+    FROM Author a
+    JOIN a.courses c
+    WHERE c.id = :courseId
+""")
+List<Author> findAuthorsByCourseId(@Param("courseId") String courseId);
 
 
 }

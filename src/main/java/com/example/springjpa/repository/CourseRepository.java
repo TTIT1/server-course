@@ -10,14 +10,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.springjpa.model.course.Course;
-import com.example.springjpa.model.order.CourseOrder;
 @Repository
 
 public interface CourseRepository  extends JpaRepository<Course, String> {
     Optional<Course> findByTitle(String title);
+    
+   @Query("select c from Course c where c.id = :courseId")
+   Course findByCourseId(@Param("courseId") String courseId);
 
 
-
-
-
-}
+    }

@@ -21,8 +21,8 @@ public interface CourseOrderRepository extends JpaRepository<CourseOrder, String
 );
 
 
-    // @Query("SELECT COUNT(p) > 0 FROM CourseOrder p " +
-    //        "WHERE p.user.id = :userId AND p.course.id = :courseId")
+    @Query("SELECT COUNT(p) > 0 FROM CourseOrder p " +
+           "WHERE p.user.id = :userId AND p.course.id = :courseId")
     // boolean existsByUserIdAndCourseId(@Param("userId") String userId,
     //                                   @Param("courseId") String courseId);
     boolean existsByUserIdAndCourseId(String userId, String courseId);
@@ -60,5 +60,7 @@ public interface CourseOrderRepository extends JpaRepository<CourseOrder, String
     """)
     boolean userHasBoughtCourse(String userId, String courseId);
 
+   @Query("select co from CourseOrder co join co.course c where c.id =: courseID")
+  List< CourseOrder> findCourseOrderIdsByCourseId(@Param("courseId") String courseId);
 
 }

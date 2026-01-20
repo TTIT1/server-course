@@ -36,6 +36,7 @@ public class Author extends BaseEntity {
     List<Course> courses = new ArrayList<>();
     @Column(name = "role", unique = false, nullable = false)
     Set<String> roles;
+    
 
 
 }

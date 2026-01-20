@@ -7,5 +7,5 @@ import com.example.springjpa.model.nevenue.model.Nevenue;
 
 @Mapper(componentModel ="spring")
 public interface  NevenueMapper {
-    Nevenue toNevenue(NevenueRequest nevenueRequest);
+    
 }

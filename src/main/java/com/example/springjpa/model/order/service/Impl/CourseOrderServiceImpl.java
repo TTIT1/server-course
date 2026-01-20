@@ -1,7 +1,5 @@
 package com.example.springjpa.model.order.service.Impl;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +12,6 @@ import com.example.springjpa.exception.ErrorCode;
 import com.example.springjpa.mapper.CourseMapper;
 import com.example.springjpa.model.auth.User;
 import com.example.springjpa.model.course.Course;
-import com.example.springjpa.model.nevenue.dto.Request.NevenueRequest;
 import com.example.springjpa.model.nevenue.repository.NevenueRepository;
 import com.example.springjpa.model.nevenue.service.NevenueService;
 import com.example.springjpa.model.order.CourseOrder;
@@ -84,7 +81,7 @@ public class CourseOrderServiceImpl implements CourseOrderService {
 
        
          
-        // if(walletTransaction){
+        
              WalletTransaction transaction = new WalletTransaction();
              transaction.setStatus(WalletTransactionStatus.SUCCESS);
              transaction.setType(WalletTransactionType.PURCHASE);
@@ -92,7 +89,7 @@ public class CourseOrderServiceImpl implements CourseOrderService {
              transaction.setWallet(wallet);
              transaction.setUpdatedBy(authenticationFilter.getIdByUsertoToken());
              walletTransactionRepository.save(transaction);
-        //}
+       
         
 
         CourseOrder  courseOrder =  mapperCourseOrder.toCourseOrder(courseOrderResquest);
@@ -103,14 +100,8 @@ public class CourseOrderServiceImpl implements CourseOrderService {
                     courseOrder.setUpdatedBy(authenticationFilter .getIdByUsertoToken());
                     courseOrderRepository.save(courseOrder);
         
-       List<String> author = authorRepository.findAuthorIdsByCourseId(course.getId());
-        NevenueRequest nevenueRequest = new NevenueRequest();
-        nevenueRequest.setAuthorId(author);
-        nevenueRequest.setCouresorderId(courseOrder.getId());
-        nevenueRequest.setCourseId(course.getId());
-         
-        nevenueService.addNevenue(nevenueRequest);
-
+        
+      
        return  CourseOrderResponse.builder()
               .userId(courseOrder.getUser().getId())
               .courseId(courseOrder.getCourse().getId())
