@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://dpg-d4uemq9r0fns7390kusg-a.oregon-postgres.render.com:5432/ttit
-    username: ttit_user
-    password: tarLtODsmnJveK9kCex8fmoLVcSCQfQQ
+    url: jdbc:postgresql://dpg-d6gkgrruibrs739ef6u0-a.oregon-postgres.render.com:5432/online_course_service_7sul
+    username: online_course_service_7sul_user
+    password: BexAIbrwFI2K9wCg0TjJ8qBd2xUMKV8g
 
   redis:
     host: redis-14131.crce262.us-east-1-1.ec2.cloud.redislabs.com
