@@ -74,7 +74,7 @@ cd hubtsocial_mobile
 * Email: [thetruongit1236@gmail.com](mailto:thetruongit1236@gmail.com)
 
 ---
-sf
+sfq
 ## 🎯 Mục tiêu học tập
 
 * Nâng cao kỹ năng thiết kế REST API với Spring Boot
