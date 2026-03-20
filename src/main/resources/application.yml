@@ -3,12 +3,39 @@ spring:
     url: jdbc:postgresql://dpg-d6gkgrruibrs739ef6u0-a.oregon-postgres.render.com:5432/online_course_service_7sul
     username: online_course_service_7sul_user
     password: BexAIbrwFI2K9wCg0TjJ8qBd2xUMKV8g
+  
+ai:
+    google:
+      genai:
+        api-key: AIzaSyCEHM2oxVUCT2cUnTe4-7-nojYW8SMSkTU
 
+        chat:
+          options:
+            model: gemini-2.5-flash
+
+        embedding:
+          api-key: AIzaSyCEHM2oxVUCT2cUnTe4-7-nojYW8SMSkTU
+          text:
+            options:
+              model: gemini-embedding-001
+
+    # Enable text EmbeddingModel auto-config (needed by Qdrant VectorStore)
+    model:
+      embedding:
+        text: google-genai
+
+    vectorstore:
+      qdrant:
+        host: localhost
+        # Spring AI talks to Qdrant via gRPC (default 6334). 6333 is REST/HTTP.
+        port: 6334
+        collection-name: documents
+        initialize-schema: true
   redis:
-    host: redis-14131.crce262.us-east-1-1.ec2.cloud.redislabs.com
-    port: 14131
+    host: redis-13945.c61.us-east-1-3.ec2.cloud.redislabs.com
+    port: 13945
     username: default
-    password: soiBqC3U9WZ2zxaevWxKHEiGwQ7VfLhZ
+    password: Ro0Nb8bMB4vIyEzbOlsF3nPrfrQOZwIq
     ssl: false
 
   jpa:

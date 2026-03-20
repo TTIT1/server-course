@@ -36,7 +36,7 @@ private String key;
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(publicEndpoint).permitAll()
 
-                    .anyRequest().authenticated() // Các request khác cần JWT hợp lệ
+                    .anyRequest().authenticated() 
             )
             .oauth2ResourceServer(ouutho2->ouutho2
                     .jwt(
