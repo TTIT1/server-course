@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     url: ${DB_URL}
@@ -13,7 +14,7 @@ spring:
         enabled: ${REDIS_SSL:true}
 
   ai:
-  google:
+   google:
     genai:
       api-key: ${GEMINI_API_KEY}
       chat:
