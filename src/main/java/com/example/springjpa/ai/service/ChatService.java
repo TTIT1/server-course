@@ -59,7 +59,7 @@ public class ChatService {
         Câu hỏi: %s
         """.formatted(context, textChat);
         String answer = chatClient.prompt()
-                
+               
                 .user(prompt)
                 .call()
                 .content();
