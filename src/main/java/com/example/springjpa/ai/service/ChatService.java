@@ -21,7 +21,8 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 @RequiredArgsConstructor
 public class ChatService {
-
+        
+     
 
     ChatClient chatClient;
     //RagService ragService;
@@ -47,13 +48,23 @@ public class ChatService {
                 .map((Document::getText))//
                 .reduce((a,b) -> a+ "\n\n ---\n\n"+b)
                 .orElse("");
+
+        String prompt = """
+        Bạn là trợ lý hữu ích. Trả lời dựa trên ngữ cảnh bên dưới.
+        Nếu không đủ thông tin hãy dùng kiến thức của bạn.
+        
+        Ngữ cảnh:
+        %s
+        
+        Câu hỏi: %s
+        """.formatted(context, textChat);
         String answer = chatClient.prompt()
-                .system(context)
-                .user(textChat)
+                
+                .user(prompt)
                 .call()
                 .content();
 
-
+ persistChat(conversationID, "plain", textChat, answer);
 
      return ChatResponse.builder()
              .messger(answer)
